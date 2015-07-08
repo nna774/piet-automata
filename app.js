@@ -95,20 +95,9 @@ function createPiet(code) {
 	ctx = newCtx;
 
 	// コードに対応した画像を挿入する｡
-	if (c[0] === 0) {
-	    ctx.drawImage(config.images['push'].image, width - config.unit, 0);
-	}
-	if (c[0] === 2) {
-	    ctx.drawImage(config.images['add'].image, width - config.unit, 0);
-	}
-	if (c[0] === 4) {
-	    ctx.drawImage(config.images['mul'].image, width - config.unit, 0);
-	}
-	if (c[0] === 9) {
-	    ctx.drawImage(config.images['dup'].image, width - config.unit, 0);
-	}
-	if (c[0] === 17) {
-	    ctx.drawImage(config.images['out_n'].image, width - config.unit, 0);
+	if (true) { // なにも考えずに挿入すれば動く命令｡
+	    var op = config.table[c[0]];
+	    ctx.drawImage(config.images[op].image, width - config.unit, 0);
 	}
     }
 
