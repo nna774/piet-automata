@@ -1,0 +1,28 @@
+{
+  "name": "piet-automata",
+  "version": "0.0.0",
+  "description": "自動piet生成｡",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nna774/piet-automata.git"
+  },
+  "keywords": [
+    "Piet"
+  ],
+  "author": "NoNameA 774",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/nna774/piet-automata/issues"
+  },
+  "homepage": "https://github.com/nna774/piet-automata",
+  "dependencies": {
+    "canvas": "^1.2.3"
+  }
+}
