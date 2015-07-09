@@ -2,6 +2,17 @@
 
 自動piet生成｡
 
+# Gallery
+
+* Hello, World!
+![Hello, World!](https://raw.githubusercontent.com/nna774/piet-automata/master/output/helloworld.png)
+
+* puts 72
+![puts 72](https://raw.githubusercontent.com/nna774/piet-automata/master/output/puts72.png)
+
+* even-or-odd(標準入力から一つ読み取り、それが奇数なら、そうでないならば0を出す)
+![even-or-odd](https://raw.githubusercontent.com/nna774/piet-automata/master/output/even-or-odd.png)
+
 # 中間言語
 スタック志向っぽい言語。
 一つだけ整数のスタックを持っている。
