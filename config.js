@@ -23,6 +23,14 @@ var images = {
     'nop_v': { 'file': 'piet/nop_v.png' },
     'start': { 'file': 'piet/start.png' },
     'terminate': { 'file': 'piet/terminate.png' },
+    'black': { 'file': 'piet/black.png' },
+    'branch': { 'file': 'piet/branch.png' },
+    'curve4': { 'file': 'piet/curve4.png' },
+    'curve5': { 'file': 'piet/curve5.png' },
+    'curve6': { 'file': 'piet/curve6.png' },
+    'curve7': { 'file': 'piet/curve7.png' },
+    'rjoin': { 'file': 'piet/rjoin.png' },
+    'ljoin': { 'file': 'piet/ljoin.png' },
 };
 
 module.exports = {

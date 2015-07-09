@@ -21,10 +21,18 @@ var opTable = {
     21: { 'filename': 'jez', 'length': 2  }, // image not exists
     22: { 'filename': 'label', 'length': 1  }, // image not exists
 
-    // 以下拡張命令
-    33: { 'filename': 'succ', 'length': 1  }, // image not exists
-    34: { 'filename': 'pred', 'length': 1  }, // image not exists
-    35: { 'filename': '', 'length': 1  },
+    24: { 'filename': 'black' }, // only use generate
+    25: { 'filename': 'branch' },
+    26: { 'filename': 'nop_h' },
+    27: { 'filename': 'nop_v' },
+    28: { 'filename': 'curve5' }, // 上から左
+    29: { 'filename': 'curve6' }, // 右から上
+    30: { 'filename': 'curve4' }, // 上から右
+    31: { 'filename': 'curve7' }, // 左から上
+    32: { 'filename': 'cross' },
+    33: { 'filename': 'join' },
+    34: { 'filename': 'rjoin' },
+    35: { 'filename': 'ljoin' },
 }
 
 var Canvas = require('canvas')
@@ -130,67 +138,136 @@ function analyze(data) {
 
 function genCodeMap(code) {
     var newCode = [];
+    newCode[0] = [];
+    var labelCount = 0;
     for (c of code) {
 	switch (c[0]) {
 	case 0:
 	    if (c[1] !== 1) {
-		newCode.push([0, 0]);
+		newCode[0].push([0, 0]);
 		for (var i = 0; i < c[1]; ++i) {
-		    newCode.push([0, 1]);
-		    newCode.push([2]);
+		    newCode[0].push([0, 1]);
+		    newCode[0].push([2]);
 		}
 	    } else {
-		newCode.push(c);
+		newCode[0].push(c);
 	    }
 	    break;
-	case 33:
-	    newCode.push([0, 1]);
-	    newCode.push([2]);
-	    break;
-	case 34:
-	    newCode.push([0, 1]);
-	    newCode.push([3]);
+	case 21: // JEZ
+	    newCode[0].push([7]);
+	    newCode[0].push([21, c[1], labelCount]);
+	    ++labelCount;
 	    break;
 	default:
-	    newCode.push(c);
+	    newCode[0].push(c);
+	}
+    }
+
+    for (var i = 0; i < labelCount; ++i) {
+	for (var c = 0; c < newCode[0].length; ++c) {
+	    newCode[i].push([26]);
+	}
+
+	// JEZ を探す。
+	var j = 0;
+	for (j = 0; j < newCode[0].length; ++j) {
+	    if (newCode[0][j][0] === 21) {
+		if (newCode[0][j][2] === j) {
+		    break;
+		}
+	    }
+	}
+
+	var word = newCode[0][j][1];
+
+	var k = 0;
+	for (k = 0; k < newCode[0].length; ++k) {
+	    if (newCode[0][k][0] === 22) {
+		if (newCode[0][j][1] === word) {
+		    break;
+		}
+	    }
+	}
+	if (j < k) {// right
+	    // 縦
+	    for (var l = 1; l < i; ++l) {
+		if (newCode[l][j][0] === 24) { // 黒
+		    newCode[l][j][0] = 27; // vnop
+		} else {
+		    newCode[l][j][0] = 32; // cross
+		}
+	    }
+	    newCode[i][j][0] = 30;
+	    for (var l = j + 1; l < k; ++l) {
+		newCode[i][l][0] = 26; // hnop
+	    }
+	    newCode[i][k][0] = 31;
+	    for (var l = i - 1; 0 < l; --l) {
+		if (newCode[l][k][0] === 24) { // 黒
+		    newCode[l][k][0] = 27; // vnop
+		} else if (newCode[l][k][0] === 26) { // hnop
+		    newCode[l][k][0] = 32; // cross
+		} else if (newCode[l][k][0] === 29){
+		    newCode[l][k][0] = 34; // rjoin
+		    break;
+		} else if (newCode[l][k][0] === 31){
+		    newCode[l][k][0] = 35; // ljoin
+		    break;
+		} else {
+		    throw ("never come");
+		}
+	    }
+	} else { // left
+	    // 縦
+	    for (var l = 1; l < i; ++l) {
+		if (newCode[l][j][0] === 24) { // 黒
+		    newCode[l][j][0] = 27; // vnop
+		} else {
+		    newCode[l][j][0] = 32; // cross
+		}
+	    }
+	    newCode[i][j][0] = 28;
+	    for (var l = k + 1; l < j; ++l) {
+		newCode[i][l][0] = 26; // hnop
+	    }
+	    newCode[i][k][0] = 29;
+	    for (var l = i - 1; 0 < l; --l) {
+		if (newCode[l][k][0] === 24) { // 黒
+		    newCode[l][k][0] = 27; // vnop
+		} else if (newCode[l][k][0] === 26) { // hnop
+		    newCode[l][k][0] = 32; // cross
+		} else if (newCode[l][k][0] === 29){
+		    newCode[l][k][0] = 34; // rjoin
+		    break;
+		} else if (newCode[l][k][0] === 31){
+		    newCode[l][k][0] = 35; // ljoin
+		    break;
+		} else {
+		    throw ("never come");
+		}
+	    }
 	}
     }
     return newCode;
 }
 
 function generateImage(code) {
-    var height = config.unit;
-    var width = config.unit;
+    var height = config.unit * code.length;
+    var width = config.unit * code[0].length;
     var canvas = new Canvas(width, height);
     var ctx = canvas.getContext('2d');
 
     ctx.drawImage(config.images['start'].image, 0, 0);
 
-    for (var c of code) { // 毎回画像の更新してるの効率悪そう｡
-	var image = ctx.getImageData(0, 0, width, height);
-	width += config.unit;
-	var newCanvas = new Canvas(width, height);
-	var newCtx = newCanvas.getContext('2d');
-	newCtx.putImageData(image, 0, 0)
-	canvas = newCanvas;
-	ctx = newCtx;
-
-	// コードに対応した画像を挿入する｡
-	if (true) { // なにも考えずに挿入すれば動く命令｡
-	    var op = table[c[0]];
-	    ctx.drawImage(config.images[op].image, width - config.unit, 0);
+    for (var i = 0; i < code.length; ++i) {
+	for (var j = 0; j < code[0].length; ++j) {
+	    // コードに対応した画像を挿入する｡
+	    var op = opTable[code[i][j][0]];
+	    var filename = op['filename']
+	    ctx.drawImage(config.images[filename].image, j * config.unit, i * config.unit);
 	}
     }
 
-    // terminate
-    var image = ctx.getImageData(0, 0, width, height);
-    width += config.unit;
-    var newCanvas = new Canvas(width, height);
-    var newCtx = newCanvas.getContext('2d');
-    newCtx.putImageData(image, 0, 0)
-    canvas = newCanvas;
-    ctx = newCtx;
-    ctx.drawImage(config.images['terminate'].image, width - config.unit, 0);
     
     // 以下保存
     var out = fs.createWriteStream('out.png')
@@ -221,6 +298,6 @@ fs.readFile(filename, 'utf8', function (err, data) {
     if (err) throw err;
     var code = analyze(data);
 
-    codemap = genCodeMap(code);p
+    codemap = genCodeMap(code);
     generateImage(codemap);
 });
