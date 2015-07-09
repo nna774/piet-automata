@@ -188,10 +188,13 @@ function genCodeMap(code) {
 	var k = 0;
 	for (k = 0; k < newCode[0].length; ++k) {
 	    if (newCode[0][k][0] === 22) {
-		if (newCode[0][j][1] === word) {
+		if (newCode[0][k][1] === word) {
 		    break;
 		}
 	    }
+	}
+	if (k == newCode[0].length) {
+	    throw("label " + word + " not found.");
 	}
 
 	if (j < k) {// right
