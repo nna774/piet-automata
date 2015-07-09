@@ -25,26 +25,7 @@ var images = {
     'terminate': { 'file': 'piet/terminate.png' },
 };
 
-var table = {
-    0: 'push',
-    1: 'pop',
-    2: 'add',
-    3: 'sub',
-    4: 'mul',
-    5: 'div',
-    6: 'mod',
-    7: 'not',
-    8: 'greater',
-    9: 'dup',
-    10: 'roll',
-    15: 'in_n',
-    16: 'in_c',
-    17: 'out_n',
-    18: 'out_c',
-}
-
 module.exports = {
     images: images,
-    table: table,
     unit: 5,
 };

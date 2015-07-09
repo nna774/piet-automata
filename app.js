@@ -1,22 +1,27 @@
 // app.js
 
-/* 
-   0: PUSH n
-   1: POP
-   2: ADD
-   3: SUB
-   4: MUL
-   5: DIV
-   6: MOD
-   7: NOT
-   8: GRATER
-   9: DUP
-   10: ROLL
-   15: INN
-   16: INC
-   17: OUTN
-   18: OUTC
-*/
+var table = {
+    0: 'push',
+    1: 'pop',
+    2: 'add',
+    3: 'sub',
+    4: 'mul',
+    5: 'div',
+    6: 'mod',
+    7: 'not',
+    8: 'greater',
+    9: 'dup',
+    10: 'roll',
+    15: 'in_n',
+    16: 'in_c',
+    17: 'out_n',
+    18: 'out_c',
+
+    // 以下拡張命令
+    33: 'succ',
+    34: 'pred',
+    35: ''
+}
 
 var Canvas = require('canvas')
   , Image = Canvas.Image
@@ -28,53 +33,109 @@ function analyze(data) {
     var code = [];
     for (var l of lines) {
 	var m;
+	var f = false; var o = l;
 	if (m = l.match(/PUSH\s+(\d+)/i)) {
 	    code.push([0, parseInt(m[1])]);
+	    f = true;
 	}
 	if (l.match(/POP/i)) {
 	    code.push([1]);
+	    f = true;
 	}
 	if (l.match(/ADD/i)) {
 	    code.push([2]);
+	    f = true;
 	}
 	if (l.match(/SUB/i)) {
 	    code.push([3]);
+	    f = true;
 	}
 	if (l.match(/MUL/i)) {
 	    code.push([4]);
+	    f = true;
 	}
 	if (l.match(/DIV/i)) {
 	    code.push([5]);
+	    f = true;
 	}
 	if (l.match(/MOD/i)) {
 	    code.push([6]);
+	    f = true;
 	}
 	if (l.match(/NOT/i)) {
 	    code.push([7]);
+	    f = true;
 	}
 	if (l.match(/GREATER/i)) {
 	    code.push([8]);
+	    f = true;
 	}
 	if (l.match(/DUP/i)) {
 	    code.push([9]);
+	    f = true;
 	}
 	if (l.match(/ROLL/i)) {
 	    code.push([10]);
+	    f = true;
 	}
 	if (l.match(/INN/i)) {
 	    code.push([15]);
+	    f = true;
 	}
 	if (l.match(/INC/i)) {
 	    code.push([16]);
+	    f = true;
 	}
 	if (l.match(/OUTN/i)) {
 	    code.push([17]);
+	    f = true;
 	}
 	if (l.match(/OUTC/i)) {
 	    code.push([18]);
+	    f = true;
+	}
+	if (l.match(/SUCC/i)) {
+	    code.push([33]);
+	    f = true;
+	}
+	if (l.match(/PRED/i)) {
+	    code.push([34]);
+	    f = true;
+	}
+
+	if (!f) {
+	    if (! l.match(/(\s*)/)) {
+		console.log("unknown token: " + o)
+	    }
 	}
     }
     return code;
+}
+
+function prepro(code) {
+    var newCode = [];
+    for (c of code) {
+	switch (c[0]) {
+	case 0:
+	    newCode.push([0, 0]);
+	    for (var i = 0; i < c[1]; ++i) {
+		newCode.push([0, 1]);
+		newCode.push([2]);
+	    }
+	    break;
+	case 33:
+	    newCode.push([0, 1]);
+	    newCode.push([2]);
+	    break;
+	case 34:
+	    newCode.push([0, 1]);
+	    newCode.push([3]);
+	    break;
+	default:
+	    newCode.push(c);
+	}
+    }
+    return newCode;
 }
 
 function createPiet(code) {
@@ -96,7 +157,7 @@ function createPiet(code) {
 
 	// コードに対応した画像を挿入する｡
 	if (true) { // なにも考えずに挿入すれば動く命令｡
-	    var op = config.table[c[0]];
+	    var op = table[c[0]];
 	    ctx.drawImage(config.images[op].image, width - config.unit, 0);
 	}
     }
@@ -140,5 +201,6 @@ fs.readFile(filename, 'utf8', function (err, data) {
     if (err) throw err;
     var code = analyze(data);
 
+    code = prepro(code);
     createPiet(code);
 });
