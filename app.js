@@ -196,7 +196,7 @@ function genCodeMap(code) {
 
 	if (j < k) {// right
 	    // 縦
-	    for (var l = 1; l < i; ++l) {
+	    for (var l = 1; l <= i; ++l) {
 		if (newCode[l][j][0] === 24) { // 黒
 		    newCode[l][j][0] = 27; // vnop
 		} else {
@@ -225,7 +225,7 @@ function genCodeMap(code) {
 	    }
 	} else { // left
 	    // 縦
-	    for (var l = 1; l < i; ++l) {
+	    for (var l = 1; l <= i; ++l) {
 		if (newCode[l][j][0] === 24) { // 黒
 		    newCode[l][j][0] = 27; // vnop
 		} else {
@@ -237,7 +237,7 @@ function genCodeMap(code) {
 		newCode[i+1][l][0] = 26; // hnop
 	    }
 	    newCode[i+1][k][0] = 29;
-	    for (var l = i - 1; 0 < l; --l) {
+	    for (var l = i; 0 < l; --l) {
 		if (newCode[l][k][0] === 24) { // 黒
 		    newCode[l][k][0] = 27; // vnop
 		} else if (newCode[l][k][0] === 26) { // hnop
