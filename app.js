@@ -16,7 +16,7 @@ var opTable = {
     16: { 'filename': 'in_c', 'length': 1  },
     17: { 'filename': 'out_n', 'length': 1  },
     18: { 'filename': 'out_c', 'length': 1  },
-
+    19: { 'filename': 'start', 'length': 1  },
     20: { 'filename': 'terminate', 'length': 1  },
     21: { 'filename': 'jez', 'length': 2  }, // image not exists
     22: { 'filename': 'label', 'length': 1  }, // image not exists
@@ -139,6 +139,7 @@ function analyze(data) {
 function genCodeMap(code) {
     var newCode = [];
     newCode[0] = [];
+    newCode[0].push([19]);
     var labelCount = 0;
     for (c of code) {
 	switch (c[0]) {
