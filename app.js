@@ -212,7 +212,7 @@ function genCodeMap(code) {
 		newCode[i+1][l][0] = 26; // hnop
 	    }
 	    newCode[i+1][k][0] = 31;
-	    for (var l = i - 1; 0 < l; --l) {
+	    for (var l = i; 0 < l; --l) {
 		if (newCode[l][k][0] === 24) { // 黒
 		    newCode[l][k][0] = 27; // vnop
 		} else if (newCode[l][k][0] === 26) { // hnop
