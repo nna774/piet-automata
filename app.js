@@ -117,10 +117,14 @@ function prepro(code) {
     for (c of code) {
 	switch (c[0]) {
 	case 0:
-	    newCode.push([0, 0]);
-	    for (var i = 0; i < c[1]; ++i) {
-		newCode.push([0, 1]);
-		newCode.push([2]);
+	    if (c[1] !== 1) {
+		newCode.push([0, 0]);
+		for (var i = 0; i < c[1]; ++i) {
+		    newCode.push([0, 1]);
+		    newCode.push([2]);
+		}
+	    } else {
+		newCode.push(c);
 	    }
 	    break;
 	case 33:
