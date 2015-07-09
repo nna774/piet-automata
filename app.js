@@ -164,6 +164,7 @@ function genCodeMap(code) {
 	    newCode[0].push(c);
 	}
     }
+    newCode[0].push([20]);
     for (var i = 0; i < labelCount; ++i) {
 	newCode.push([]);
 	for (var c = 0; c < newCode[0].length; ++c) {
