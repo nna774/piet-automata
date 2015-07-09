@@ -19,3 +19,7 @@
 * INC
 * OUTN
 * OUTC
+* HALT
+* JEZ word
+  not branch に落ちる。
+* LABEL word

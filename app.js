@@ -1,26 +1,30 @@
 // app.js
 
-var table = {
-    0: 'push',
-    1: 'pop',
-    2: 'add',
-    3: 'sub',
-    4: 'mul',
-    5: 'div',
-    6: 'mod',
-    7: 'not',
-    8: 'greater',
-    9: 'dup',
-    10: 'roll',
-    15: 'in_n',
-    16: 'in_c',
-    17: 'out_n',
-    18: 'out_c',
+var opTable = {
+    0: { 'filename': 'push', 'length': 1 },
+    1: { 'filename': 'pop', 'length': 1 },
+    2: { 'filename': 'add', 'length': 1  },
+    3: { 'filename': 'sub', 'length': 1  },
+    4: { 'filename': 'mul', 'length': 1  },
+    5: { 'filename': 'div', 'length': 1  },
+    6: { 'filename': 'mod', 'length': 1  },
+    7: { 'filename': 'not', 'length': 1  },
+    8: { 'filename': 'greater', 'length': 1  },
+    9: { 'filename': 'dup', 'length': 1  },
+    10: { 'filename': 'roll', 'length': 1  },
+    15: { 'filename': 'in_n', 'length': 1  },
+    16: { 'filename': 'in_c', 'length': 1  },
+    17: { 'filename': 'out_n', 'length': 1  },
+    18: { 'filename': 'out_c', 'length': 1  },
+
+    20: { 'filename': 'terminate', 'length': 1  },
+    21: { 'filename': 'jez', 'length': 2  }, // image not exists
+    22: { 'filename': 'label', 'length': 1  }, // image not exists
 
     // 以下拡張命令
-    33: 'succ',
-    34: 'pred',
-    35: ''
+    33: { 'filename': 'succ', 'length': 1  }, // image not exists
+    34: { 'filename': 'pred', 'length': 1  }, // image not exists
+    35: { 'filename': '', 'length': 1  },
 }
 
 var Canvas = require('canvas')
@@ -94,6 +98,18 @@ function analyze(data) {
 	    code.push([18]);
 	    f = true;
 	}
+	if (l.match(/HALT/i)) {
+	    code.push([20]);
+	    f = true;
+	}
+	if (m = l.match(/JEZ\s+(\w+)/i)) {
+	    code.push([21, m[1]]);
+	    f = true;
+	}
+	if (m = l.match(/LABEL\s+(\w+)/i)) {
+	    code.push([22, m[1]]);
+	    f = true;
+	}
 	if (l.match(/SUCC/i)) {
 	    code.push([33]);
 	    f = true;
@@ -112,7 +128,7 @@ function analyze(data) {
     return code;
 }
 
-function prepro(code) {
+function genCodeMap(code) {
     var newCode = [];
     for (c of code) {
 	switch (c[0]) {
@@ -142,7 +158,7 @@ function prepro(code) {
     return newCode;
 }
 
-function createPiet(code) {
+function generateImage(code) {
     var height = config.unit;
     var width = config.unit;
     var canvas = new Canvas(width, height);
@@ -205,6 +221,6 @@ fs.readFile(filename, 'utf8', function (err, data) {
     if (err) throw err;
     var code = analyze(data);
 
-    code = prepro(code);
-    createPiet(code);
+    codemap = genCodeMap(code);p
+    generateImage(codemap);
 });
