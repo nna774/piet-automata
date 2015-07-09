@@ -14,7 +14,7 @@ var images = {
     'in_c': { 'file': 'piet/in_c.png' },
     'out_n': { 'file': 'piet/out_n.png' },
     'out_c': { 'file': 'piet/out_c.png' },
-    'nop': { 'file': 'piet/nop_h.png' },
+    'nop_h': { 'file': 'piet/nop_h.png' },
     'nop_v': { 'file': 'piet/nop_v.png' },
     'cross': { 'file': 'piet/cross.png' },
     'curve': { 'file': 'piet/curve1.png' },

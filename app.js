@@ -137,6 +137,7 @@ function analyze(data) {
 }
 
 function genCodeMap(code) {
+    console.log("genCodeMap");
     var newCode = [];
     newCode[0] = [];
     newCode[0].push([19]);
@@ -163,22 +164,25 @@ function genCodeMap(code) {
 	    newCode[0].push(c);
 	}
     }
-
     for (var i = 0; i < labelCount; ++i) {
+	newCode.push([]);
 	for (var c = 0; c < newCode[0].length; ++c) {
-	    newCode[i].push([26]);
+	    newCode[i+1].push([24]);
 	}
 
 	// JEZ を探す。
 	var j = 0;
 	for (j = 0; j < newCode[0].length; ++j) {
 	    if (newCode[0][j][0] === 21) {
-		if (newCode[0][j][2] === j) {
+		if (newCode[0][j][2] === i) {
 		    break;
 		}
 	    }
 	}
 
+	if (j == newCode[0].length) {
+	    throw("never come");
+	}
 	var word = newCode[0][j][1];
 
 	var k = 0;
@@ -189,6 +193,7 @@ function genCodeMap(code) {
 		}
 	    }
 	}
+
 	if (j < k) {// right
 	    // 縦
 	    for (var l = 1; l < i; ++l) {
@@ -198,11 +203,11 @@ function genCodeMap(code) {
 		    newCode[l][j][0] = 32; // cross
 		}
 	    }
-	    newCode[i][j][0] = 30;
+	    newCode[i+1][j][0] = 30;
 	    for (var l = j + 1; l < k; ++l) {
-		newCode[i][l][0] = 26; // hnop
+		newCode[i+1][l][0] = 26; // hnop
 	    }
-	    newCode[i][k][0] = 31;
+	    newCode[i+1][k][0] = 31;
 	    for (var l = i - 1; 0 < l; --l) {
 		if (newCode[l][k][0] === 24) { // 黒
 		    newCode[l][k][0] = 27; // vnop
@@ -227,11 +232,11 @@ function genCodeMap(code) {
 		    newCode[l][j][0] = 32; // cross
 		}
 	    }
-	    newCode[i][j][0] = 28;
+	    newCode[i+1][j][0] = 28;
 	    for (var l = k + 1; l < j; ++l) {
-		newCode[i][l][0] = 26; // hnop
+		newCode[i+1][l][0] = 26; // hnop
 	    }
-	    newCode[i][k][0] = 29;
+	    newCode[i+1][k][0] = 29;
 	    for (var l = i - 1; 0 < l; --l) {
 		if (newCode[l][k][0] === 24) { // 黒
 		    newCode[l][k][0] = 27; // vnop
@@ -253,6 +258,7 @@ function genCodeMap(code) {
 }
 
 function generateImage(code) {
+    console.log("generateImage");
     var height = config.unit * code.length;
     var width = config.unit * code[0].length;
     var canvas = new Canvas(width, height);
@@ -265,6 +271,12 @@ function generateImage(code) {
 	    // コードに対応した画像を挿入する｡
 	    var op = opTable[code[i][j][0]];
 	    var filename = op['filename']
+	    if (filename === 'jez') {
+		filename = 'branch';
+	    }
+	    if (filename === 'label') {
+		filename = 'join';
+	    }
 	    ctx.drawImage(config.images[filename].image, j * config.unit, i * config.unit);
 	}
     }
