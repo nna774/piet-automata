@@ -151,9 +151,14 @@ function genCodeMap(code) {
 		newCode[0].push([0, 1]); // push 0 is push 1; not
 		newCode[0].push([7]);
 	    } else {
-		newCode[0].push([0, 1]); // push 0 is push 1; not
-		newCode[0].push([7]);
-		for (var i = 0; i < c[1]; ++i) {
+		newCode[0].push([0, 1]);
+		var i = 1;
+		while (i * 2 > c[1]) {
+		    i *= 2;
+		    newCode[0].push([9]); // DUP
+		    newCode[0].push([2]); // ADD
+		}
+		for (; i < c[1]; ++i) {
 		    newCode[0].push([0, 1]);
 		    newCode[0].push([2]);
 		}
