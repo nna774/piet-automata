@@ -145,15 +145,18 @@ function genCodeMap(code) {
     for (c of code) {
 	switch (c[0]) {
 	case 0:
-	    if (c[1] !== 1) {
+	    if (c[1] === 1) {
+		newCode[0].push(c);
+	    } else if (c[1] === 0) {
+		newCode[0].push([0, 1]); // push 0 is push 1; not
+		newCode[0].push([7]);
+	    } else {
 		newCode[0].push([0, 1]); // push 0 is push 1; not
 		newCode[0].push([7]);
 		for (var i = 0; i < c[1]; ++i) {
 		    newCode[0].push([0, 1]);
 		    newCode[0].push([2]);
 		}
-	    } else {
-		newCode[0].push(c);
 	    }
 	    break;
 	case 21: // JEZ
