@@ -1,6 +1,3 @@
-var rand = (Math.random() * 10)|0;
-var ans = rand %2;
-
 var cases = [
     {
 	name: '0',
@@ -20,13 +17,21 @@ var cases = [
 	input: ['2'],
 	expect: '0',
     },
+];
+
+for (var i = 0; i < 100; ++i) {
+  var rand = (Math.random() * 10)|0;
+  var ans = rand %2;
+
+  cases.push(
     {
 	name: 'rand',
 	desc: 'rand',
 	input: [String(rand)],
 	expect: String(ans),
-    },
-];
+    }
+  );
+}
 
 module.exports = {
     cases: cases,
