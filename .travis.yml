@@ -8,7 +8,6 @@ install:
   - sudo apt-get -qq install imagemagick libmagickwand-dev libmagickcore-dev libgif-dev
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
-  - sed -i -e "s/var codel = 10;/var codel = 1;/" piet-testutils/config.js
   - node app.js tests/puts72.pas
   - mv out.png puts72.png
   - node app.js tests/even-or-odd.pas
@@ -18,6 +17,7 @@ install:
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
+  - sed -i -e "s/var codel = 10;/var codel = 1;/" piet-testutils/config.js
   - cp ../tests/tests/puts72.js tests.js
   - node app.js ../puts72.png
   - cp ../tests/tests/even-or-odd.js tests.js
