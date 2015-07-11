@@ -25,6 +25,7 @@ var images = {
     'terminate': { 'file': 'piet/terminate.png' },
     'black': { 'file': 'piet/black.png' },
     'branch': { 'file': 'piet/branch.png' },
+    'curve1': { 'file': 'piet/curve1.png' },
     'curve4': { 'file': 'piet/curve4.png' },
     'curve5': { 'file': 'piet/curve5.png' },
     'curve6': { 'file': 'piet/curve6.png' },
