@@ -89,3 +89,6 @@ http://www.slideshare.net/KMC_JP/piet-46068527 ここの39-40を見て下さい�
 スタックのから1つ取り、その値がゼロなら、対応するwordを持つLABELにジャンプする。
 
 Jump Equal Zero
+
+## JMP word
+対応するwordに無条件ジャンプする。
