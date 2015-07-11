@@ -20,6 +20,7 @@ var opTable = {
     20: { 'filename': 'terminate', 'length': 1  },
     21: { 'filename': 'jez', 'length': 2  }, // image not exists
     22: { 'filename': 'label', 'length': 1  }, // image not exists
+    23: { 'filename': 'jmp', 'length': 1  }, // image not exists
 
     24: { 'filename': 'black' }, // only use generate
     25: { 'filename': 'branch' },
@@ -33,6 +34,7 @@ var opTable = {
     33: { 'filename': 'join' },
     34: { 'filename': 'rjoin' },
     35: { 'filename': 'ljoin' },
+    36: { 'filename': 'curve1' }, // 左から下
 }
 
 var Canvas = require('canvas')
@@ -118,22 +120,29 @@ function analyze(data) {
 	    code.push([22, m[1]]);
 	    f = true;
 	}
-	if (l.match(/SUCC/i)) {
-	    code.push([33]);
+	if (m = l.match(/JMP\s+(\w+)/i)) {
+	    code.push([23, m[1]]);
 	    f = true;
 	}
-	if (l.match(/PRED/i)) {
-	    code.push([34]);
+
+	if (m = l.match(/(^#.*$|\s*)/i)) {
+	    // コメント or 空行
 	    f = true;
 	}
 
 	if (!f) {
-	    if (! l.match(/(\s*)/)) {
-		console.log("unknown token: " + o)
-	    }
+	    console.log("unknown token: " + o)
 	}
     }
     return code;
+}
+
+function isJump(opCode) {
+    if (opCode === 21 || // jez
+	opCode === 23) { // jmp
+	return true;
+    }
+    return false;
 }
 
 function genCodeMap(code) {
@@ -173,6 +182,10 @@ function genCodeMap(code) {
 	    newCode[0].push([21, c[1], labelCount]);
 	    ++labelCount;
 	    break;
+	case 23: // JMP
+	    newCode[0].push([23, c[1], labelCount]);
+	    ++labelCount;
+	    break;
 	default:
 	    newCode[0].push(c);
 	}
@@ -184,10 +197,10 @@ function genCodeMap(code) {
 	    newCode[i+1].push([24]);
 	}
 
-	// JEZ を探す。
+	// Jump系を探す。
 	var j = 0;
 	for (j = 0; j < newCode[0].length; ++j) {
-	    if (newCode[0][j][0] === 21) {
+	    if (isJump(newCode[0][j][0])) {
 		if (newCode[0][j][2] === i) {
 		    break;
 		}
@@ -290,6 +303,9 @@ function generateImage(code) {
 	    var filename = op['filename']
 	    if (filename === 'jez') {
 		filename = 'branch';
+	    }
+	    if (filename === 'jmp') {
+		filename = 'curve1';
 	    }
 	    if (filename === 'label') {
 		filename = 'join';
