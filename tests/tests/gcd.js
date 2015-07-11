@@ -54,7 +54,7 @@ for (var i = 0; i < 100; ++i) {
 
   cases.push(
     {
-	name: 'rand' + String(rand1) + ' ' + String(rand2),
+	name: 'rand ' + String(rand1) + ' ' + String(rand2),
 	desc: 'rand',
 	input: [String(rand1), String(rand2)],
 	expect: String(ans),
@@ -62,7 +62,7 @@ for (var i = 0; i < 100; ++i) {
   );
   cases.push(
     {
-	name: 'rand' + String(rand2) + ' ' + String(rand1),
+	name: 'rand ' + String(rand2) + ' ' + String(rand1),
 	desc: 'rand',
 	input: [String(rand2), String(rand1)],
 	expect: String(ans),
