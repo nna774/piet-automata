@@ -16,6 +16,8 @@ install:
   - mv out.png even-or-odd.png
   - node app.js tests/helloworld.pas
   - mv out.png helloworld.png
+  - node app.js tests/jmp_2.pas
+  - mv out.png jmp_2.png
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
@@ -27,3 +29,5 @@ install:
   - node app.js ../even-or-odd.png
   - cp ../tests/tests/helloworld.js tests.js
   - node app.js ../helloworld.png
+  - cp ../tests/tests/puts1.js tests.js
+  - node app.js ../jmp_2.png
