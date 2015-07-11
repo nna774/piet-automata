@@ -10,17 +10,24 @@ install:
   - git clone https://github.com/nna774/piet-testutils.git
   - node app.js tests/puts72.pas
   - mv out.png puts72.png
+  - node app.js tests/puts72_2.pas
+  - mv out.png puts72_2.png
   - node app.js tests/even-or-odd.pas
   - mv out.png even-or-odd.png
   - node app.js tests/helloworld.pas
   - mv out.png helloworld.png
+  - node app.js tests/jmp_2.pas
+  - mv out.png jmp_2.png
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
   - sed -i -e "s/var codel = 10;/var codel = 1;/" config.js
   - cp ../tests/tests/puts72.js tests.js
   - node app.js ../puts72.png
+  - node app.js ../puts72_2.png
   - cp ../tests/tests/even-or-odd.js tests.js
   - node app.js ../even-or-odd.png
   - cp ../tests/tests/helloworld.js tests.js
   - node app.js ../helloworld.png
+  - cp ../tests/tests/puts1.js tests.js
+  - node app.js ../jmp_2.png
