@@ -20,6 +20,8 @@ install:
   - mv out.png jmp_2.png
   - node app.js tests/jmp_3.pas
   - mv out.png jmp_3.png
+  - node app.js tests/gcd.pas
+  - mv out.png gcd.png
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
@@ -34,3 +36,5 @@ install:
   - cp ../tests/tests/puts1.js tests.js
   - node app.js ../jmp_2.png
   - node app.js ../jmp_3.png
+  - cp ../tests/tests/gcd.js tests.js
+  - node app.js ../gcd.png
