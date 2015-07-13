@@ -332,6 +332,17 @@ function genCodeMap(code) {
     return newCode;
 }
 
+function sanityCheck(opcode) {
+    'use strict';
+    if (opcode.op === OP.push) {
+	if (opcode.val !== 1) {
+	    // if this, genCodeMap maybe somethig wrong.
+	    return false;
+	}
+    }
+    return true;
+}
+
 function generateImage(code) {
     'use strict';
     console.log("generateImage");
@@ -345,7 +356,11 @@ function generateImage(code) {
     for (var i = 0; i < code.length; ++i) {
 	for (var j = 0; j < code[0].length; ++j) {
 	    // コードに対応した画像を挿入する｡
-	    var op = opTable[code[i][j].op];
+	    var opCode = code[i][j];
+	    if (!sanityCheck(opCode)) {
+		throw opCode
+	    }
+	    var op = opTable[opCode.op];
 	    var filename = op['filename']
 	    if (filename === 'jez') {
 		filename = 'branch';
