@@ -86,79 +86,79 @@ function analyze(data) {
 	var m;
 	var f = false; var o = l;
 	if (m = l.match(/PUSH\s+(\d+)/i)) {
-	    code.push([OP.push, parseInt(m[1])]);
+	    code.push({ op: OP.push, val: parseInt(m[1]) });
 	    f = true;
 	}
 	if (l.match(/POP/i)) {
-	    code.push([OP.pop]);
+	    code.push({ op: OP.pop });
 	    f = true;
 	}
 	if (l.match(/ADD/i)) {
-	    code.push([OP.add]);
+	    code.push({ op: OP.add });
 	    f = true;
 	}
 	if (l.match(/SUB/i)) {
-	    code.push([OP.sub]);
+	    code.push({ op: OP.sub });
 	    f = true;
 	}
 	if (l.match(/MUL/i)) {
-	    code.push([OP.mul]);
+	    code.push({ op: OP.mul });
 	    f = true;
 	}
 	if (l.match(/DIV/i)) {
-	    code.push([OP.div]);
+	    code.push({ op: OP.div });
 	    f = true;
 	}
 	if (l.match(/MOD/i)) {
-	    code.push([OP.mod]);
+	    code.push({ op: OP.mod });
 	    f = true;
 	}
 	if (l.match(/NOT/i)) {
-	    code.push([OP.not]);
+	    code.push({ op: OP.not });
 	    f = true;
 	}
 	if (l.match(/GREATER/i)) {
-	    code.push([OP.greater]);
+	    code.push({ op: OP.greater });
 	    f = true;
 	}
 	if (l.match(/DUP/i)) {
-	    code.push([OP.dup]);
+	    code.push({ op: OP.dup });
 	    f = true;
 	}
 	if (l.match(/ROLL/i)) {
-	    code.push([OP.roll]);
+	    code.push({ op: OP.roll });
 	    f = true;
 	}
 	if (l.match(/INN/i)) {
-	    code.push([OP.in_n]);
+	    code.push({ op: OP.in_n });
 	    f = true;
 	}
 	if (l.match(/INC/i)) {
-	    code.push([OP.in_c]);
+	    code.push({ op: OP.in_c });
 	    f = true;
 	}
 	if (l.match(/OUTN/i)) {
-	    code.push([OP.out_n]);
+	    code.push({ op: OP.out_n });
 	    f = true;
 	}
 	if (l.match(/OUTC/i)) {
-	    code.push([OP.out_c]);
+	    code.push({ op: OP.out_c });
 	    f = true;
 	}
 	if (l.match(/HALT/i)) {
-	    code.push([OP.terminate]);
+	    code.push({ op: OP.terminate });
 	    f = true;
 	}
 	if (m = l.match(/JEZ\s+(\w+)/i)) {
-	    code.push([OP.jez, m[1]]);
+	    code.push({ op: OP.jez, label: m[1] });
 	    f = true;
 	}
 	if (m = l.match(/LABEL\s+(\w+)/i)) {
-	    code.push([OP.label, m[1]]);
+	    code.push({ op: OP.label, word: m[1] });
 	    f = true;
 	}
 	if (m = l.match(/JMP\s+(\w+)/i)) {
-	    code.push([OP.jmp, m[1]]);
+	    code.push({ op: OP.jmp, label: m[1] });
 	    f = true;
 	}
 
@@ -188,30 +188,30 @@ function genCodeMap(code) {
     console.log("genCodeMap");
     var newCode = [];
     newCode[0] = [];
-    newCode[0].push([OP.start]);
+    newCode[0].push({ op: OP.start });
     var labelCount = 0;
     for (c of code) {
-	switch (c[0]) {
+	switch (c.op) {
 	case OP.push:
-	    if (c[1] === 1) {
+	    if (c.val === 1) {
 		newCode[0].push(c);
-	    } else if (c[1] === 0) {
-		newCode[0].push([OP.push, 1]); // push 0 is push 1; not
-		newCode[0].push([OP.not]);
+	    } else if (c.val === 0) {
+		newCode[0].push({ op: OP.push, val: 1 }); // push 0 is push 1; not
+		newCode[0].push({ op: OP.not });
 	    } else {
-		newCode[0].push([OP.push, 1]); // push 0 is push 1; not
-		newCode[0].push([OP.not]);
+		newCode[0].push({ op: OP.push, val: 1}); // push 0 is push 1; not
+		newCode[0].push({ op: OP.not });
 		var sum = 0;
-		var tar = c[1];
+		var tar = c.val;
 		while (tar !== sum) {
-		    newCode[0].push([OP.push, 1]);
+		    newCode[0].push({ op: OP.push, val: 1 });
 		    var d = 1;
 		    while (sum + d * 2 < tar) {
 			d *= 2;
-			newCode[0].push([OP.dup]);
-			newCode[0].push([OP.add]);
+			newCode[0].push({ op: OP.dup });
+			newCode[0].push({ op: OP.add });
 		    }
-		    newCode[0].push([OP.add]);
+		    newCode[0].push({ op: OP.add });
 		    sum += d;
 		}
 	    }
@@ -219,13 +219,13 @@ function genCodeMap(code) {
 	case OP.jez: // JEZ
 	    // jezは画像生成時にbranch(pointer命令が入っている)へと落ちる。
 	    // not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-	    newCode[0].push([OP.not]);
-	    newCode[0].push([OP.jez, c[1], labelCount]);
+	    newCode[0].push({ op: OP.not });
+	    newCode[0].push({ op: OP.jez, label: c.label, count: labelCount });
 	    ++labelCount;
 	    break;
 	case OP.jmp: // JMP
 	    // jmpは画像生成時にleft2downへと落ちる。
-	    newCode[0].push([OP.jmp, c[1], labelCount]);
+	    newCode[0].push({ op: OP.jmp, label: c.label, count: labelCount });
 	    ++labelCount;
 	    break;
 	    // 以上の2つの処理はややこしいので、それぞれこのタイミングで落ちるものに書き換えるよう修正が欲しい。
@@ -233,18 +233,18 @@ function genCodeMap(code) {
 	    newCode[0].push(c);
 	}
     }
-    newCode[0].push([OP.terminate]);
+    newCode[0].push({ op: OP.terminate });
     for (var i = 0; i < labelCount; ++i) {
 	newCode.push([]);
 	for (var c = 0; c < newCode[0].length; ++c) {
-	    newCode[i+1].push([OP.black]);
+	    newCode[i+1].push({ op: OP.black });
 	}
 
 	// Jump系を探す。
 	var j = 0;
 	for (j = 0; j < newCode[0].length; ++j) {
-	    if (isJump(newCode[0][j][0])) {
-		if (newCode[0][j][2] === i) {
+	    if (isJump(newCode[0][j].op)) {
+		if (newCode[0][j].count === i) {
 		    break;
 		}
 	    }
@@ -253,13 +253,13 @@ function genCodeMap(code) {
 	if (j == newCode[0].length) {
 	    throw("never come");
 	}
-	var word = newCode[0][j][1];
+	var word = newCode[0][j].label;
 
 	// 対応するラベルを探す。
 	var k = 0;
 	for (k = 0; k < newCode[0].length; ++k) {
-	    if (newCode[0][k][0] === OP.label) {
-		if (newCode[0][k][1] === word) {
+	    if (newCode[0][k].op === OP.label) {
+		if (newCode[0][k].word === word) {
 		    break;
 		}
 	    }
@@ -272,27 +272,27 @@ function genCodeMap(code) {
 	if (j < k) {// right
 	    // 縦
 	    for (var l = 1; l <= i; ++l) {
-		if (newCode[l][j][0] === OP.black) { // 黒
-		    newCode[l][j][0] = OP.nop_v; // vnop
+		if (newCode[l][j].op === OP.black) { // 黒
+		    newCode[l][j].op = OP.nop_v; // vnop
 		} else {
-		    newCode[l][j][0] = OP.cross; // cross
+		    newCode[l][j].op = OP.cross; // cross
 		}
 	    }
-	    newCode[i+1][j][0] = OP.up2right;
+	    newCode[i+1][j].op = OP.up2right;
 	    for (var l = j + 1; l < k; ++l) {
-		newCode[i+1][l][0] = OP.nop_h; // hnop
+		newCode[i+1][l].op = OP.nop_h; // hnop
 	    }
-	    newCode[i+1][k][0] = OP.left2up;
+	    newCode[i+1][k].op = OP.left2up;
 	    for (var l = i; 0 < l; --l) {
-		if (newCode[l][k][0] === OP.black) { // 黒
-		    newCode[l][k][0] = OP.nop_v; // vnop
-		} else if (newCode[l][k][0] === OP.nop_h) { // hnop
-		    newCode[l][k][0] = OP.cross; // cross
-		} else if (newCode[l][k][0] === OP.right2up){
-		    newCode[l][k][0] = OP.rjoin; // rjoin
+		if (newCode[l][k].op === OP.black) { // 黒
+		    newCode[l][k].op = OP.nop_v; // vnop
+		} else if (newCode[l][k].op === OP.nop_h) { // hnop
+		    newCode[l][k].op = OP.cross; // cross
+		} else if (newCode[l][k].op === OP.right2up){
+		    newCode[l][k].op = OP.rjoin; // rjoin
 		    break;
-		} else if (newCode[l][k][0] === OP.left2up){
-		    newCode[l][k][0] = OP.ljoin; // ljoin
+		} else if (newCode[l][k].op === OP.left2up){
+		    newCode[l][k].op = OP.ljoin; // ljoin
 		    break;
 		} else {
 		    throw ("never come");
@@ -301,27 +301,27 @@ function genCodeMap(code) {
 	} else { // left
 	    // 縦
 	    for (var l = 1; l <= i; ++l) {
-		if (newCode[l][j][0] === OP.black) { // 黒
-		    newCode[l][j][0] = OP.nop_v; // vnop
+		if (newCode[l][j].op === OP.black) { // 黒
+		    newCode[l][j].op = OP.nop_v; // vnop
 		} else {
-		    newCode[l][j][0] = OP.cross; // cross
+		    newCode[l][j].op = OP.cross; // cross
 		}
 	    }
-	    newCode[i+1][j][0] = OP.up2left;
+	    newCode[i+1][j].op = OP.up2left;
 	    for (var l = k + 1; l < j; ++l) {
-		newCode[i+1][l][0] = OP.nop_h; // hnop
+		newCode[i+1][l].op = OP.nop_h; // hnop
 	    }
-	    newCode[i+1][k][0] = OP.right2up;
+	    newCode[i+1][k].op = OP.right2up;
 	    for (var l = i; 0 < l; --l) {
-		if (newCode[l][k][0] === OP.black) { // 黒
-		    newCode[l][k][0] = OP.nop_v; // vnop
-		} else if (newCode[l][k][0] === OP.nop_h) { // hnop
-		    newCode[l][k][0] = OP.cross; // cross
-		} else if (newCode[l][k][0] === OP.right2up){
-		    newCode[l][k][0] = OP.rjoin; // rjoin
+		if (newCode[l][k].op === OP.black) { // 黒
+		    newCode[l][k].op = OP.nop_v; // vnop
+		} else if (newCode[l][k].op === OP.nop_h) { // hnop
+		    newCode[l][k].op = OP.cross; // cross
+		} else if (newCode[l][k].op === OP.right2up){
+		    newCode[l][k].op = OP.rjoin; // rjoin
 		    break;
-		} else if (newCode[l][k][0] === OP.left2up){
-		    newCode[l][k][0] = OP.ljoin; // ljoin
+		} else if (newCode[l][k].op === OP.left2up){
+		    newCode[l][k].op = OP.ljoin; // ljoin
 		    break;
 		} else {
 		    throw ("never come");
@@ -345,7 +345,7 @@ function generateImage(code) {
     for (var i = 0; i < code.length; ++i) {
 	for (var j = 0; j < code[0].length; ++j) {
 	    // コードに対応した画像を挿入する｡
-	    var op = opTable[code[i][j][0]];
+	    var op = opTable[code[i][j].op];
 	    var filename = op['filename']
 	    if (filename === 'jez') {
 		filename = 'branch';
