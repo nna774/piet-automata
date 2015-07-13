@@ -79,6 +79,7 @@ var Canvas = require('canvas')
   , config = require('./config');
 
 function analyze(data) {
+    'use strict';
     var lines = data.split('\n');
     var code = [];
     for (var l of lines) {
@@ -174,6 +175,7 @@ function analyze(data) {
 }
 
 function isJump(opCode) {
+    'use strict';
     if (opCode === OP.jez || // jez
 	opCode === OP.jmp) { // jmp
 	return true;
@@ -182,6 +184,7 @@ function isJump(opCode) {
 }
 
 function genCodeMap(code) {
+    'use strict';
     console.log("genCodeMap");
     var newCode = [];
     newCode[0] = [];
@@ -330,6 +333,7 @@ function genCodeMap(code) {
 }
 
 function generateImage(code) {
+    'use strict';
     console.log("generateImage");
     var height = config.unit * code.length;
     var width = config.unit * code[0].length;
