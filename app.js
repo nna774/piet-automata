@@ -85,7 +85,7 @@ function analyze(data) {
   for (var l of lines) {
     var m;
     var f = false; var o = l;
-    if (m = l.match(/PUSH\s+(\d+)/i)) {
+    if ((m = l.match(/PUSH\s+(\d+)/i))) {
       code.push({ op: OP.push, val: parseInt(m[1]) });
       f = true;
     }
@@ -149,20 +149,20 @@ function analyze(data) {
       code.push({ op: OP.terminate });
       f = true;
     }
-    if (m = l.match(/JEZ\s+(\w+)/i)) {
+    if ((m = l.match(/JEZ\s+(\w+)/i))) {
       code.push({ op: OP.jez, label: m[1] });
       f = true;
     }
-    if (m = l.match(/LABEL\s+(\w+)/i)) {
+    if ((m = l.match(/LABEL\s+(\w+)/i))) {
       code.push({ op: OP.label, word: m[1] });
       f = true;
     }
-    if (m = l.match(/JMP\s+(\w+)/i)) {
+    if ((m = l.match(/JMP\s+(\w+)/i))) {
       code.push({ op: OP.jmp, label: m[1] });
       f = true;
     }
 
-    if (m = l.match(/(^#.*$|\s*)/i)) {
+    if (l.match(/(^#.*$|\s*)/i)) {
       // コメント or 空行
       f = true;
     }
@@ -358,10 +358,10 @@ function generateImage(code) {
       // コードに対応した画像を挿入する｡
       var opCode = code[i][j];
       if (!sanityCheck(opCode)) {
-        throw opCode
+        throw opCode;
       }
       var op = opTable[opCode.op];
-      var filename = op['filename']
+      var filename = op['filename'];
       if (filename === 'jez') {
         filename = 'branch';
       }
@@ -376,7 +376,7 @@ function generateImage(code) {
   }
 
   // 以下保存
-  var out = fs.createWriteStream('out.png')
+  var out = fs.createWriteStream('out.png');
   var stream = canvas.pngStream();
 
   stream.on('data', function(chunk){
