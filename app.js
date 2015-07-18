@@ -217,11 +217,14 @@ function genCodeMap(code) {
               if (d * d + sum < tar) {
                 newCode[0].push({ op: OP.dup});
                 newCode[0].push({ op: OP.mul});
+                d *= d;
               } else if (d * 2 + sum < tar) {
                 newCode[0].push({ op: OP.dup});
                 newCode[0].push({ op: OP.add});
+                d *= 2;
               } else {
                 newCode[0].push({ op: OP.add});
+                sum += d;
                 break;
               }
             }
