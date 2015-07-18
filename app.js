@@ -208,6 +208,7 @@ function genCodeMap(code) {
             newCode[0].push({ op: OP.push, val: 1 });
             newCode[0].push({ op: OP.add });
             sum += d;
+            break;
           } else {
             var d = 2;
             newCode[0].push({ op: OP.push, val: 1 });
