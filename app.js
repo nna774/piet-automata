@@ -204,15 +204,28 @@ function genCodeMap(code) {
         var sum = 0;
         var tar = c.val;
         while (tar !== sum) {
-          newCode[0].push({ op: OP.push, val: 1 });
-          var d = 1;
-          while (sum + d * 2 < tar) {
-            d *= 2;
-            newCode[0].push({ op: OP.dup });
+          if (tar === sum + 1) {
+            newCode[0].push({ op: OP.push, val: 1 });
             newCode[0].push({ op: OP.add });
+            sum += d;
+          } else {
+            var d = 2;
+            newCode[0].push({ op: OP.push, val: 1 });
+            newCode[0].push({ op: OP.push, val: 1 });
+            newCode[0].push({ op: OP.add }); // push 2欲しい気もする。
+            while (true) {
+              if (d * d + sum < tar) {
+                newCode[0].push({ op: OP.dup});
+                newCode[0].push({ op: OP.mul});
+              } else if (d * 2 + sum < tar) {
+                newCode[0].push({ op: OP.dup});
+                newCode[0].push({ op: OP.add});
+              } else {
+                newCode[0].push({ op: OP.add});
+                break;
+              }
+            }
           }
-          newCode[0].push({ op: OP.add });
-          sum += d;
         }
       }
       break;
