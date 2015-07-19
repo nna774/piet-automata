@@ -35,6 +35,11 @@ var opTable = {
   34: { 'filename': 'rjoin' },
   35: { 'filename': 'ljoin' },
   36: { 'filename': 'curve1' }, // 左から下
+
+  40: { 'filename': 'push0' },
+  41: { 'filename': 'push2' },
+  42: { 'filename': 'dupadd' },
+  43: { 'filename': 'dupmul' },
 };
 
 const OP = {
@@ -71,6 +76,10 @@ const OP = {
   rjoin: 34,
   ljoin: 35,
   left2down: 36,
+  push0: 40,
+  push2: 41,
+  dupadd: 42,
+  dupmul: 43,
 };
 
 var Canvas = require('canvas')
@@ -196,11 +205,9 @@ function genCodeMap(code) {
       if (c.val === 1) {
         newCode[0].push(c);
       } else if (c.val === 0) {
-        newCode[0].push({ op: OP.push, val: 1 }); // push 0 is push 1; not
-        newCode[0].push({ op: OP.not });
+        newCode[0].push({ op: OP.push0 });
       } else {
-        newCode[0].push({ op: OP.push, val: 1}); // push 0 is push 1; not
-        newCode[0].push({ op: OP.not });
+        newCode[0].push({ op: OP.push0 });
         var sum = 0;
         var tar = c.val;
         while (tar !== sum) {
@@ -211,20 +218,16 @@ function genCodeMap(code) {
             break;
           } else {
             var d = 2;
-            newCode[0].push({ op: OP.push, val: 1 });
-            newCode[0].push({ op: OP.push, val: 1 });
-            newCode[0].push({ op: OP.add }); // push 2欲しい気もする。
+            newCode[0].push({ op: OP.push2 });
             while (true) {
               if (d * d + sum < tar) {
-                newCode[0].push({ op: OP.dup});
-                newCode[0].push({ op: OP.mul});
+                newCode[0].push({ op: OP.dupmul });
                 d *= d;
               } else if (d * 2 + sum < tar) {
-                newCode[0].push({ op: OP.dup});
-                newCode[0].push({ op: OP.add});
+                newCode[0].push({ op: OP.dupadd });
                 d *= 2;
               } else {
-                newCode[0].push({ op: OP.add});
+                newCode[0].push({ op: OP.add });
                 sum += d;
                 break;
               }
