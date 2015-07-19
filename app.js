@@ -38,6 +38,8 @@ var opTable = {
 
   40: { 'filename': 'push0' },
   41: { 'filename': 'push2' },
+  42: { 'filename': 'dupadd' },
+  43: { 'filename': 'dupmul' },
 };
 
 const OP = {
@@ -76,6 +78,8 @@ const OP = {
   left2down: 36,
   push0: 40,
   push2: 41,
+  dupadd: 42,
+  dupmul: 43,
 };
 
 var Canvas = require('canvas')
@@ -217,12 +221,10 @@ function genCodeMap(code) {
             newCode[0].push({ op: OP.push2 });
             while (true) {
               if (d * d + sum < tar) {
-                newCode[0].push({ op: OP.dup });
-                newCode[0].push({ op: OP.mul });
+                newCode[0].push({ op: OP.dupmul });
                 d *= d;
               } else if (d * 2 + sum < tar) {
-                newCode[0].push({ op: OP.dup });
-                newCode[0].push({ op: OP.add });
+                newCode[0].push({ op: OP.dupadd });
                 d *= 2;
               } else {
                 newCode[0].push({ op: OP.add });
