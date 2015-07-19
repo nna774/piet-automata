@@ -37,6 +37,7 @@ var opTable = {
   36: { 'filename': 'curve1' }, // 左から下
 
   40: { 'filename': 'push0' },
+  41: { 'filename': 'push2' },
 };
 
 const OP = {
@@ -74,6 +75,7 @@ const OP = {
   ljoin: 35,
   left2down: 36,
   push0: 40,
+  push2: 41,
 };
 
 var Canvas = require('canvas')
@@ -199,9 +201,9 @@ function genCodeMap(code) {
       if (c.val === 1) {
         newCode[0].push(c);
       } else if (c.val === 0) {
-        newCode[0].push({ op: OP.push0, val: 1 });
+        newCode[0].push({ op: OP.push0 });
       } else {
-        newCode[0].push({ op: OP.push0, val: 1});
+        newCode[0].push({ op: OP.push0 });
         var sum = 0;
         var tar = c.val;
         while (tar !== sum) {
@@ -212,9 +214,7 @@ function genCodeMap(code) {
             break;
           } else {
             var d = 2;
-            newCode[0].push({ op: OP.push, val: 1 });
-            newCode[0].push({ op: OP.push, val: 1 });
-            newCode[0].push({ op: OP.add }); // push 2欲しい気もする。
+            newCode[0].push({ op: OP.push2 });
             while (true) {
               if (d * d + sum < tar) {
                 newCode[0].push({ op: OP.dup});
