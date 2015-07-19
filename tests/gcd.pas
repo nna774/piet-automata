@@ -10,7 +10,6 @@ JEZ S
 PUSH 2
 PUSH 1
 ROLL
-JMP S
 LABEL S
 # ここでStackに2つ入っていて、大きいほうが上
 PUSH 2

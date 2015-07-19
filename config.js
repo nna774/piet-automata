@@ -24,6 +24,7 @@ var images = {
     'curve': { 'file': 'piet/curve1.png' },
     'join': { 'file': 'piet/join.png' },
     'branch': { 'file': 'piet/branch.png' },
+    'notbranch': { 'file': 'piet/notbranch.png' },
     'nop_v': { 'file': 'piet/nop_v.png' },
     'start': { 'file': 'piet/start.png' },
     'terminate': { 'file': 'piet/terminate.png' },
