@@ -35,6 +35,8 @@ var opTable = {
   34: { 'filename': 'rjoin' },
   35: { 'filename': 'ljoin' },
   36: { 'filename': 'curve1' }, // 左から下
+
+  40: { 'filename': 'push0' },
 };
 
 const OP = {
@@ -71,6 +73,7 @@ const OP = {
   rjoin: 34,
   ljoin: 35,
   left2down: 36,
+  push0: 40,
 };
 
 var Canvas = require('canvas')
@@ -196,11 +199,9 @@ function genCodeMap(code) {
       if (c.val === 1) {
         newCode[0].push(c);
       } else if (c.val === 0) {
-        newCode[0].push({ op: OP.push, val: 1 }); // push 0 is push 1; not
-        newCode[0].push({ op: OP.not });
+        newCode[0].push({ op: OP.push0, val: 1 });
       } else {
-        newCode[0].push({ op: OP.push, val: 1}); // push 0 is push 1; not
-        newCode[0].push({ op: OP.not });
+        newCode[0].push({ op: OP.push0, val: 1});
         var sum = 0;
         var tar = c.val;
         while (tar !== sum) {

@@ -1,5 +1,6 @@
 var images = {
     'push': { 'file': 'piet/push1.png' },
+    'push0': { 'file': 'piet/push0.png' },
     'pop': { 'file': 'piet/pop.png' },
     'add': { 'file': 'piet/add.png' },
     'sub': { 'file': 'piet/sub.png' },
