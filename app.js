@@ -40,6 +40,7 @@ var opTable = {
   41: { 'filename': 'push2' },
   42: { 'filename': 'dupadd' },
   43: { 'filename': 'dupmul' },
+  44: { 'filename': 'notbranch' },
 };
 
 const OP = {
@@ -80,6 +81,7 @@ const OP = {
   push2: 41,
   dupadd: 42,
   dupmul: 43,
+  notbranch: 44,
 };
 
 var Canvas = require('canvas')
@@ -236,8 +238,7 @@ function genCodeMap(code) {
     case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      newCode[0].push({ op: OP.not });
-      newCode[0].push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+      newCode[0].push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true });
       ++labelCount;
       break;
     case OP.jmp: // JMP
