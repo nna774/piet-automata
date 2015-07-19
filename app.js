@@ -185,10 +185,7 @@ function analyze(data) {
 
 function isJump(opCode) {
   'use strict';
-  if (opCode === OP.jez || // jez
-      opCode === OP.jmp) { // jmp
-    return true;
-  }
+  if (opCode.jump === true) return true;
   return false;
 }
 
@@ -237,18 +234,16 @@ function genCodeMap(code) {
       }
       break;
     case OP.jez: // JEZ
-      // jezは画像生成時にbranch(pointer命令が入っている)へと落ちる。
-      // not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
+      // branch is a kind of pointer.
+      // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
       newCode[0].push({ op: OP.not });
-      newCode[0].push({ op: OP.jez, label: c.label, count: labelCount });
+      newCode[0].push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
       ++labelCount;
       break;
     case OP.jmp: // JMP
-      // jmpは画像生成時にleft2downへと落ちる。
-      newCode[0].push({ op: OP.jmp, label: c.label, count: labelCount });
+      newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
       ++labelCount;
       break;
-      // 以上の2つの処理はややこしいので、それぞれこのタイミングで落ちるものに書き換えるよう修正が欲しい。
     default:
       newCode[0].push(c);
     }
@@ -263,7 +258,7 @@ function genCodeMap(code) {
     // Jump系を探す。
     var j = 0;
     for (j = 0; j < newCode[0].length; ++j) {
-      if (isJump(newCode[0][j].op)) {
+      if (isJump(newCode[0][j])) {
         if (newCode[0][j].count === i) {
           break;
         }
@@ -382,12 +377,6 @@ function generateImage(code) {
       }
       var op = opTable[opCode.op];
       var filename = op['filename'];
-      if (filename === 'jez') {
-        filename = 'branch';
-      }
-      if (filename === 'jmp') {
-        filename = 'curve1';
-      }
       if (filename === 'label') {
         filename = 'join';
       }
