@@ -2,6 +2,8 @@ var images = {
     'push': { 'file': 'piet/push1.png' },
     'push0': { 'file': 'piet/push0.png' },
     'push2': { 'file': 'piet/push2.png' },
+    'push16': { 'file': 'piet/push16.png' },
+    'push32': { 'file': 'piet/push32.png' },
     'pop': { 'file': 'piet/pop.png' },
     'add': { 'file': 'piet/add.png' },
     'sub': { 'file': 'piet/sub.png' },

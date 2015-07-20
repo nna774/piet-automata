@@ -38,9 +38,12 @@ var opTable = {
 
   40: { 'filename': 'push0' },
   41: { 'filename': 'push2' },
-  42: { 'filename': 'dupadd' },
-  43: { 'filename': 'dupmul' },
-  44: { 'filename': 'notbranch' },
+  42: { 'filename': 'push16' },
+  43: { 'filename': 'push32' },
+
+  46: { 'filename': 'dupadd' },
+  47: { 'filename': 'dupmul' },
+  48: { 'filename': 'notbranch' },
 };
 
 const OP = {
@@ -79,9 +82,11 @@ const OP = {
   left2down: 36,
   push0: 40,
   push2: 41,
-  dupadd: 42,
-  dupmul: 43,
-  notbranch: 44,
+  push16: 42,
+  push32: 43,
+  dupadd: 46,
+  dupmul: 47,
+  notbranch: 48,
 };
 
 var Canvas = require('canvas')
@@ -217,7 +222,15 @@ function genCodeMap(code) {
             break;
           } else {
             var d = 2;
-            newCode[0].push({ op: OP.push2 });
+            if (sum + 32 < tar) {
+              d = 32;
+              newCode[0].push({ op: OP.push32 });
+            } else if (sum + 16 < tar) {
+              d = 16;
+              newCode[0].push({ op: OP.push16 });
+            } else {
+              newCode[0].push({ op: OP.push2 });
+            }
             while (true) {
               if (d * d + sum < tar) {
                 newCode[0].push({ op: OP.dupmul });
