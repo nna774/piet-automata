@@ -24,6 +24,8 @@ install:
   - mv out.png jmp_3.png
   - node app.js tests/gcd.pas
   - mv out.png gcd.png
+  - node app.js tests/swap.pas
+  - mv out.png swap.png
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
@@ -41,3 +43,5 @@ install:
   - node app.js ../jmp_3.png
   - cp ../tests/tests/gcd.js tests.js
   - node app.js ../gcd.png
+  - cp ../tests/tests/swap.js tests.js
+  - node app.js ../swap.png

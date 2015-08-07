@@ -92,3 +92,12 @@ Jump Equal Zero
 
 ## JMP word
 対応するwordに無条件ジャンプする。
+
+## SWAP
+スタックの上2つを入れ替えます。
+
+PUSH 2
+PUSH 1
+ROOL
+
+と同じです。

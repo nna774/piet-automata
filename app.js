@@ -44,6 +44,7 @@ var opTable = {
   46: { 'filename': 'dupadd' },
   47: { 'filename': 'dupmul' },
   48: { 'filename': 'notbranch' },
+  49: { 'filename': 'swap' },
 };
 
 const OP = {
@@ -87,6 +88,7 @@ const OP = {
   dupadd: 46,
   dupmul: 47,
   notbranch: 48,
+  swap: 49,
 };
 
 var Canvas = require('canvas')
@@ -175,6 +177,10 @@ function analyze(data) {
     }
     if ((m = l.match(/JMP\s+(\w+)/i))) {
       code.push({ op: OP.jmp, label: m[1] });
+      f = true;
+    }
+    if (l.match(/SWAP/i)) {
+      code.push({ op: OP.swap });
       f = true;
     }
 
