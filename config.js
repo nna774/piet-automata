@@ -39,6 +39,7 @@ var images = {
     'curve7': { 'file': 'piet/curve7.png' },
     'rjoin': { 'file': 'piet/rjoin.png' },
     'ljoin': { 'file': 'piet/ljoin.png' },
+    'swap': { 'file': 'piet/swap.png' },
 };
 
 module.exports = {
