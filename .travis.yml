@@ -22,20 +22,13 @@ install:
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
   - sed -i -e "s/var codel = 10;/var codel = 1;/" config.js
-  - cp ../tests/tests/puts72.js tests.js
-  - node app.js ../puts72.png
-  - node app.js ../puts72_2.png
-  - cp ../tests/tests/even-or-odd.js tests.js
-  - node app.js ../even-or-odd.png
-  - cp ../tests/tests/helloworld.js tests.js
-  - node app.js ../helloworld.png
-  - node app.js ../helloworld_2.png
-  - cp ../tests/tests/puts1.js tests.js
-  - node app.js ../jmp_2.png
-  - node app.js ../jmp_3.png
-  - cp ../tests/tests/gcd.js tests.js
-  - node app.js ../gcd.png
-  - cp ../tests/tests/swap.js tests.js
-  - node app.js ../swap.png
-  - cp ../tests/tests/lisp-like-calc.js tests.js
-  - node app.js ../lisp-like-calc.png
+  - node app.js ../puts72.png ../tests/tests/puts72.js
+  - node app.js ../puts72_2.png ../tests/tests/puts72.js
+  - node app.js ../even-or-odd.png ../tests/tests/even-or-odd.js
+  - node app.js ../helloworld.png ../tests/tests/helloworld.js
+  - node app.js ../helloworld_2.png ../tests/tests/helloworld.js
+  - node app.js ../jmp_2.png ../tests/tests/puts1.js
+  - node app.js ../jmp_3.png ../tests/tests/puts1.js
+  - node app.js ../gcd.png ../tests/tests/gcd.js
+  - node app.js ../swap.png ../tests/tests/swap.js
+  - node app.js ../lisp-like-calc.png ../tests/tests/lisp-like-calc.js
