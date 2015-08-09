@@ -101,3 +101,7 @@ PUSH 1
 ROOL
 
 と同じです。
+
+# tests/lisp-like-calc.pas
+
+https://gist.github.com/1995hnagamin/408da3708bf279e2095d
