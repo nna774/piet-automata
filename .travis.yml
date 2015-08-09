@@ -8,24 +8,15 @@ install:
   - sudo apt-get -qq install imagemagick libmagickwand-dev libmagickcore-dev libgif-dev
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
-  - node app.js tests/puts72.pas
-  - mv out.png puts72.png
-  - node app.js tests/puts72_2.pas
-  - mv out.png puts72_2.png
-  - node app.js tests/even-or-odd.pas
-  - mv out.png even-or-odd.png
-  - node app.js tests/helloworld.pas
-  - mv out.png helloworld.png
-  - node app.js tests/helloworld_2.pas
-  - mv out.png helloworld_2.png
-  - node app.js tests/jmp_2.pas
-  - mv out.png jmp_2.png
-  - node app.js tests/jmp_3.pas
-  - mv out.png jmp_3.png
-  - node app.js tests/gcd.pas
-  - mv out.png gcd.png
-  - node app.js tests/swap.pas
-  - mv out.png swap.png
+  - node app.js tests/puts72.pas puts72.png
+  - node app.js tests/puts72_2.pas puts72_2.png
+  - node app.js tests/even-or-odd.pas even-or-odd.png
+  - node app.js tests/helloworld.pas helloworld.png
+  - node app.js tests/helloworld_2.pas helloworld_2.png
+  - node app.js tests/jmp_2.pas jmp_2.png
+  - node app.js tests/jmp_3.pas jmp_3.png
+  - node app.js tests/gcd.pas gcd.png
+  - node app.js tests/swap.pas swap.png
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
