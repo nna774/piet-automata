@@ -378,7 +378,7 @@ function sanityCheck(opcode) {
   return true;
 }
 
-function generateImage(code) {
+function generateImage(code, outfile) {
   'use strict';
   console.log("generateImage");
   var height = config.unit * code.length;
@@ -405,7 +405,7 @@ function generateImage(code) {
   }
 
   // 以下保存
-  var out = fs.createWriteStream('out.png');
+  var out = fs.createWriteStream(outfile);
   var stream = canvas.pngStream();
 
   stream.on('data', function(chunk){
@@ -422,6 +422,7 @@ if (process.argv.length < 3) {
   return;
 }
 var filename = process.argv[2];
+var outfile = process.argv[3] || 'out.png';
 
 for (var k in config.images) {
   var image = new Image();
@@ -434,5 +435,5 @@ fs.readFile(filename, 'utf8', function (err, data) {
   var code = analyze(data);
 
   var codemap = genCodeMap(code);
-  generateImage(codemap);
+  generateImage(codemap, outfile);
 });
