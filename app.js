@@ -103,83 +103,83 @@ function analyze(data) {
   for (var l of lines) {
     var m;
     var f = false; var o = l;
-    if ((m = l.match(/PUSH\s+(\d+)/i))) {
+    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) {
       code.push({ op: OP.push, val: parseInt(m[1]) });
       f = true;
     }
-    if (l.match(/POP/i)) {
+    if (l.match(/^\s*POP/i)) {
       code.push({ op: OP.pop });
       f = true;
     }
-    if (l.match(/ADD/i)) {
+    if (l.match(/^\s*ADD/i)) {
       code.push({ op: OP.add });
       f = true;
     }
-    if (l.match(/SUB/i)) {
+    if (l.match(/^\s*SUB/i)) {
       code.push({ op: OP.sub });
       f = true;
     }
-    if (l.match(/MUL/i)) {
+    if (l.match(/^\s*MUL/i)) {
       code.push({ op: OP.mul });
       f = true;
     }
-    if (l.match(/DIV/i)) {
+    if (l.match(/^\s*DIV/i)) {
       code.push({ op: OP.div });
       f = true;
     }
-    if (l.match(/MOD/i)) {
+    if (l.match(/^\s*MOD/i)) {
       code.push({ op: OP.mod });
       f = true;
     }
-    if (l.match(/NOT/i)) {
+    if (l.match(/^\s*NOT/i)) {
       code.push({ op: OP.not });
       f = true;
     }
-    if (l.match(/GREATER/i)) {
+    if (l.match(/^\s*GREATER/i)) {
       code.push({ op: OP.greater });
       f = true;
     }
-    if (l.match(/DUP/i)) {
+    if (l.match(/^\s*DUP/i)) {
       code.push({ op: OP.dup });
       f = true;
     }
-    if (l.match(/ROLL/i)) {
+    if (l.match(/^\s*ROLL/i)) {
       code.push({ op: OP.roll });
       f = true;
     }
-    if (l.match(/INN/i)) {
+    if (l.match(/^\s*INN/i)) {
       code.push({ op: OP.in_n });
       f = true;
     }
-    if (l.match(/INC/i)) {
+    if (l.match(/^\s*INC/i)) {
       code.push({ op: OP.in_c });
       f = true;
     }
-    if (l.match(/OUTN/i)) {
+    if (l.match(/^\s*OUTN/i)) {
       code.push({ op: OP.out_n });
       f = true;
     }
-    if (l.match(/OUTC/i)) {
+    if (l.match(/^\s*OUTC/i)) {
       code.push({ op: OP.out_c });
       f = true;
     }
-    if (l.match(/HALT/i)) {
+    if (l.match(/^\s*HALT/i)) {
       code.push({ op: OP.terminate });
       f = true;
     }
-    if ((m = l.match(/JEZ\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) {
       code.push({ op: OP.jez, label: m[1] });
       f = true;
     }
-    if ((m = l.match(/LABEL\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*LABEL\s+(\w+)/i))) {
       code.push({ op: OP.label, word: m[1] });
       f = true;
     }
-    if ((m = l.match(/JMP\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*JMP\s+(\w+)/i))) {
       code.push({ op: OP.jmp, label: m[1] });
       f = true;
     }
-    if (l.match(/SWAP/i)) {
+    if (l.match(/^\s*SWAP/i)) {
       code.push({ op: OP.swap });
       f = true;
     }
