@@ -26,6 +26,8 @@ install:
   - mv out.png gcd.png
   - node app.js tests/swap.pas
   - mv out.png swap.png
+  - node app.js tests/lisp-like-calc.pas
+  - mv out.png lisp-like-calc.png
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
@@ -45,3 +47,5 @@ install:
   - node app.js ../gcd.png
   - cp ../tests/tests/swap.js tests.js
   - node app.js ../swap.png
+  - cp ../tests/tests/lisp-like-calc.js tests.js
+  - node app.js ../lisp-like-calc.png
