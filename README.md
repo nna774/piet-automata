@@ -98,7 +98,7 @@ Jump Equal Zero
 
 PUSH 2
 PUSH 1
-ROOL
+ROLL
 
 と同じです。
 
