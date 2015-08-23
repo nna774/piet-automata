@@ -102,7 +102,7 @@ function analyze(data) {
   var code = [];
   for (var l of lines) {
     var m;
-    var f = false; var o = l;
+    var f = false;
     if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) {
       code.push({ op: OP.push, val: parseInt(m[1]) });
       f = true;
@@ -190,7 +190,7 @@ function analyze(data) {
     }
 
     if (!f) {
-      console.log("unknown token: " + o);
+      console.log("unknown token: " + l);
     }
   }
   return code;
