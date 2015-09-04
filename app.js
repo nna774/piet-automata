@@ -307,7 +307,13 @@ function genCodeMap(code) {
     case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      newCode[0].push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true });
+      if (config.unit === 7) { newCode[0].push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); }
+      else if (config.unit === 5) {
+        newCode[0].push({ op: OP.not });
+        newCode[0].push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+      } else {
+        throw "never come!(unknown unit size)";
+      }
       ++labelCount;
       break;
     case OP.jmp: // JMP
