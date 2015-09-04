@@ -1,6 +1,41 @@
-var size = 7;
+var size = 5;
 
 var images = {
+  5: {
+    'push': { 'file': 'piet/5x5/push1.png' },
+    'pop': { 'file': 'piet/5x5/pop.png' },
+    'add': { 'file': 'piet/5x5/add.png' },
+    'sub': { 'file': 'piet/5x5/sub.png' },
+    'mul': { 'file': 'piet/5x5/mul.png' },
+    'div': { 'file': 'piet/5x5/div.png' },
+    'mod': { 'file': 'piet/5x5/mod.png' },
+    'not': { 'file': 'piet/5x5/not.png' },
+    'greater': { 'file': 'piet/5x5/great.png' },
+    'dup': { 'file': 'piet/5x5/dup.png' },
+    'roll': { 'file': 'piet/5x5/roll.png' },
+    'in_n': { 'file': 'piet/5x5/in_n.png' },
+    'in_c': { 'file': 'piet/5x5/in_c.png' },
+    'out_n': { 'file': 'piet/5x5/out_n.png' },
+    'out_c': { 'file': 'piet/5x5/out_c.png' },
+    'nop_h': { 'file': 'piet/5x5/nop_h.png' },
+    'nop_v': { 'file': 'piet/5x5/nop_v.png' },
+    'cross': { 'file': 'piet/5x5/cross.png' },
+    'curve': { 'file': 'piet/5x5/curve1.png' },
+    'join': { 'file': 'piet/5x5/join.png' },
+    'branch': { 'file': 'piet/5x5/branch.png' },
+    'nop_v': { 'file': 'piet/5x5/nop_v.png' },
+    'start': { 'file': 'piet/5x5/start.png' },
+    'terminate': { 'file': 'piet/5x5/terminate.png' },
+    'black': { 'file': 'piet/5x5/black.png' },
+    'branch': { 'file': 'piet/5x5/branch.png' },
+    'curve1': { 'file': 'piet/5x5/curve1.png' },
+    'curve4': { 'file': 'piet/5x5/curve4.png' },
+    'curve5': { 'file': 'piet/5x5/curve5.png' },
+    'curve6': { 'file': 'piet/5x5/curve6.png' },
+    'curve7': { 'file': 'piet/5x5/curve7.png' },
+    'rjoin': { 'file': 'piet/5x5/rjoin.png' },
+    'ljoin': { 'file': 'piet/5x5/ljoin.png' },
+  },
   7: {
     'push': { 'file': 'piet/7x7/push1.png' },
     'push0': { 'file': 'piet/7x7/push0.png' },
@@ -43,7 +78,7 @@ var images = {
     'rjoin': { 'file': 'piet/7x7/rjoin.png' },
     'ljoin': { 'file': 'piet/7x7/ljoin.png' },
     'swap': { 'file': 'piet/7x7/swap.png' },
-  }
+  },
 };
 
 module.exports = {
