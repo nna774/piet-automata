@@ -96,9 +96,9 @@ Jump Equal Zero
 ## SWAP
 スタックの上2つを入れ替えます。
 
-PUSH 2
-PUSH 1
-ROOL
+PUSH 2  
+PUSH 1  
+ROLL
 
 と同じです。
 
