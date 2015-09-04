@@ -180,7 +180,15 @@ function analyze(data) {
       f = true;
     }
     if (l.match(/^\s*SWAP/i)) {
-      code.push({ op: OP.swap });
+      var funs = {
+        7: function(c) { c.push({ op: OP.swap }); },
+        5: function(c) {
+          c.push({ op: OP.push, val: 2 });
+          c.push({ op: OP.push, val: 1 });
+          c.push({ op: OP.roll });
+        },
+      };
+      sizedPush(funs, code);
       f = true;
     }
 
@@ -200,6 +208,13 @@ function isJump(opCode) {
   'use strict';
   if (opCode.jump === true) return true;
   return false;
+}
+
+function sizedPush(funs, list) {
+  'use strict';
+  var fun = funs[config.unit];
+  if (!fun) throw "never come!(unknown unit size)";
+  fun(list);
 }
 
 function opPush(newCode, c) {
@@ -304,19 +319,20 @@ function genCodeMap(code) {
      case OP.push:
       opPush(newCode, c);
       break;
-    case OP.jez: // JEZ
+     case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      if (config.unit === 7) { newCode[0].push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); }
-      else if (config.unit === 5) {
-        newCode[0].push({ op: OP.not });
-        newCode[0].push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
-      } else {
-        throw "never come!(unknown unit size)";
-      }
+      var funs = {
+        7: function(l) { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
+        5: function(l) {
+          l.push({ op: OP.not });
+          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+        },
+      };
+      sizedPush(funs, newCode[0]);
       ++labelCount;
       break;
-    case OP.jmp: // JMP
+     case OP.jmp: // JMP
       newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
       ++labelCount;
       break;
