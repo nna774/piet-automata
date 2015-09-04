@@ -405,7 +405,7 @@ function generateImage(code, outfile) {
       if (filename === 'label') {
         filename = 'join';
       }
-      ctx.drawImage(config.images[filename].image, j * config.unit, i * config.unit);
+      ctx.drawImage(config.images[config.unit][filename].image, j * config.unit, i * config.unit);
     }
   }
 
@@ -429,7 +429,7 @@ if (process.argv.length < 3) {
 var filename = process.argv[2];
 var outfile = process.argv[3] || 'out.png';
 
-for (var k in config.images) {
+for (var k in config.images[config.unit]) {
   var image = new Image();
   image.src = fs.readFileSync(config.images[config.unit][k].file);
   config.images[config.unit][k].image = image;
