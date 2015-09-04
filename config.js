@@ -1,3 +1,5 @@
+var size = 7;
+
 var images = {
     'push': { 'file': 'piet/push1.png' },
     'push0': { 'file': 'piet/push0.png' },
@@ -44,5 +46,5 @@ var images = {
 
 module.exports = {
     images: images,
-    unit: 7,
+    unit: size,
 };
