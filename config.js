@@ -1,6 +1,7 @@
 var size = 7;
 
 var images = {
+  7: {
     'push': { 'file': 'piet/7x7/push1.png' },
     'push0': { 'file': 'piet/7x7/push0.png' },
     'push2': { 'file': 'piet/7x7/push2.png' },
@@ -42,6 +43,7 @@ var images = {
     'rjoin': { 'file': 'piet/7x7/rjoin.png' },
     'ljoin': { 'file': 'piet/7x7/ljoin.png' },
     'swap': { 'file': 'piet/7x7/swap.png' },
+  }
 };
 
 module.exports = {

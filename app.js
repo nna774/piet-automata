@@ -391,7 +391,7 @@ function generateImage(code, outfile) {
   var canvas = new Canvas(width, height);
   var ctx = canvas.getContext('2d');
 
-  ctx.drawImage(config.images['start'].image, 0, 0);
+  ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
 
   for (var i = 0; i < code.length; ++i) {
     for (var j = 0; j < code[0].length; ++j) {
@@ -431,8 +431,8 @@ var outfile = process.argv[3] || 'out.png';
 
 for (var k in config.images) {
   var image = new Image();
-  image.src = fs.readFileSync(config.images[k].file);
-  config.images[k].image = image;
+  image.src = fs.readFileSync(config.images[config.unit][k].file);
+  config.images[config.unit][k].image = image;
 }
 
 fs.readFile(filename, 'utf8', function (err, data) {
