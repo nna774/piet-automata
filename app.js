@@ -246,14 +246,14 @@ function opPush(newCode, c) {
         }
       }
     }
-  } else if (config.unit == 5) {
+  } else if (config.unit === 5) {
     if (c.val === 1) {
       newCode[0].push(c);
     } else if (c.val === 0) {
-      newCode[0].push(c);
+      newCode[0].push({ op: OP.push, val: 1 });
       newCode[0].push({ op: OP.not });
     } else {
-      newCode[0].push(c);
+      newCode[0].push({ op: OP.push, val: 1 });
       newCode[0].push({ op: OP.not });
       var sum = 0;
       var tar = c.val;
@@ -443,6 +443,7 @@ function generateImage(code, outfile) {
       // コードに対応した画像を挿入する｡
       var opCode = code[i][j];
       if (!sanityCheck(opCode)) {
+        console.error(opCode);
         throw opCode;
       }
       var op = opTable[opCode.op];
