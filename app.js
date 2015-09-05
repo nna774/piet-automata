@@ -342,6 +342,18 @@ function optimize(chain) {
   return chain;
 }
 
+function crossable(c) {
+  'use strict';
+  if (c.op === OP.black || c.op === OP.nop_v) return true;
+  return false;
+}
+
+function findSpace(map, i, s, g) {
+  return i;
+  for (; i > 0; --i) {
+  }
+}
+
 function genCodeMap(code) {
   'use strict';
   console.log("genCodeMap");
@@ -386,11 +398,10 @@ function genCodeMap(code) {
       throw("label " + word + " not found.");
     }
 
-    // 上が開いてるかどうかを確認。
-    var current = i;
-
-    // ラベルとジャンプを繋ぐ。
+// ラベルとジャンプを繋ぐ。
     if (j < k) {// right
+      // 上が開いてるかどうかを確認。
+      var current = findSpace(newCode, i, j, k);
       // 縦
       for (var l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
@@ -420,6 +431,8 @@ function genCodeMap(code) {
         }
       }
     } else { // left
+      // 上が開いてるかどうかを確認。
+      var current = findSpace(newCode, i, k, j);
       // 縦
       for (var l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
