@@ -1,3 +1,4 @@
+// this should be 5 or 7
 var size = 5;
 
 var images = {
