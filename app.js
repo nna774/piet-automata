@@ -100,6 +100,11 @@ var Canvas = require('canvas')
   , fs = require('fs')
   , config = require('./config');
 
+function pusher1(l, op) {
+  'use strict';
+  l.push({ op: op});
+}
+
 function analyze(data) {
   'use strict';
   var lines = data.split('\n');
@@ -112,63 +117,63 @@ function analyze(data) {
       f = true;
     }
     if (l.match(/^\s*POP/i)) {
-      code.push({ op: OP.pop });
+      pusher1(code, OP.pop);
       f = true;
     }
     if (l.match(/^\s*ADD/i)) {
-      code.push({ op: OP.add });
+      pusher1(code, OP.add);
       f = true;
     }
     if (l.match(/^\s*SUB/i)) {
-      code.push({ op: OP.sub });
+      pusher1(code, OP.sub);
       f = true;
     }
     if (l.match(/^\s*MUL/i)) {
-      code.push({ op: OP.mul });
+      pusher1(code, OP.mul);
       f = true;
     }
     if (l.match(/^\s*DIV/i)) {
-      code.push({ op: OP.div });
+      pusher1(code, OP.div);
       f = true;
     }
     if (l.match(/^\s*MOD/i)) {
-      code.push({ op: OP.mod });
+      pusher1(code, OP.mod);
       f = true;
     }
     if (l.match(/^\s*NOT/i)) {
-      code.push({ op: OP.not });
+      pusher1(code, OP.not);
       f = true;
     }
     if (l.match(/^\s*GREATER/i)) {
-      code.push({ op: OP.greater });
+      pusher1(code, OP.greater);
       f = true;
     }
     if (l.match(/^\s*DUP/i)) {
-      code.push({ op: OP.dup });
+      pusher1(code, OP.dup);
       f = true;
     }
     if (l.match(/^\s*ROLL/i)) {
-      code.push({ op: OP.roll });
+      pusher1(code, OP.roll);
       f = true;
     }
     if (l.match(/^\s*INN/i)) {
-      code.push({ op: OP.in_n });
+      pusher1(code, OP.in_n);
       f = true;
     }
     if (l.match(/^\s*INC/i)) {
-      code.push({ op: OP.in_c });
+      pusher1(code, OP.in_c);
       f = true;
     }
     if (l.match(/^\s*OUTN/i)) {
-      code.push({ op: OP.out_n });
+      pusher1(code, OP.out_n);
       f = true;
     }
     if (l.match(/^\s*OUTC/i)) {
-      code.push({ op: OP.out_c });
+      pusher1(code, OP.out_c);
       f = true;
     }
     if (l.match(/^\s*HALT/i)) {
-      code.push({ op: OP.terminate });
+      pusher1(code, OP.terminate);
       f = true;
     }
     if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) {
