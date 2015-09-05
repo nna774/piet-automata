@@ -105,6 +105,12 @@ function pusher1(l, op) {
   l.push({ op: op});
 }
 
+function debug_log(level, out) {
+  if (config.debug > level) {
+    console.log(out);
+  }
+}
+
 function analyze(data) {
   'use strict';
   var lines = data.split('\n');
@@ -455,12 +461,12 @@ function sanityCheck(opcode) {
   return true;
 }
 
-function debug_log(level, out) {
-  if (config.debug > level) {
-    console.log(out);
-  }
-}
+function rewriteCodemap(codemap) {
+  'use strict';
+  console.log("rewriteCodemap");
 
+  return codemap;
+}
 function generateImage(code, outfile) {
   'use strict';
   console.log("generateImage");
@@ -523,5 +529,6 @@ fs.readFile(filename, 'utf8', function (err, data) {
   var code = analyze(data);
 
   var codemap = genCodeMap(code);
+  codemap = rewriteCodemap(codemap);
   generateImage(codemap, outfile);
 });
