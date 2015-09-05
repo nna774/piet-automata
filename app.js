@@ -1,26 +1,26 @@
 // app.js
 
 var opTable = {
-  0: { 'filename': 'push', 'length': 1 },
-  1: { 'filename': 'pop', 'length': 1 },
-  2: { 'filename': 'add', 'length': 1  },
-  3: { 'filename': 'sub', 'length': 1  },
-  4: { 'filename': 'mul', 'length': 1  },
-  5: { 'filename': 'div', 'length': 1  },
-  6: { 'filename': 'mod', 'length': 1  },
-  7: { 'filename': 'not', 'length': 1  },
-  8: { 'filename': 'greater', 'length': 1  },
-  9: { 'filename': 'dup', 'length': 1  },
-  10: { 'filename': 'roll', 'length': 1  },
-  15: { 'filename': 'in_n', 'length': 1  },
-  16: { 'filename': 'in_c', 'length': 1  },
-  17: { 'filename': 'out_n', 'length': 1  },
-  18: { 'filename': 'out_c', 'length': 1  },
-  19: { 'filename': 'start', 'length': 1  },
-  20: { 'filename': 'terminate', 'length': 1  },
-  21: { 'filename': 'jez', 'length': 2  }, // image not exists
-  22: { 'filename': 'label', 'length': 1  }, // image not exists
-  23: { 'filename': 'jmp', 'length': 1  }, // image not exists
+  0: { 'filename': 'push' },
+  1: { 'filename': 'pop' },
+  2: { 'filename': 'add' },
+  3: { 'filename': 'sub' },
+  4: { 'filename': 'mul' },
+  5: { 'filename': 'div' },
+  6: { 'filename': 'mod' },
+  7: { 'filename': 'not' },
+  8: { 'filename': 'greater' },
+  9: { 'filename': 'dup' },
+  10: { 'filename': 'roll' },
+  15: { 'filename': 'in_n' },
+  16: { 'filename': 'in_c' },
+  17: { 'filename': 'out_n' },
+  18: { 'filename': 'out_c' },
+  19: { 'filename': 'start' },
+  20: { 'filename': 'terminate' },
+  21: { 'filename': 'jez' }, // image not exists
+  22: { 'filename': 'label' }, // image not exists
+  23: { 'filename': 'jmp' }, // image not exists
 
   24: { 'filename': 'black' }, // only use generate
   25: { 'filename': 'branch' },
