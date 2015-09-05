@@ -252,11 +252,19 @@ function opPush(newCode, c) {
           } else if (sum + 16 < tar) {
             d = 16;
             newCode[0].push({ op: OP.push16 });
+          } else if (sum + 4 < tar) {
+            d = 4;
+            newCode[0].push({ op: OP.push4 });
           } else {
             newCode[0].push({ op: OP.push2 });
           }
         } else if (config.unit === 5) {
-          newCode[0].push({ op: OP.push2 });
+          if (sum + 4 < tar) {
+            d = 4;
+            newCode[0].push({ op: OP.push4 });
+          } else {
+            newCode[0].push({ op: OP.push2 });
+          }
         } else {
           throw "never come!(unknown unit size)";
         }
