@@ -12,6 +12,8 @@ var images = {
     'not': { 'file': 'piet/5x5/not.png' },
     'greater': { 'file': 'piet/5x5/great.png' },
     'dup': { 'file': 'piet/5x5/dup.png' },
+    'dupadd': { 'file': 'piet/5x5/dupadd.png' },
+    'dupmul': { 'file': 'piet/5x5/dupmul.png' },
     'roll': { 'file': 'piet/5x5/roll.png' },
     'in_n': { 'file': 'piet/5x5/in_n.png' },
     'in_c': { 'file': 'piet/5x5/in_c.png' },
