@@ -308,6 +308,13 @@ function genCodeChain(code) {
            'count': labelCount };
 }
 
+function optimize(chain) {
+  'use strict';
+  console.log("optimize(level: %s)", config.level);
+
+  return chain;
+}
+
 function genCodeMap(code) {
   'use strict';
   console.log("genCodeMap");
@@ -315,6 +322,8 @@ function genCodeMap(code) {
   var tmp = genCodeChain(code);
   var newCode = tmp['code'];
   var labelCount = tmp['count'];
+
+  newCode = optimize(newCode);
 
   for (var i = 0; i < labelCount; ++i) {
     newCode.push([]);

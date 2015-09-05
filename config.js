@@ -1,6 +1,8 @@
 // this should be 5 or 7
 var size = 5;
 
+var optimezeLevel = 0;
+
 var images = {
   5: {
     'push': { 'file': 'piet/5x5/push1.png' },
@@ -87,6 +89,7 @@ var images = {
 };
 
 module.exports = {
-    images: images,
-    unit: size,
+  images: images,
+  unit: size,
+  level: optimezeLevel,
 };
