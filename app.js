@@ -470,7 +470,11 @@ function genCodeMap(code) {
            newCode[current+1][l].op = OP.nop_h;
         }
       }
-      newCode[current+1][k].op = OP.right2up;
+      if (newCode[current+1][k].op === OP.nop_v) {
+        newCode[current+1][k].op = OP.rjoin;
+      } else {
+        newCode[current+1][k].op = OP.right2up;
+      }
       for (var l = current; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
