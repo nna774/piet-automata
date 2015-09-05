@@ -102,6 +102,10 @@ ROLL
 
 と同じです。
 
-# tests/lisp-like-calc.pas
+# ブロックサイズの変更
+`config.js`のsize変数を書き換えてみると、うまくいくとより小さい画像が生成される可能性があります。
+書き換えて試してみてください。
+
+# Tests/Lisp-like-calc.pas
 
 https://gist.github.com/1995hnagamin/408da3708bf279e2095d
