@@ -350,17 +350,17 @@ function crossable(c) {
 
 function findSpace(map, i, s, g) {
   'use strict';
-  for (; i > 0; --i) {
+  for (var c = 0; c <= i; ++c) {
     var flg = true; // crossable
     for (var l = s; l <= g; ++l) {
-      if (! crossable(map[i][l])) {
+      if (! crossable(map[c+1][l])) {
         flg = false;
         break;
       }
     }
-    if (!flg) return i;
+    if (flg) return c;
   }
-  return 0;
+  return i;
 }
 
 function genCodeMap(code) {
@@ -435,6 +435,10 @@ function genCodeMap(code) {
         } else if (newCode[l][k].op === OP.left2up){
           newCode[l][k].op = OP.ljoin; // ljoin
           break;
+        } else if (newCode[l][k].op === OP.ljoin ||
+                   newCode[l][k].op === OP.rjoin ||
+                   newCode[l][k].op === OP.cross) {
+          /* do nothing */
         } else {
           throw ("never come");
         }
@@ -466,6 +470,10 @@ function genCodeMap(code) {
         } else if (newCode[l][k].op === OP.left2up){
           newCode[l][k].op = OP.ljoin; // ljoin
           break;
+        } else if (newCode[l][k].op === OP.ljoin ||
+                   newCode[l][k].op === OP.rjoin ||
+                   newCode[l][k].op === OP.cross) {
+          /* do nothing */
         } else {
           throw ("never come");
         }
