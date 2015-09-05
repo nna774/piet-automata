@@ -421,7 +421,11 @@ function genCodeMap(code) {
       }
       newCode[current+1][j].op = OP.up2right;
       for (var l = j + 1; l < k; ++l) {
-        newCode[current+1][l].op = OP.nop_h; // hnop
+        if (newCode[current+1][l].op === OP.nop_v) {
+           newCode[current+1][l].op = OP.cross;
+        } else {
+           newCode[current+1][l].op = OP.nop_h;
+        }
       }
       newCode[current+1][k].op = OP.left2up;
       for (var l = current; 0 < l; --l) {
@@ -455,8 +459,12 @@ function genCodeMap(code) {
         }
       }
       newCode[current+1][j].op = OP.up2left;
-      for (var l = k + 1; l < j; ++l) {
-        newCode[current+1][l].op = OP.nop_h; // hnop
+      for (var l = j + 1; l < k; ++l) {
+        if (newCode[current+1][l].op === OP.nop_v) {
+           newCode[current+1][l].op = OP.cross;
+        } else {
+           newCode[current+1][l].op = OP.nop_h;
+        }
       }
       newCode[current+1][k].op = OP.right2up;
       for (var l = current; 0 < l; --l) {
