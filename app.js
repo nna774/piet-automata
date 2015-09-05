@@ -459,7 +459,7 @@ function genCodeMap(code) {
         }
       }
       newCode[current+1][j].op = OP.up2left;
-      for (var l = j + 1; l < k; ++l) {
+      for (var l = k + 1; l < j; ++l) {
         if (newCode[current+1][l].op === OP.nop_v) {
            newCode[current+1][l].op = OP.cross;
         } else {
