@@ -9,7 +9,7 @@ all: $(images)
 
 .SUFFIXES: .pas .png
 
-%.png:: tests/%.pas app.js
+%.png:: tests/%.pas app.js config.js
 	 $(NODE) $(APP) $< $@
 
 .PHONY: clean test

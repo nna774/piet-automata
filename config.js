@@ -1,11 +1,18 @@
 // this should be 5 or 7
 var size = 5;
 
+var optimezeLevel = 0;
+
+// 0 ~ 100
+var debug = 0;
+
 var images = {
   5: {
     'push': { 'file': 'piet/5x5/push1.png' },
     'push0': { 'file': 'piet/5x5/push0.png' },
     'push2': { 'file': 'piet/5x5/push2.png' },
+    'push3': { 'file': 'piet/5x5/push3.png' },
+    'push4': { 'file': 'piet/5x5/push4.png' },
     'pop': { 'file': 'piet/5x5/pop.png' },
     'add': { 'file': 'piet/5x5/add.png' },
     'sub': { 'file': 'piet/5x5/sub.png' },
@@ -45,6 +52,8 @@ var images = {
     'push': { 'file': 'piet/7x7/push1.png' },
     'push0': { 'file': 'piet/7x7/push0.png' },
     'push2': { 'file': 'piet/7x7/push2.png' },
+    'push3': { 'file': 'piet/7x7/push3.png' },
+    'push4': { 'file': 'piet/7x7/push4.png' },
     'push16': { 'file': 'piet/7x7/push16.png' },
     'push32': { 'file': 'piet/7x7/push32.png' },
     'pop': { 'file': 'piet/7x7/pop.png' },
@@ -87,6 +96,8 @@ var images = {
 };
 
 module.exports = {
-    images: images,
-    unit: size,
+  images: images,
+  unit: size,
+  level: optimezeLevel,
+  debug: debug,
 };

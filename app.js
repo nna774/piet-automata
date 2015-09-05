@@ -1,26 +1,26 @@
 // app.js
 
 var opTable = {
-  0: { 'filename': 'push', 'length': 1 },
-  1: { 'filename': 'pop', 'length': 1 },
-  2: { 'filename': 'add', 'length': 1  },
-  3: { 'filename': 'sub', 'length': 1  },
-  4: { 'filename': 'mul', 'length': 1  },
-  5: { 'filename': 'div', 'length': 1  },
-  6: { 'filename': 'mod', 'length': 1  },
-  7: { 'filename': 'not', 'length': 1  },
-  8: { 'filename': 'greater', 'length': 1  },
-  9: { 'filename': 'dup', 'length': 1  },
-  10: { 'filename': 'roll', 'length': 1  },
-  15: { 'filename': 'in_n', 'length': 1  },
-  16: { 'filename': 'in_c', 'length': 1  },
-  17: { 'filename': 'out_n', 'length': 1  },
-  18: { 'filename': 'out_c', 'length': 1  },
-  19: { 'filename': 'start', 'length': 1  },
-  20: { 'filename': 'terminate', 'length': 1  },
-  21: { 'filename': 'jez', 'length': 2  }, // image not exists
-  22: { 'filename': 'label', 'length': 1  }, // image not exists
-  23: { 'filename': 'jmp', 'length': 1  }, // image not exists
+  0: { 'filename': 'push' },
+  1: { 'filename': 'pop' },
+  2: { 'filename': 'add' },
+  3: { 'filename': 'sub' },
+  4: { 'filename': 'mul' },
+  5: { 'filename': 'div' },
+  6: { 'filename': 'mod' },
+  7: { 'filename': 'not' },
+  8: { 'filename': 'greater' },
+  9: { 'filename': 'dup' },
+  10: { 'filename': 'roll' },
+  15: { 'filename': 'in_n' },
+  16: { 'filename': 'in_c' },
+  17: { 'filename': 'out_n' },
+  18: { 'filename': 'out_c' },
+  19: { 'filename': 'start' },
+  20: { 'filename': 'terminate' },
+  21: { 'filename': 'jez' }, // image not exists
+  22: { 'filename': 'label' }, // image not exists
+  23: { 'filename': 'jmp' }, // image not exists
 
   24: { 'filename': 'black' }, // only use generate
   25: { 'filename': 'branch' },
@@ -38,13 +38,15 @@ var opTable = {
 
   40: { 'filename': 'push0' },
   41: { 'filename': 'push2' },
-  42: { 'filename': 'push16' },
-  43: { 'filename': 'push32' },
+  42: { 'filename': 'push3' },
+  43: { 'filename': 'push4' },
+  50: { 'filename': 'push16' },
+  51: { 'filename': 'push32' },
 
-  46: { 'filename': 'dupadd' },
-  47: { 'filename': 'dupmul' },
-  48: { 'filename': 'notbranch' },
-  49: { 'filename': 'swap' },
+  65: { 'filename': 'dupadd' },
+  66: { 'filename': 'dupmul' },
+  67: { 'filename': 'notbranch' },
+  68: { 'filename': 'swap' },
 };
 
 const OP = {
@@ -83,18 +85,25 @@ const OP = {
   left2down: 36,
   push0: 40,
   push2: 41,
-  push16: 42,
-  push32: 43,
-  dupadd: 46,
-  dupmul: 47,
-  notbranch: 48,
-  swap: 49,
+  push3: 42,
+  push4: 43,
+  push16: 50,
+  push32: 51,
+  dupadd: 65,
+  dupmul: 66,
+  notbranch: 67,
+  swap: 68,
 };
 
 var Canvas = require('canvas')
   , Image = Canvas.Image
   , fs = require('fs')
   , config = require('./config');
+
+function pusher1(l, op) {
+  'use strict';
+  l.push({ op: op});
+}
 
 function analyze(data) {
   'use strict';
@@ -108,63 +117,63 @@ function analyze(data) {
       f = true;
     }
     if (l.match(/^\s*POP/i)) {
-      code.push({ op: OP.pop });
+      pusher1(code, OP.pop);
       f = true;
     }
     if (l.match(/^\s*ADD/i)) {
-      code.push({ op: OP.add });
+      pusher1(code, OP.add);
       f = true;
     }
     if (l.match(/^\s*SUB/i)) {
-      code.push({ op: OP.sub });
+      pusher1(code, OP.sub);
       f = true;
     }
     if (l.match(/^\s*MUL/i)) {
-      code.push({ op: OP.mul });
+      pusher1(code, OP.mul);
       f = true;
     }
     if (l.match(/^\s*DIV/i)) {
-      code.push({ op: OP.div });
+      pusher1(code, OP.div);
       f = true;
     }
     if (l.match(/^\s*MOD/i)) {
-      code.push({ op: OP.mod });
+      pusher1(code, OP.mod);
       f = true;
     }
     if (l.match(/^\s*NOT/i)) {
-      code.push({ op: OP.not });
+      pusher1(code, OP.not);
       f = true;
     }
     if (l.match(/^\s*GREATER/i)) {
-      code.push({ op: OP.greater });
+      pusher1(code, OP.greater);
       f = true;
     }
     if (l.match(/^\s*DUP/i)) {
-      code.push({ op: OP.dup });
+      pusher1(code, OP.dup);
       f = true;
     }
     if (l.match(/^\s*ROLL/i)) {
-      code.push({ op: OP.roll });
+      pusher1(code, OP.roll);
       f = true;
     }
     if (l.match(/^\s*INN/i)) {
-      code.push({ op: OP.in_n });
+      pusher1(code, OP.in_n);
       f = true;
     }
     if (l.match(/^\s*INC/i)) {
-      code.push({ op: OP.in_c });
+      pusher1(code, OP.in_c);
       f = true;
     }
     if (l.match(/^\s*OUTN/i)) {
-      code.push({ op: OP.out_n });
+      pusher1(code, OP.out_n);
       f = true;
     }
     if (l.match(/^\s*OUTC/i)) {
-      code.push({ op: OP.out_c });
+      pusher1(code, OP.out_c);
       f = true;
     }
     if (l.match(/^\s*HALT/i)) {
-      code.push({ op: OP.terminate });
+      pusher1(code, OP.terminate);
       f = true;
     }
     if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) {
@@ -225,6 +234,10 @@ function opPush(newCode, c) {
     newCode[0].push(c);
   } else if (c.val === 2) {
     newCode[0].push({ op: OP.push2 });
+  } else if (c.val === 3) {
+    newCode[0].push({ op: OP.push3 });
+  } else if (c.val === 4) {
+    newCode[0].push({ op: OP.push4 });
   } else {
     newCode[0].push({ op: OP.push0 });
     var sum = 0;
@@ -244,11 +257,19 @@ function opPush(newCode, c) {
           } else if (sum + 16 < tar) {
             d = 16;
             newCode[0].push({ op: OP.push16 });
+          } else if (sum + 4 < tar) {
+            d = 4;
+            newCode[0].push({ op: OP.push4 });
           } else {
             newCode[0].push({ op: OP.push2 });
           }
         } else if (config.unit === 5) {
-          newCode[0].push({ op: OP.push2 });
+          if (sum + 4 < tar) {
+            d = 4;
+            newCode[0].push({ op: OP.push4 });
+          } else {
+            newCode[0].push({ op: OP.push2 });
+          }
         } else {
           throw "never come!(unknown unit size)";
         }
@@ -270,14 +291,14 @@ function opPush(newCode, c) {
   }
 }
 
-function genCodeMap(code) {
+function genCodeChain(code) {
   'use strict';
-  console.log("genCodeMap");
+  console.log("genCodeChain");
   var newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
   var labelCount = 0;
-  for (c of code) {
+  for (var c of code) {
     switch (c.op) {
      case OP.push:
       opPush(newCode, c);
@@ -304,6 +325,27 @@ function genCodeMap(code) {
     }
   }
   newCode[0].push({ op: OP.terminate });
+  return { 'code': newCode,
+           'count': labelCount };
+}
+
+function optimize(chain) {
+  'use strict';
+  console.log("optimize(level: %s)", config.level);
+
+  return chain;
+}
+
+function genCodeMap(code) {
+  'use strict';
+  console.log("genCodeMap");
+
+  var tmp = genCodeChain(code);
+  var newCode = tmp['code'];
+  var labelCount = tmp['count'];
+
+  newCode = optimize(newCode);
+
   for (var i = 0; i < labelCount; ++i) {
     newCode.push([]);
     for (var c = 0; c < newCode[0].length; ++c) {
@@ -413,6 +455,12 @@ function sanityCheck(opcode) {
   return true;
 }
 
+function debug_log(level, out) {
+  if (config.debug > level) {
+    console.log(out);
+  }
+}
+
 function generateImage(code, outfile) {
   'use strict';
   console.log("generateImage");
@@ -423,6 +471,7 @@ function generateImage(code, outfile) {
 
   ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
 
+  debug_log(50, code);
   for (var i = 0; i < code.length; ++i) {
     for (var j = 0; j < code[0].length; ++j) {
       // コードに対応した画像を挿入する｡
@@ -431,11 +480,14 @@ function generateImage(code, outfile) {
         console.error(opCode);
         throw opCode;
       }
+      debug_log(20, opCode);
       var op = opTable[opCode.op];
+      debug_log(15, op);
       var filename = op['filename'];
       if (filename === 'label') {
         filename = 'join';
       }
+      debug_log(10, filename);
       ctx.drawImage(config.images[config.unit][filename].image, j * config.unit, i * config.unit);
     }
   }
