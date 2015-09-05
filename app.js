@@ -180,7 +180,15 @@ function analyze(data) {
       f = true;
     }
     if (l.match(/^\s*SWAP/i)) {
-      code.push({ op: OP.swap });
+      var funs = {
+        7: function(c) { c.push({ op: OP.swap }); },
+        5: function(c) {
+          c.push({ op: OP.push, val: 2 });
+          c.push({ op: OP.push, val: 1 });
+          c.push({ op: OP.roll });
+        },
+      };
+      sizedPush(funs, code);
       f = true;
     }
 
@@ -202,48 +210,99 @@ function isJump(opCode) {
   return false;
 }
 
+function sizedPush(funs, list) {
+  'use strict';
+  var fun = funs[config.unit];
+  if (!fun) throw "never come!(unknown unit size)";
+  fun(list);
+}
+
 function opPush(newCode, c) {
   'use strict';
-  if (c.val === 1) {
-    newCode[0].push(c);
-  } else if (c.val === 0) {
-    newCode[0].push({ op: OP.push0 });
-  } else {
-    newCode[0].push({ op: OP.push0 });
-    var sum = 0;
-    var tar = c.val;
-    while (tar !== sum) {
-      if (tar === sum + 1) {
-        newCode[0].push({ op: OP.push, val: 1 });
-        newCode[0].push({ op: OP.add });
-        sum += d;
-        break;
-      } else {
-        var d = 2;
-        if (sum + 32 < tar) {
-          d = 32;
-          newCode[0].push({ op: OP.push32 });
-        } else if (sum + 16 < tar) {
-          d = 16;
-          newCode[0].push({ op: OP.push16 });
+  if (config.unit === 7) {
+    if (c.val === 1) {
+      newCode[0].push(c);
+    } else if (c.val === 0) {
+      newCode[0].push({ op: OP.push0 });
+    } else {
+      newCode[0].push({ op: OP.push0 });
+      var sum = 0;
+      var tar = c.val;
+      while (tar !== sum) {
+        if (tar === sum + 1) {
+          newCode[0].push({ op: OP.push, val: 1 });
+          newCode[0].push({ op: OP.add });
+          sum += d;
+          break;
         } else {
-          newCode[0].push({ op: OP.push2 });
-        }
-        while (true) {
-          if (d * d + sum < tar) {
-            newCode[0].push({ op: OP.dupmul });
-            d *= d;
-          } else if (d * 2 + sum < tar) {
-            newCode[0].push({ op: OP.dupadd });
-            d *= 2;
+          var d = 2;
+          if (sum + 32 < tar) {
+            d = 32;
+            newCode[0].push({ op: OP.push32 });
+          } else if (sum + 16 < tar) {
+            d = 16;
+            newCode[0].push({ op: OP.push16 });
           } else {
-            newCode[0].push({ op: OP.add });
-            sum += d;
-            break;
+            newCode[0].push({ op: OP.push2 });
+          }
+          while (true) {
+            if (d * d + sum < tar) {
+              newCode[0].push({ op: OP.dupmul });
+              d *= d;
+            } else if (d * 2 + sum < tar) {
+              newCode[0].push({ op: OP.dupadd });
+              d *= 2;
+            } else {
+              newCode[0].push({ op: OP.add });
+              sum += d;
+              break;
+            }
           }
         }
       }
     }
+  } else if (config.unit === 5) {
+    if (c.val === 1) {
+      newCode[0].push(c);
+    } else if (c.val === 0) {
+      newCode[0].push({ op: OP.push, val: 1 });
+      newCode[0].push({ op: OP.not });
+    } else {
+      newCode[0].push({ op: OP.push, val: 1 });
+      newCode[0].push({ op: OP.not });
+      var sum = 0;
+      var tar = c.val;
+      while (tar !== sum) {
+        if (tar === sum + 1) {
+          newCode[0].push({ op: OP.push, val: 1 });
+          newCode[0].push({ op: OP.add });
+          sum += d;
+          break;
+        } else {
+          newCode[0].push({ op: OP.push, val: 1 });
+          newCode[0].push({ op: OP.push, val: 1 });
+          newCode[0].push({ op: OP.add });
+          var d = 2;
+          while (true) {
+            if (d * d + sum < tar) {
+              newCode[0].push({ op: OP.dup });
+              newCode[0].push({ op: OP.mul });
+              d *= d;
+            } else if (d * 2 + sum < tar) {
+              newCode[0].push({ op: OP.dup });
+              newCode[0].push({ op: OP.add });
+              d *= 2;
+            } else {
+              newCode[0].push({ op: OP.add });
+              sum += d;
+              break;
+            }
+          }
+        }
+      }
+    }
+  } else {
+    throw "never come!(unknown unit size)";
   }
 }
 
@@ -259,13 +318,20 @@ function genCodeMap(code) {
      case OP.push:
       opPush(newCode, c);
       break;
-    case OP.jez: // JEZ
+     case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      newCode[0].push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true });
+      var funs = {
+        7: function(l) { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
+        5: function(l) {
+          l.push({ op: OP.not });
+          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+        },
+      };
+      sizedPush(funs, newCode[0]);
       ++labelCount;
       break;
-    case OP.jmp: // JMP
+     case OP.jmp: // JMP
       newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
       ++labelCount;
       break;
@@ -391,13 +457,14 @@ function generateImage(code, outfile) {
   var canvas = new Canvas(width, height);
   var ctx = canvas.getContext('2d');
 
-  ctx.drawImage(config.images['start'].image, 0, 0);
+  ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
 
   for (var i = 0; i < code.length; ++i) {
     for (var j = 0; j < code[0].length; ++j) {
       // コードに対応した画像を挿入する｡
       var opCode = code[i][j];
       if (!sanityCheck(opCode)) {
+        console.error(opCode);
         throw opCode;
       }
       var op = opTable[opCode.op];
@@ -405,7 +472,7 @@ function generateImage(code, outfile) {
       if (filename === 'label') {
         filename = 'join';
       }
-      ctx.drawImage(config.images[filename].image, j * config.unit, i * config.unit);
+      ctx.drawImage(config.images[config.unit][filename].image, j * config.unit, i * config.unit);
     }
   }
 
@@ -424,15 +491,15 @@ function generateImage(code, outfile) {
 
 if (process.argv.length < 3) {
   console.log('missing argument.');
-  return;
+  exit(-1);
 }
 var filename = process.argv[2];
 var outfile = process.argv[3] || 'out.png';
 
-for (var k in config.images) {
+for (var k in config.images[config.unit]) {
   var image = new Image();
-  image.src = fs.readFileSync(config.images[k].file);
-  config.images[k].image = image;
+  image.src = fs.readFileSync(config.images[config.unit][k].file);
+  config.images[config.unit][k].image = image;
 }
 
 fs.readFile(filename, 'utf8', function (err, data) {
