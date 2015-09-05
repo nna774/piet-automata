@@ -386,21 +386,24 @@ function genCodeMap(code) {
       throw("label " + word + " not found.");
     }
 
+    // 上が開いてるかどうかを確認。
+    var current = i;
+
     // ラベルとジャンプを繋ぐ。
     if (j < k) {// right
       // 縦
-      for (var l = 1; l <= i; ++l) {
+      for (var l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
           newCode[l][j].op = OP.nop_v; // vnop
         } else {
           newCode[l][j].op = OP.cross; // cross
         }
       }
-      newCode[i+1][j].op = OP.up2right;
+      newCode[current+1][j].op = OP.up2right;
       for (var l = j + 1; l < k; ++l) {
-        newCode[i+1][l].op = OP.nop_h; // hnop
+        newCode[current+1][l].op = OP.nop_h; // hnop
       }
-      newCode[i+1][k].op = OP.left2up;
+      newCode[current+1][k].op = OP.left2up;
       for (var l = i; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
@@ -418,19 +421,19 @@ function genCodeMap(code) {
       }
     } else { // left
       // 縦
-      for (var l = 1; l <= i; ++l) {
+      for (var l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
           newCode[l][j].op = OP.nop_v; // vnop
         } else {
           newCode[l][j].op = OP.cross; // cross
         }
       }
-      newCode[i+1][j].op = OP.up2left;
+      newCode[current+1][j].op = OP.up2left;
       for (var l = k + 1; l < j; ++l) {
-        newCode[i+1][l].op = OP.nop_h; // hnop
+        newCode[current+1][l].op = OP.nop_h; // hnop
       }
-      newCode[i+1][k].op = OP.right2up;
-      for (var l = i; 0 < l; --l) {
+      newCode[current+1][k].op = OP.right2up;
+      for (var l = current; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
         } else if (newCode[l][k].op === OP.nop_h) { // hnop
