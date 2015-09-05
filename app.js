@@ -38,13 +38,15 @@ var opTable = {
 
   40: { 'filename': 'push0' },
   41: { 'filename': 'push2' },
-  42: { 'filename': 'push16' },
-  43: { 'filename': 'push32' },
+  42: { 'filename': 'push3' },
+  43: { 'filename': 'push4' },
+  50: { 'filename': 'push16' },
+  51: { 'filename': 'push32' },
 
-  46: { 'filename': 'dupadd' },
-  47: { 'filename': 'dupmul' },
-  48: { 'filename': 'notbranch' },
-  49: { 'filename': 'swap' },
+  65: { 'filename': 'dupadd' },
+  66: { 'filename': 'dupmul' },
+  67: { 'filename': 'notbranch' },
+  68: { 'filename': 'swap' },
 };
 
 const OP = {
@@ -83,12 +85,14 @@ const OP = {
   left2down: 36,
   push0: 40,
   push2: 41,
-  push16: 42,
-  push32: 43,
-  dupadd: 46,
-  dupmul: 47,
-  notbranch: 48,
-  swap: 49,
+  push3: 42,
+  push4: 43,
+  push16: 50,
+  push32: 51,
+  dupadd: 65,
+  dupmul: 66,
+  notbranch: 67,
+  swap: 68,
 };
 
 var Canvas = require('canvas')
@@ -225,6 +229,10 @@ function opPush(newCode, c) {
     newCode[0].push(c);
   } else if (c.val === 2) {
     newCode[0].push({ op: OP.push2 });
+  } else if (c.val === 3) {
+    newCode[0].push({ op: OP.push3 });
+  } else if (c.val === 4) {
+    newCode[0].push({ op: OP.push4 });
   } else {
     newCode[0].push({ op: OP.push0 });
     var sum = 0;
