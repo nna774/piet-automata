@@ -3,6 +3,8 @@ var size = 5;
 var images = {
   5: {
     'push': { 'file': 'piet/5x5/push1.png' },
+    'push0': { 'file': 'piet/5x5/push0.png' },
+    'push2': { 'file': 'piet/5x5/push2.png' },
     'pop': { 'file': 'piet/5x5/pop.png' },
     'add': { 'file': 'piet/5x5/add.png' },
     'sub': { 'file': 'piet/5x5/sub.png' },

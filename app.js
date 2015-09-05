@@ -265,11 +265,9 @@ function opPush(newCode, c) {
     if (c.val === 1) {
       newCode[0].push(c);
     } else if (c.val === 0) {
-      newCode[0].push({ op: OP.push, val: 1 });
-      newCode[0].push({ op: OP.not });
+      newCode[0].push({ op: OP.push0 });
     } else {
-      newCode[0].push({ op: OP.push, val: 1 });
-      newCode[0].push({ op: OP.not });
+      newCode[0].push({ op: OP.push0 });
       var sum = 0;
       var tar = c.val;
       while (tar !== sum) {
@@ -279,9 +277,7 @@ function opPush(newCode, c) {
           sum += d;
           break;
         } else {
-          newCode[0].push({ op: OP.push, val: 1 });
-          newCode[0].push({ op: OP.push, val: 1 });
-          newCode[0].push({ op: OP.add });
+          newCode[0].push({ op: OP.push2 });
           var d = 2;
           while (true) {
             if (d * d + sum < tar) {
