@@ -270,14 +270,14 @@ function opPush(newCode, c) {
   }
 }
 
-function genCodeMap(code) {
+function genCodeChain(code) {
   'use strict';
-  console.log("genCodeMap");
+  console.log("genCodeChain");
   var newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
   var labelCount = 0;
-  for (c of code) {
+  for (var c of code) {
     switch (c.op) {
      case OP.push:
       opPush(newCode, c);
@@ -304,6 +304,18 @@ function genCodeMap(code) {
     }
   }
   newCode[0].push({ op: OP.terminate });
+  return { 'code': newCode,
+           'count': labelCount };
+}
+
+function genCodeMap(code) {
+  'use strict';
+  console.log("genCodeMap");
+
+  var tmp = genCodeChain(code);
+  var newCode = tmp['code'];
+  var labelCount = tmp['count'];
+
   for (var i = 0; i < labelCount; ++i) {
     newCode.push([]);
     for (var c = 0; c < newCode[0].length; ++c) {
