@@ -434,6 +434,12 @@ function sanityCheck(opcode) {
   return true;
 }
 
+function debug_log(level, out) {
+  if (config.debug > level) {
+    console.log(out);
+  }
+}
+
 function generateImage(code, outfile) {
   'use strict';
   console.log("generateImage");
@@ -444,6 +450,7 @@ function generateImage(code, outfile) {
 
   ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
 
+  debug_log(50, code);
   for (var i = 0; i < code.length; ++i) {
     for (var j = 0; j < code[0].length; ++j) {
       // コードに対応した画像を挿入する｡
@@ -452,11 +459,14 @@ function generateImage(code, outfile) {
         console.error(opCode);
         throw opCode;
       }
+      debug_log(20, opCode);
       var op = opTable[opCode.op];
+      debug_log(15, op);
       var filename = op['filename'];
       if (filename === 'label') {
         filename = 'join';
       }
+      debug_log(10, filename);
       ctx.drawImage(config.images[config.unit][filename].image, j * config.unit, i * config.unit);
     }
   }
