@@ -282,7 +282,6 @@ function opPush(newCode, c) {
           newCode[0].push({ op: OP.push, val: 1 });
           newCode[0].push({ op: OP.push, val: 1 });
           newCode[0].push({ op: OP.add });
-          newCode[0].push({ op: OP.add });
           var d = 2;
           while (true) {
             if (d * d + sum < tar) {
