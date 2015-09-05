@@ -219,10 +219,12 @@ function sizedPush(funs, list) {
 
 function opPush(newCode, c) {
   'use strict';
-  if (c.val === 1) {
-    newCode[0].push(c);
-  } else if (c.val === 0) {
+  if (c.val === 0) {
     newCode[0].push({ op: OP.push0 });
+  } else if (c.val === 1) {
+    newCode[0].push(c);
+  } else if (c.val === 2) {
+    newCode[0].push({ op: OP.push2 });
   } else {
     newCode[0].push({ op: OP.push0 });
     var sum = 0;
