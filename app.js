@@ -17,7 +17,7 @@ var opTable = {
   17: { 'filename': 'out_n', toRight: true },
   18: { 'filename': 'out_c', toRight: true },
   19: { 'filename': 'start', toRight: true },
-  20: { 'filename': 'terminate', toRight: true },
+  20: { 'filename': 'terminate', toRight: false },
   21: { 'filename': 'jez', toRight: true }, // image not exists
   22: { 'filename': 'label', toRight: true }, // image not exists
   23: { 'filename': 'jmp', toRight: false }, // image not exists
