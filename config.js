@@ -1,5 +1,5 @@
 // this should be 5 or 7
-var size = 5;
+var size = 3;
 
 var optimezeLevel = 0;
 
@@ -7,6 +7,46 @@ var optimezeLevel = 0;
 var debug = 0;
 
 var images = {
+  3: {
+    'push': { 'file': 'piet/3x3/push1.png' },
+    'push0': { 'file': 'piet/3x3/push0.png' },
+    'push2': { 'file': 'piet/3x3/push2.png' },
+    'pop': { 'file': 'piet/3x3/pop.png' },
+    'add': { 'file': 'piet/3x3/add.png' },
+    'sub': { 'file': 'piet/3x3/sub.png' },
+    'mul': { 'file': 'piet/3x3/mul.png' },
+    'div': { 'file': 'piet/3x3/div.png' },
+    'mod': { 'file': 'piet/3x3/mod.png' },
+    'not': { 'file': 'piet/3x3/not.png' },
+    'greater': { 'file': 'piet/3x3/great.png' },
+    'dup': { 'file': 'piet/3x3/dup.png' },
+    'dupadd': { 'file': 'piet/3x3/dupadd.png' },
+    'dupmul': { 'file': 'piet/3x3/dupmul.png' },
+    'roll': { 'file': 'piet/3x3/roll.png' },
+    'in_n': { 'file': 'piet/3x3/in_n.png' },
+    'in_c': { 'file': 'piet/3x3/in_c.png' },
+    'out_n': { 'file': 'piet/3x3/out_n.png' },
+    'out_c': { 'file': 'piet/3x3/out_c.png' },
+    'nop_h': { 'file': 'piet/3x3/nop_h.png' },
+    'nop_v': { 'file': 'piet/3x3/nop_v.png' },
+    'cross': { 'file': 'piet/3x3/cross.png' },
+    'curve': { 'file': 'piet/3x3/curve1.png' },
+    'join': { 'file': 'piet/3x3/join.png' },
+    'branch': { 'file': 'piet/3x3/branch.png' },
+    'nop_v': { 'file': 'piet/3x3/nop_v.png' },
+    'start': { 'file': 'piet/3x3/start.png' },
+    'terminate': { 'file': 'piet/3x3/terminate.png' },
+    'black': { 'file': 'piet/3x3/black.png' },
+    'branch': { 'file': 'piet/3x3/branch.png' },
+    'curve1': { 'file': 'piet/3x3/curve1.png' },
+    'curve2': { 'file': 'piet/3x3/curve2.png' },
+    'curve4': { 'file': 'piet/3x3/curve4.png' },
+    'curve5': { 'file': 'piet/3x3/curve5.png' },
+    'curve6': { 'file': 'piet/3x3/curve6.png' },
+    'curve7': { 'file': 'piet/3x3/curve7.png' },
+    'rjoin': { 'file': 'piet/3x3/rjoin.png' },
+    'ljoin': { 'file': 'piet/3x3/ljoin.png' },
+  },
   5: {
     'push': { 'file': 'piet/5x5/push1.png' },
     'push0': { 'file': 'piet/5x5/push0.png' },

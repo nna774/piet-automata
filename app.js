@@ -197,13 +197,15 @@ function analyze(data) {
       f = true;
     }
     if (l.match(/^\s*SWAP/i)) {
+      var f = function(c) {
+        c.push({ op: OP.push, val: 2 });
+        c.push({ op: OP.push, val: 1 });
+        c.push({ op: OP.roll });
+      };
       var funs = {
         7: function(c) { c.push({ op: OP.swap }); },
-        5: function(c) {
-          c.push({ op: OP.push, val: 2 });
-          c.push({ op: OP.push, val: 1 });
-          c.push({ op: OP.roll });
-        },
+        5: f,
+        3: f,
       };
       sizedPush(funs, code);
       f = true;
@@ -242,9 +244,9 @@ function opPush(newCode, c) {
     newCode[0].push(c);
   } else if (c.val === 2) {
     newCode[0].push({ op: OP.push2 });
-  } else if (c.val === 3) {
+  } else if (c.val === 3 && config.unit >= 5) {
     newCode[0].push({ op: OP.push3 });
-  } else if (c.val === 4) {
+  } else if (c.val === 4 && config.unit >= 5) {
     newCode[0].push({ op: OP.push4 });
   } else {
     newCode[0].push({ op: OP.push0 });
@@ -278,6 +280,8 @@ function opPush(newCode, c) {
           } else {
             newCode[0].push({ op: OP.push2 });
           }
+        } else if (config.unit === 3) {
+          newCode[0].push({ op: OP.push2 });
         } else {
           throw "never come!(unknown unit size)";
         }
@@ -314,12 +318,14 @@ function genCodeChain(code) {
      case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
+      var f = function(l) {
+        l.push({ op: OP.not });
+        l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+      };
       var funs = {
         7: function(l) { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
-        5: function(l) {
-          l.push({ op: OP.not });
-          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
-        },
+        5: f,
+        3: f,
       };
       sizedPush(funs, newCode[0]);
       ++labelCount;
