@@ -84,6 +84,7 @@ const OP = {
   rjoin: 34,
   ljoin: 35,
   left2down: 36,
+  down2right: 37,
   push0: 40,
   push2: 41,
   push3: 42,
@@ -331,7 +332,9 @@ function genCodeChain(code) {
       newCode[0].push(c);
     }
   }
-  newCode[0].push({ op: OP.terminate });
+  if (opTable[newCode[0][newCode[0].length - 1].op].toRight){
+    newCode[0].push({ op: OP.terminate });
+  }
   return { 'code': newCode,
            'count': labelCount };
 }
@@ -556,7 +559,11 @@ function generateImage(code, outfile) {
       debug_log(15, op);
       var filename = op['filename'];
       if (filename === 'label') {
-        filename = 'join';
+        if (opTable[code[i][j-1].op].toRight) {
+          filename = 'join';
+        } else {
+          filename = 'curve2';
+        }
       }
       debug_log(10, filename);
       ctx.drawImage(config.images[config.unit][filename].image, j * config.unit, i * config.unit);
