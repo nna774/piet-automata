@@ -1,4 +1,4 @@
-// this should be 5 or 7
+// this should be 3, 5 or 7
 var size = 3;
 
 var optimezeLevel = 0;
