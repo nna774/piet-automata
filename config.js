@@ -9,7 +9,6 @@ var debug = 0;
 var images = {
   3: {
     'push': { 'file': 'piet/3x3/push1.png' },
-    'push0': { 'file': 'piet/3x3/push0.png' },
     'push2': { 'file': 'piet/3x3/push2.png' },
     'pop': { 'file': 'piet/3x3/pop.png' },
     'add': { 'file': 'piet/3x3/add.png' },
@@ -20,8 +19,6 @@ var images = {
     'not': { 'file': 'piet/3x3/not.png' },
     'greater': { 'file': 'piet/3x3/great.png' },
     'dup': { 'file': 'piet/3x3/dup.png' },
-    'dupadd': { 'file': 'piet/3x3/dupadd.png' },
-    'dupmul': { 'file': 'piet/3x3/dupmul.png' },
     'roll': { 'file': 'piet/3x3/roll.png' },
     'in_n': { 'file': 'piet/3x3/in_n.png' },
     'in_c': { 'file': 'piet/3x3/in_c.png' },

@@ -239,7 +239,12 @@ function sizedPush(funs, list) {
 function opPush(newCode, c) {
   'use strict';
   if (c.val === 0) {
-    newCode[0].push({ op: OP.push0 });
+    if (config.unit >= 5) {
+      newCode[0].push({ op: OP.push0 });
+    } else {
+      newCode[0].push({ op: OP.push, val: 1 });
+      newCode[0].push({ op: OP.not });
+    }
   } else if (c.val === 1) {
     newCode[0].push(c);
   } else if (c.val === 2) {
@@ -249,7 +254,12 @@ function opPush(newCode, c) {
   } else if (c.val === 4 && config.unit >= 5) {
     newCode[0].push({ op: OP.push4 });
   } else {
-    newCode[0].push({ op: OP.push0 });
+    if (config.unit >= 5) {
+      newCode[0].push({ op: OP.push0 });
+    } else {
+      newCode[0].push({ op: OP.push, val: 1 });
+      newCode[0].push({ op: OP.not });
+    }
     var sum = 0;
     var tar = c.val;
     while (tar !== sum) {
@@ -287,10 +297,20 @@ function opPush(newCode, c) {
         }
         while (true) {
           if (d * d + sum < tar) {
-            newCode[0].push({ op: OP.dupmul });
+            if (config.unit === 3) {
+              newCode[0].push({ op: OP.dup });
+              newCode[0].push({ op: OP.mul });
+            } else {
+              newCode[0].push({ op: OP.dupmul });
+            }
             d *= d;
           } else if (d * 2 + sum < tar) {
-            newCode[0].push({ op: OP.dupadd });
+            if (config.unit === 3) {
+              newCode[0].push({ op: OP.dup });
+              newCode[0].push({ op: OP.add });
+            } else {
+              newCode[0].push({ op: OP.dupadd });
+            }
             d *= 2;
           } else {
             newCode[0].push({ op: OP.add });
