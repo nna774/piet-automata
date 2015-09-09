@@ -197,17 +197,7 @@ function analyze(data) {
       f = true;
     }
     if (l.match(/^\s*SWAP/i)) {
-      var f = function(c) {
-        c.push({ op: OP.push, val: 2 });
-        c.push({ op: OP.push, val: 1 });
-        c.push({ op: OP.roll });
-      };
-      var funs = {
-        7: function(c) { c.push({ op: OP.swap }); },
-        5: f,
-        3: f,
-      };
-      sizedPush(funs, code);
+      code.push({ op: OP.swap });
       f = true;
     }
 
@@ -353,6 +343,19 @@ function genCodeChain(code) {
      case OP.jmp: // JMP
       newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
       ++labelCount;
+      break;
+     case OP.swap:
+      var f = function(c) {
+        c.push({ op: OP.push, val: 2 });
+        c.push({ op: OP.push, val: 1 });
+        c.push({ op: OP.roll });
+      };
+      var funs = {
+        7: function(c) { c.push({ op: OP.swap }); },
+        5: f,
+        3: f,
+      };
+      sizedPush(funs, code);
       break;
     default:
       newCode[0].push(c);
