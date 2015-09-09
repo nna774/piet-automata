@@ -355,7 +355,7 @@ function genCodeChain(code) {
         5: f,
         3: f,
       };
-      sizedPush(funs, code);
+      sizedPush(funs, newCode[0]);
       break;
     default:
       newCode[0].push(c);
