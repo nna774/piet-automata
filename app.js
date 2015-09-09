@@ -346,7 +346,7 @@ function genCodeChain(code) {
       break;
      case OP.swap:
       var f = function(c) {
-        c.push({ op: OP.push, val: 2 });
+        c.push({ op: OP.push2 });
         c.push({ op: OP.push, val: 1 });
         c.push({ op: OP.roll });
       };
