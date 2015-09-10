@@ -17,5 +17,5 @@ clean:
 	$(RM) $(images)
 
 test: $(images)
-	echo test
+	TESTUTILS_REL=../piet-testutils ./test.sh
 
