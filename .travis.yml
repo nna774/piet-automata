@@ -8,49 +8,19 @@ install:
   - sudo apt-get -qq install imagemagick libmagickwand-dev libmagickcore-dev libgif-dev
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
-script:
-  - make all
   - cd piet-testutils
   - npm install
   - node app.js devide_by_2.10cs.11x4.png
   - sed -i -e "s/var codel = 10;/var codel = 1;/" config.js
-  - node app.js ../puts72.png ../tests/tests/puts72.js
-  - node app.js ../puts72_2.png ../tests/tests/puts72.js
-  - node app.js ../even-or-odd.png ../tests/tests/even-or-odd.js
-  - node app.js ../helloworld.png ../tests/tests/helloworld.js
-  - node app.js ../helloworld_2.png ../tests/tests/helloworld.js
-  - node app.js ../jmp_2.png ../tests/tests/puts1.js
-  - node app.js ../jmp_3.png ../tests/tests/puts1.js
-  - node app.js ../gcd.png ../tests/tests/gcd.js
-  - node app.js ../swap.png ../tests/tests/swap.js
-  - node app.js ../lisp-like-calc.png ../tests/tests/lisp-like-calc.js
   - cd ..
+script:
+  - make all
+  - TESTUTILS_REL=piet-testutils ./test.sh
   - make clean
   - sed -i -e "s/var size = 3;/var size = 5;/" config.js
   - make all
-  - cd piet-testutils
-  - node app.js ../puts72.png ../tests/tests/puts72.js
-  - node app.js ../puts72_2.png ../tests/tests/puts72.js
-  - node app.js ../even-or-odd.png ../tests/tests/even-or-odd.js
-  - node app.js ../helloworld.png ../tests/tests/helloworld.js
-  - node app.js ../helloworld_2.png ../tests/tests/helloworld.js
-  - node app.js ../jmp_2.png ../tests/tests/puts1.js
-  - node app.js ../jmp_3.png ../tests/tests/puts1.js
-  - node app.js ../gcd.png ../tests/tests/gcd.js
-  - node app.js ../swap.png ../tests/tests/swap.js
-  - node app.js ../lisp-like-calc.png ../tests/tests/lisp-like-calc.js
-  - cd ..
+  - TESTUTILS_REL=piet-testutils ./test.sh
   - make clean
   - sed -i -e "s/var size = 5;/var size = 7;/" config.js
   - make all
-  - cd piet-testutils
-  - node app.js ../puts72.png ../tests/tests/puts72.js
-  - node app.js ../puts72_2.png ../tests/tests/puts72.js
-  - node app.js ../even-or-odd.png ../tests/tests/even-or-odd.js
-  - node app.js ../helloworld.png ../tests/tests/helloworld.js
-  - node app.js ../helloworld_2.png ../tests/tests/helloworld.js
-  - node app.js ../jmp_2.png ../tests/tests/puts1.js
-  - node app.js ../jmp_3.png ../tests/tests/puts1.js
-  - node app.js ../gcd.png ../tests/tests/gcd.js
-  - node app.js ../swap.png ../tests/tests/swap.js
-  - node app.js ../lisp-like-calc.png ../tests/tests/lisp-like-calc.js
+  - TESTUTILS_REL=piet-testutils ./test.sh
