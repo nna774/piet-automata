@@ -2,10 +2,15 @@ language: node_js
 node_js:
   - 0.11
   - 0.12
-before_install:
-  - sudo apt-get -qq update
+sudo: false
+addons:
+  apt:
+    packages:
+      - imagemagick
+      - libmagickwand-dev
+      - libmagickcore-dev
+      - libgif-dev
 install:
-  - sudo apt-get -qq install imagemagick libmagickwand-dev libmagickcore-dev libgif-dev
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
   - cd piet-testutils
