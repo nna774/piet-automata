@@ -3,7 +3,7 @@ APP = app.js
 
 RM = rm -rf
 
-images = puts72.png puts72_2.png even-or-odd.png helloworld.png helloworld_2.png jmp_2.png jmp_3.png gcd.png swap.png lisp-like-calc.png
+images = puts72.png puts72_2.png even-or-odd.png 1to100.png helloworld.png helloworld_2.png jmp_2.png jmp_3.png gcd.png swap.png lisp-like-calc.png
 
 all: $(images)
 
