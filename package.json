@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/nna774/piet-automata",
   "dependencies": {
-    "canvas": "^1.2.3"
+    "canvas": "^1.4.0"
   }
 }
