@@ -124,6 +124,15 @@ function analyze(data) {
       code.push({ op: OP.push, val: parseInt(m[1]) });
       f = true;
     }
+    if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
+      if (m[1][0] === '\\') {
+        // エスケープ文字の処理をする。
+        throw("escape is un impled now");
+      } else {
+        code.push({ op: OP.push, val: m[1][0].charCodeAt() });
+      }
+      f = true;
+    }
     if (l.match(/^\s*POP/i)) {
       pusher1(code, OP.pop);
       f = true;
