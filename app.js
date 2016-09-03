@@ -224,8 +224,7 @@ function analyze(data) {
 
 function isJump(opCode) {
   'use strict';
-  if (opCode.jump === true) return true;
-  return false;
+  return !!opCode.jump;
 }
 
 function sizedPush(funs, list) {
