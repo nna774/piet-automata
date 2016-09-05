@@ -217,7 +217,7 @@ function analyze(data) {
     }
 
     if (!f) {
-      console.log('unknown token: ' + l);
+      console.log(`unknown token: ${l}`);
     }
   }
   return code;
@@ -445,7 +445,7 @@ function genCodeMap(code) {
       }
     }
     if (k === newCode[0].length) {
-      throw new Error('label ' + word + ' not found.');
+      throw new Error(`label ${word} not found.`);
     }
 
 // ラベルとジャンプを繋ぐ。
