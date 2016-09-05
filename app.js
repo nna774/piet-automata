@@ -404,8 +404,8 @@ function genCodeMap(code) {
   console.log('genCodeMap');
 
   const tmp = genCodeChain(code);
-  let newCode = tmp['code'];
-  const labelCount = tmp['count'];
+  let newCode = tmp.code;
+  const labelCount = tmp.count;
 
   newCode = optimize(newCode);
 
@@ -575,7 +575,7 @@ function generateImage(code, outfile) {
   const canvas = new Canvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
+  ctx.drawImage(config.images[config.unit].start.image, 0, 0);
 
   debug_log(50, code);
   for (let i = 0; i < code.length; ++i) {
@@ -589,7 +589,7 @@ function generateImage(code, outfile) {
       debug_log(20, opCode);
       const op = opTable[opCode.op];
       debug_log(15, op);
-      let filename = op['filename'];
+      let filename = op.filename;
       if (filename === 'label') {
         if (opTable[code[i][j - 1].op].toRight) {
           filename = 'join';
