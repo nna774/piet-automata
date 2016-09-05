@@ -6,11 +6,14 @@ node_js:
 sudo: false
 addons:
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
       - libgif-dev
       - libcairo2-dev
       - libjpeg8-dev
       - libpango1.0-dev
+      - g++-4.8
 install:
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
