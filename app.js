@@ -622,7 +622,7 @@ if (process.argv.length < 3) {
 const filename = process.argv[2];
 const outfile = process.argv[3] || 'out.png';
 
-for (const k in config.images[config.unit]) {
+for (const k of config.images[config.unit]) {
   const image = new Image();
   image.src = fs.readFileSync(config.images[config.unit][k].file);
   config.images[config.unit][k].image = image;
