@@ -98,9 +98,10 @@ const OP = {
 };
 
 const Canvas = require('canvas');
-const Image = Canvas.Image;
 const fs = require('fs');
 const config = require('./config');
+
+const Image = Canvas.Image;
 
 function pusher1(l, op) {
   'use strict';
