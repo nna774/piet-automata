@@ -617,7 +617,7 @@ function generateImage(code, outfile) {
 
 if (process.argv.length < 3) {
   console.log('missing argument.');
-  exit(-1);
+  process.exit(-1);
 }
 const filename = process.argv[2];
 const outfile = process.argv[3] || 'out.png';
