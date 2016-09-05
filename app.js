@@ -367,8 +367,8 @@ function genCodeChain(code) {
   if (opTable[newCode[0][newCode[0].length - 1].op].toRight) {
     newCode[0].push({ op: OP.terminate });
   }
-  return { 'code': newCode,
-           'count': labelCount };
+  return { code: newCode,
+           count: labelCount };
 }
 
 function optimize(chain) {
