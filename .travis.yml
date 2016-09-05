@@ -26,6 +26,7 @@ install:
   - sed -i -e "s/var codel = 10;/var codel = 1;/" config.js
   - cd ..
 script:
+  - make lint
   - make all
   - TESTUTILS_REL=piet-testutils ./test.sh
   - make clean
