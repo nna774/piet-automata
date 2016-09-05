@@ -252,13 +252,8 @@ function opPush(newCode, c) {
   } else if (c.val === 4 && config.unit >= 5) {
     newCode[0].push({ op: OP.push4 });
   } else {
-    if (config.unit >= 5) {
-      newCode[0].push({ op: OP.push0 });
-    } else {
-      newCode[0].push({ op: OP.push, val: 1 });
-      newCode[0].push({ op: OP.not });
-    }
-    var sum = 0;
+    newCode[0].push({ op: OP.push2 });
+    var sum = 2;
     var tar = c.val;
     while (tar !== sum) {
       if (tar === sum + 1) {
