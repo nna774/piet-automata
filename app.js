@@ -122,7 +122,7 @@ function analyze(data) {
     let m;
     let f = false;
     if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) {
-      code.push({ op: OP.push, val: parseInt(m[1]) });
+      code.push({ op: OP.push, val: parseInt(m[1], 10) });
       f = true;
     }
     if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
