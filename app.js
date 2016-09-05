@@ -323,6 +323,15 @@ function genCodeChain(code) {
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
   let labelCount = 0;
+  const jezDefault = (l) => {
+    l.push({ op: OP.not });
+    l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+  };
+  const jezFuns = {
+    7: (l) => { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
+    5: jezDefault,
+    3: jezDefault,
+  };
   for (let c of code) {
     switch (c.op) {
      case OP.push:
@@ -331,16 +340,7 @@ function genCodeChain(code) {
      case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      let f = function(l) {
-        l.push({ op: OP.not });
-        l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
-      };
-      let funs = {
-        7: function(l) { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
-        5: f,
-        3: f,
-      };
-      sizedPush(funs, newCode[0]);
+      sizedPush(jezFuns, newCode[0]);
       ++labelCount;
       break;
      case OP.jmp: // JMP
@@ -348,13 +348,13 @@ function genCodeChain(code) {
       ++labelCount;
       break;
      case OP.swap:
-      let f = function(c) {
+      let f = (c) => {
         c.push({ op: OP.push2 });
         c.push({ op: OP.push, val: 1 });
         c.push({ op: OP.roll });
       };
       let funs = {
-        7: function(c) { c.push({ op: OP.swap }); },
+        7: (c) => { c.push({ op: OP.swap }); },
         5: f,
         3: f,
       };
@@ -606,11 +606,11 @@ function generateImage(code, outfile) {
   let out = fs.createWriteStream(outfile);
   let stream = canvas.pngStream();
 
-  stream.on('data', function(chunk){
+  stream.on('data', (chunk) => {
     out.write(chunk);
   });
 
-  stream.on('end', function(){
+  stream.on('end', () => {
     console.log('saved png');
   });
 }
@@ -628,7 +628,7 @@ for (let k in config.images[config.unit]) {
   config.images[config.unit][k].image = image;
 }
 
-fs.readFile(filename, 'utf8', function (err, data) {
+fs.readFile(filename, 'utf8', (err, data) => {
   if (err) throw err;
   const code = analyze(data);
 
