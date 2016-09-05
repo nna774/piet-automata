@@ -23,10 +23,12 @@ all: $(images)
 %.png:: tests/%.pas app.js config.js
 	 $(NODE) $(APP) $< $@
 
-.PHONY: clean test
+.PHONY: clean test lint
 clean:
 	$(RM) $(images)
 
 test: $(images)
 	TESTUTILS_REL=../piet-testutils ./test.sh
 
+lint:
+	npm run lint
