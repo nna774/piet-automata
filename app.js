@@ -1,53 +1,53 @@
 // app.js
 
 let opTable = {
-  0: { 'filename': 'push', toRight: true },
-  1: { 'filename': 'pop', toRight: true },
-  2: { 'filename': 'add', toRight: true },
-  3: { 'filename': 'sub', toRight: true },
-  4: { 'filename': 'mul', toRight: true },
-  5: { 'filename': 'div', toRight: true },
-  6: { 'filename': 'mod', toRight: true },
-  7: { 'filename': 'not', toRight: true },
-  8: { 'filename': 'greater', toRight: true },
-  9: { 'filename': 'dup', toRight: true },
-  10: { 'filename': 'roll', toRight: true },
-  15: { 'filename': 'in_n', toRight: true },
-  16: { 'filename': 'in_c', toRight: true },
-  17: { 'filename': 'out_n', toRight: true },
-  18: { 'filename': 'out_c', toRight: true },
-  19: { 'filename': 'start', toRight: true },
-  20: { 'filename': 'terminate', toRight: false },
-  21: { 'filename': 'jez', toRight: true }, // image not exists
-  22: { 'filename': 'label', toRight: true }, // image not exists
-  23: { 'filename': 'jmp', toRight: false }, // image not exists
+  0: { filename: 'push', toRight: true },
+  1: { filename: 'pop', toRight: true },
+  2: { filename: 'add', toRight: true },
+  3: { filename: 'sub', toRight: true },
+  4: { filename: 'mul', toRight: true },
+  5: { filename: 'div', toRight: true },
+  6: { filename: 'mod', toRight: true },
+  7: { filename: 'not', toRight: true },
+  8: { filename: 'greater', toRight: true },
+  9: { filename: 'dup', toRight: true },
+  10: { filename: 'roll', toRight: true },
+  15: { filename: 'in_n', toRight: true },
+  16: { filename: 'in_c', toRight: true },
+  17: { filename: 'out_n', toRight: true },
+  18: { filename: 'out_c', toRight: true },
+  19: { filename: 'start', toRight: true },
+  20: { filename: 'terminate', toRight: false },
+  21: { filename: 'jez', toRight: true }, // image not exists
+  22: { filename: 'label', toRight: true }, // image not exists
+  23: { filename: 'jmp', toRight: false }, // image not exists
 
-  24: { 'filename': 'black', toRight: false }, // only use generate
-  25: { 'filename': 'branch', toRight: true },
-  26: { 'filename': 'nop_h', toRight: true },
-  27: { 'filename': 'nop_v', toRight: false },
-  28: { 'filename': 'curve5', toRight: false }, // 上から左
-  29: { 'filename': 'curve6', toRight: false}, // 右から上
-  30: { 'filename': 'curve4', toRight: true }, // 上から右
-  31: { 'filename': 'curve7', toRight: false }, // 左から上
-  32: { 'filename': 'cross', toRight: true },
-  33: { 'filename': 'join', toRight: true },
-  34: { 'filename': 'rjoin', toRight: true },
-  35: { 'filename': 'ljoin', toRight: false },
-  36: { 'filename': 'curve1', toRight: false }, // 左から下
-  37: { 'filename': 'curve2', toRight: true }, // 下から右
+  24: { filename: 'black', toRight: false }, // only use generate
+  25: { filename: 'branch', toRight: true },
+  26: { filename: 'nop_h', toRight: true },
+  27: { filename: 'nop_v', toRight: false },
+  28: { filename: 'curve5', toRight: false }, // 上から左
+  29: { filename: 'curve6', toRight: false}, // 右から上
+  30: { filename: 'curve4', toRight: true }, // 上から右
+  31: { filename: 'curve7', toRight: false }, // 左から上
+  32: { filename: 'cross', toRight: true },
+  33: { filename: 'join', toRight: true },
+  34: { filename: 'rjoin', toRight: true },
+  35: { filename: 'ljoin', toRight: false },
+  36: { filename: 'curve1', toRight: false }, // 左から下
+  37: { filename: 'curve2', toRight: true }, // 下から右
 
-  40: { 'filename': 'push0', toRight: true },
-  41: { 'filename': 'push2', toRight: true },
-  42: { 'filename': 'push3', toRight: true },
-  43: { 'filename': 'push4', toRight: true },
-  50: { 'filename': 'push16', toRight: true },
-  51: { 'filename': 'push32', toRight: true },
+  40: { filename: 'push0', toRight: true },
+  41: { filename: 'push2', toRight: true },
+  42: { filename: 'push3', toRight: true },
+  43: { filename: 'push4', toRight: true },
+  50: { filename: 'push16', toRight: true },
+  51: { filename: 'push32', toRight: true },
 
-  65: { 'filename': 'dupadd', toRight: true },
-  66: { 'filename': 'dupmul', toRight: true },
-  67: { 'filename': 'notbranch', toRight: true },
-  68: { 'filename': 'swap', toRight: true },
+  65: { filename: 'dupadd', toRight: true },
+  66: { filename: 'dupmul', toRight: true },
+  67: { filename: 'notbranch', toRight: true },
+  68: { filename: 'swap', toRight: true },
 };
 
 const OP = {
