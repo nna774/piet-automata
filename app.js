@@ -325,43 +325,43 @@ function genCodeChain(code) {
   let labelCount = 0;
   for (const c of code) {
     switch (c.op) {
-     case OP.push:
-      opPush(newCode, c);
-      break;
-     case OP.jez: // JEZ
+      case OP.push:
+        opPush(newCode, c);
+        break;
+      case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      const jezDefault = (l) => {
-        l.push({ op: OP.not });
-        l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
-      };
-      const jezFuns = {
-        7: (l) => { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
-        5: jezDefault,
-        3: jezDefault,
-      };
-      sizedPush(jezFuns, newCode[0]);
-      ++labelCount;
-      break;
-     case OP.jmp: // JMP
-      newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
-      ++labelCount;
-      break;
-     case OP.swap:
-      const f = (c) => {
-        c.push({ op: OP.push2 });
-        c.push({ op: OP.push, val: 1 });
-        c.push({ op: OP.roll });
-      };
-      const funs = {
-        7: (c) => { c.push({ op: OP.swap }); },
-        5: f,
-        3: f,
-      };
-      sizedPush(funs, newCode[0]);
-      break;
-    default:
-      newCode[0].push(c);
+        const jezDefault = (l) => {
+          l.push({ op: OP.not });
+          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+        };
+        const jezFuns = {
+          7: (l) => { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
+          5: jezDefault,
+          3: jezDefault,
+        };
+        sizedPush(jezFuns, newCode[0]);
+        ++labelCount;
+        break;
+      case OP.jmp: // JMP
+        newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
+        ++labelCount;
+        break;
+      case OP.swap:
+        const f = (c) => {
+          c.push({ op: OP.push2 });
+          c.push({ op: OP.push, val: 1 });
+          c.push({ op: OP.roll });
+        };
+        const funs = {
+          7: (c) => { c.push({ op: OP.swap }); },
+          5: f,
+          3: f,
+        };
+        sizedPush(funs, newCode[0]);
+        break;
+      default:
+        newCode[0].push(c);
     }
   }
   if (opTable[newCode[0][newCode[0].length - 1].op].toRight){
@@ -458,9 +458,9 @@ function genCodeMap(code) {
       newCode[current+1][j].op = OP.up2right;
       for (let l = j + 1; l < k; ++l) {
         if (newCode[current+1][l].op === OP.nop_v) {
-           newCode[current+1][l].op = OP.cross;
+          newCode[current+1][l].op = OP.cross;
         } else {
-           newCode[current+1][l].op = OP.nop_h;
+          newCode[current+1][l].op = OP.nop_h;
         }
       }
       if (newCode[current+1][k].op === OP.nop_v) {
@@ -501,9 +501,9 @@ function genCodeMap(code) {
       newCode[current+1][j].op = OP.up2left;
       for (let l = k + 1; l < j; ++l) {
         if (newCode[current+1][l].op === OP.nop_v) {
-           newCode[current+1][l].op = OP.cross;
+          newCode[current+1][l].op = OP.cross;
         } else {
-           newCode[current+1][l].op = OP.nop_h;
+          newCode[current+1][l].op = OP.nop_h;
         }
       }
       if (newCode[current+1][k].op === OP.nop_v) {
