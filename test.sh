@@ -9,6 +9,7 @@ node app.js $CURRENT/even-or-odd.png $CURRENT/tests/tests/even-or-odd.js
 node app.js $CURRENT/1to100.png $CURRENT/tests/tests/1to100.js
 node app.js $CURRENT/helloworld.png $CURRENT/tests/tests/helloworld.js
 node app.js $CURRENT/helloworld_2.png $CURRENT/tests/tests/helloworld.js
+node app.js $CURRENT/helloworld_3.png $CURRENT/tests/tests/helloworld.js
 node app.js $CURRENT/jmp_2.png $CURRENT/tests/tests/puts1.js
 node app.js $CURRENT/jmp_3.png $CURRENT/tests/tests/puts1.js
 node app.js $CURRENT/gcd.png $CURRENT/tests/tests/gcd.js

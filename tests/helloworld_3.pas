@@ -1,0 +1,26 @@
+PUSH 'H'
+OUTC
+PUSH 'e'
+OUTC
+PUSH 'l'
+DUP
+OUTC
+OUTC
+PUSH 'o'
+OUTC
+PUSH ','
+OUTC
+PUSH ' '
+OUTC
+PUSH 'w'
+OUTC
+PUSH 'o'
+OUTC
+PUSH 'r'
+OUTC
+PUSH 'l'
+OUTC
+PUSH 'd'
+OUTC
+PUSH '!'
+OUTC
