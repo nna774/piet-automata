@@ -325,12 +325,13 @@ function genCodeChain(code) {
   let labelCount = 0;
   for (const c of code) {
     switch (c.op) {
-      case OP.push:
+      case OP.push: {
         opPush(newCode, c);
         break;
-      case OP.jez: // JEZ
-      // branch is a kind of pointer.
-      // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
+      }
+      case OP.jez: { // JEZ
+        // branch is a kind of pointer.
+        // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
         const jezDefault = (l) => {
           l.push({ op: OP.not });
           l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
@@ -343,11 +344,13 @@ function genCodeChain(code) {
         sizedPush(jezFuns, newCode[0]);
         ++labelCount;
         break;
-      case OP.jmp: // JMP
+      }
+      case OP.jmp: { // JMP
         newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
         ++labelCount;
         break;
-      case OP.swap:
+      }
+      case OP.swap: {
         const f = (c) => {
           c.push({ op: OP.push2 });
           c.push({ op: OP.push, val: 1 });
@@ -360,8 +363,10 @@ function genCodeChain(code) {
         };
         sizedPush(funs, newCode[0]);
         break;
-      default:
+      }
+      default: {
         newCode[0].push(c);
+      }
     }
   }
   if (opTable[newCode[0][newCode[0].length - 1].op].toRight) {
