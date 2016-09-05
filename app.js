@@ -128,7 +128,7 @@ function analyze(data) {
     if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
       if (m[1][0] === '\\') {
         // エスケープ文字の処理をする。
-        throw "escape is un impled now";
+        throw 'escape is un impled now';
       } else {
         code.push({ op: OP.push, val: m[1][0].charCodeAt() });
       }
@@ -217,7 +217,7 @@ function analyze(data) {
     }
 
     if (!f) {
-      console.log("unknown token: " + l);
+      console.log('unknown token: ' + l);
     }
   }
   return code;
@@ -231,7 +231,7 @@ function isJump(opCode) {
 function sizedPush(funs, list) {
   'use strict';
   const fun = funs[config.unit];
-  if (!fun) throw "never come!(unknown unit size)";
+  if (!fun) throw 'never come!(unknown unit size)';
   fun(list);
 }
 
@@ -286,7 +286,7 @@ function opPush(newCode, c) {
         } else if (config.unit === 3) {
           newCode[0].push({ op: OP.push2 });
         } else {
-          throw "never come!(unknown unit size)";
+          throw 'never come!(unknown unit size)';
         }
         for (;;) {
           if (d * d + sum < tar) {
@@ -318,7 +318,7 @@ function opPush(newCode, c) {
 
 function genCodeChain(code) {
   'use strict';
-  console.log("genCodeChain");
+  console.log('genCodeChain');
   const newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
@@ -373,7 +373,7 @@ function genCodeChain(code) {
 
 function optimize(chain) {
   'use strict';
-  console.log("optimize(level: %s)", config.level);
+  console.log('optimize(level: %s)', config.level);
 
   return chain;
 }
@@ -401,7 +401,7 @@ function findSpace(map, i, s, g) {
 
 function genCodeMap(code) {
   'use strict';
-  console.log("genCodeMap");
+  console.log('genCodeMap');
 
   const tmp = genCodeChain(code);
   let newCode = tmp['code'];
@@ -426,7 +426,7 @@ function genCodeMap(code) {
     }
 
     if (j === newCode[0].length) {
-      throw "never come";
+      throw 'never come';
     }
     const word = newCode[0][j].label;
 
@@ -440,7 +440,7 @@ function genCodeMap(code) {
       }
     }
     if (k === newCode[0].length) {
-      throw "label " + word + " not found.";
+      throw 'label ' + word + ' not found.';
     }
 
 // ラベルとジャンプを繋ぐ。
@@ -484,7 +484,7 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw "never come";
+          throw 'never come';
         }
       }
     } else { // left
@@ -527,7 +527,7 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw "never come";
+          throw 'never come';
         }
       }
     }
@@ -563,13 +563,13 @@ function sanityCheck(opcode) {
 
 function rewriteCodemap(codemap) {
   'use strict';
-  console.log("rewriteCodemap");
+  console.log('rewriteCodemap');
 
   return codemap;
 }
 function generateImage(code, outfile) {
   'use strict';
-  console.log("generateImage");
+  console.log('generateImage');
   const height = config.unit * code.length;
   const width = config.unit * code[0].length;
   const canvas = new Canvas(width, height);
