@@ -105,7 +105,7 @@ const Image = Canvas.Image;
 
 function pusher1(l, op) {
   'use strict';
-  l.push({ op: op });
+  l.push({ op });
 }
 
 function debug_log(level, out) {
