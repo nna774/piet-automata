@@ -1,5 +1,4 @@
 // app.js
-'use strict';
 
 const opTable = {
   0: { filename: 'push', toRight: true },

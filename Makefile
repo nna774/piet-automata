@@ -1,4 +1,4 @@
-NODE = node
+NODE = node --use_strict
 APP = app.js
 
 RM = rm -rf
