@@ -128,7 +128,7 @@ function analyze(data) {
     if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
       if (m[1][0] === '\\') {
         // エスケープ文字の処理をする。
-        throw 'escape is un impled now';
+        throw new Error('escape is un impled now');
       } else {
         code.push({ op: OP.push, val: m[1][0].charCodeAt() });
       }
@@ -231,7 +231,7 @@ function isJump(opCode) {
 function sizedPush(funs, list) {
   'use strict';
   const fun = funs[config.unit];
-  if (!fun) throw 'never come!(unknown unit size)';
+  if (!fun) throw new Error('never come!(unknown unit size)');
   fun(list);
 }
 
@@ -286,7 +286,7 @@ function opPush(newCode, c) {
         } else if (config.unit === 3) {
           newCode[0].push({ op: OP.push2 });
         } else {
-          throw 'never come!(unknown unit size)';
+          throw new Error('never come!(unknown unit size)');
         }
         for (;;) {
           if (d * d + sum < tar) {
@@ -426,7 +426,7 @@ function genCodeMap(code) {
     }
 
     if (j === newCode[0].length) {
-      throw 'never come';
+      throw new Error('never come');
     }
     const word = newCode[0][j].label;
 
@@ -440,7 +440,7 @@ function genCodeMap(code) {
       }
     }
     if (k === newCode[0].length) {
-      throw 'label ' + word + ' not found.';
+      throw new Error('label ' + word + ' not found.');
     }
 
 // ラベルとジャンプを繋ぐ。
@@ -484,7 +484,7 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw 'never come';
+          throw new Error('never come');
         }
       }
     } else { // left
@@ -527,7 +527,7 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw 'never come';
+          throw new Error('never come');
         }
       }
     }
