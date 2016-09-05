@@ -27,7 +27,7 @@ const opTable = {
   26: { filename: 'nop_h', toRight: true },
   27: { filename: 'nop_v', toRight: false },
   28: { filename: 'curve5', toRight: false }, // 上から左
-  29: { filename: 'curve6', toRight: false}, // 右から上
+  29: { filename: 'curve6', toRight: false }, // 右から上
   30: { filename: 'curve4', toRight: true }, // 上から右
   31: { filename: 'curve7', toRight: false }, // 左から上
   32: { filename: 'cross', toRight: true },
@@ -104,7 +104,7 @@ const config = require('./config');
 
 function pusher1(l, op) {
   'use strict';
-  l.push({ op: op});
+  l.push({ op: op });
 }
 
 function debug_log(level, out) {
@@ -127,7 +127,7 @@ function analyze(data) {
     if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
       if (m[1][0] === '\\') {
         // エスケープ文字の処理をする。
-        throw("escape is un impled now");
+        throw "escape is un impled now";
       } else {
         code.push({ op: OP.push, val: m[1][0].charCodeAt() });
       }
@@ -363,7 +363,7 @@ function genCodeChain(code) {
         newCode[0].push(c);
     }
   }
-  if (opTable[newCode[0][newCode[0].length - 1].op].toRight){
+  if (opTable[newCode[0][newCode[0].length - 1].op].toRight) {
     newCode[0].push({ op: OP.terminate });
   }
   return { 'code': newCode,
@@ -388,7 +388,7 @@ function findSpace(map, i, s, g) {
   for (let c = 0; c <= i; ++c) {
     let flg = true; // crossable
     for (let l = s; l <= g; ++l) {
-      if (! crossable(map[c+1][l])) {
+      if (!crossable(map[c + 1][l])) {
         flg = false;
         break;
       }
@@ -411,7 +411,7 @@ function genCodeMap(code) {
   for (let i = 0; i < labelCount; ++i) {
     newCode.push([]);
     for (let c = 0; c < newCode[0].length; ++c) {
-      newCode[i+1].push({ op: OP.black });
+      newCode[i + 1].push({ op: OP.black });
     }
 
     // Jump系を探す。
@@ -425,7 +425,7 @@ function genCodeMap(code) {
     }
 
     if (j == newCode[0].length) {
-      throw("never come");
+      throw "never come";
     }
     const word = newCode[0][j].label;
 
@@ -439,11 +439,11 @@ function genCodeMap(code) {
       }
     }
     if (k == newCode[0].length) {
-      throw("label " + word + " not found.");
+      throw "label " + word + " not found.";
     }
 
 // ラベルとジャンプを繋ぐ。
-    if (j < k) {// right
+    if (j < k) { // right
       // 上が開いてるかどうかを確認。
       const current = findSpace(newCode, i, j, k);
       // 縦
@@ -454,28 +454,28 @@ function genCodeMap(code) {
           newCode[l][j].op = OP.cross; // cross
         }
       }
-      newCode[current+1][j].op = OP.up2right;
+      newCode[current + 1][j].op = OP.up2right;
       for (let l = j + 1; l < k; ++l) {
-        if (newCode[current+1][l].op === OP.nop_v) {
-          newCode[current+1][l].op = OP.cross;
+        if (newCode[current + 1][l].op === OP.nop_v) {
+          newCode[current + 1][l].op = OP.cross;
         } else {
-          newCode[current+1][l].op = OP.nop_h;
+          newCode[current + 1][l].op = OP.nop_h;
         }
       }
-      if (newCode[current+1][k].op === OP.nop_v) {
-        newCode[current+1][k].op = OP.ljoin;
+      if (newCode[current + 1][k].op === OP.nop_v) {
+        newCode[current + 1][k].op = OP.ljoin;
       } else {
-        newCode[current+1][k].op = OP.left2up;
+        newCode[current + 1][k].op = OP.left2up;
       }
       for (let l = current; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
         } else if (newCode[l][k].op === OP.nop_h) { // hnop
           newCode[l][k].op = OP.cross; // cross
-        } else if (newCode[l][k].op === OP.right2up){
+        } else if (newCode[l][k].op === OP.right2up) {
           newCode[l][k].op = OP.rjoin; // rjoin
           break;
-        } else if (newCode[l][k].op === OP.left2up){
+        } else if (newCode[l][k].op === OP.left2up) {
           newCode[l][k].op = OP.ljoin; // ljoin
           break;
         } else if (newCode[l][k].op === OP.ljoin ||
@@ -483,7 +483,7 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw ("never come");
+          throw "never come";
         }
       }
     } else { // left
@@ -497,28 +497,28 @@ function genCodeMap(code) {
           newCode[l][j].op = OP.cross; // cross
         }
       }
-      newCode[current+1][j].op = OP.up2left;
+      newCode[current + 1][j].op = OP.up2left;
       for (let l = k + 1; l < j; ++l) {
-        if (newCode[current+1][l].op === OP.nop_v) {
-          newCode[current+1][l].op = OP.cross;
+        if (newCode[current + 1][l].op === OP.nop_v) {
+          newCode[current + 1][l].op = OP.cross;
         } else {
-          newCode[current+1][l].op = OP.nop_h;
+          newCode[current + 1][l].op = OP.nop_h;
         }
       }
-      if (newCode[current+1][k].op === OP.nop_v) {
-        newCode[current+1][k].op = OP.rjoin;
+      if (newCode[current + 1][k].op === OP.nop_v) {
+        newCode[current + 1][k].op = OP.rjoin;
       } else {
-        newCode[current+1][k].op = OP.right2up;
+        newCode[current + 1][k].op = OP.right2up;
       }
       for (let l = current; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
         } else if (newCode[l][k].op === OP.nop_h) { // hnop
           newCode[l][k].op = OP.cross; // cross
-        } else if (newCode[l][k].op === OP.right2up){
+        } else if (newCode[l][k].op === OP.right2up) {
           newCode[l][k].op = OP.rjoin; // rjoin
           break;
-        } else if (newCode[l][k].op === OP.left2up){
+        } else if (newCode[l][k].op === OP.left2up) {
           newCode[l][k].op = OP.ljoin; // ljoin
           break;
         } else if (newCode[l][k].op === OP.ljoin ||
@@ -526,13 +526,13 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw ("never come");
+          throw "never come";
         }
       }
     }
   }
   // delete all black line
-  for(let c = newCode.length - 1; c > 0; c--) {
+  for (let c = newCode.length - 1; c > 0; c--) {
     let flg = true;
     for (const o of newCode[c]) {
       if (o.op !== OP.black) {
@@ -590,7 +590,7 @@ function generateImage(code, outfile) {
       debug_log(15, op);
       let filename = op['filename'];
       if (filename === 'label') {
-        if (opTable[code[i][j-1].op].toRight) {
+        if (opTable[code[i][j - 1].op].toRight) {
           filename = 'join';
         } else {
           filename = 'curve2';
