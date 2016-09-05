@@ -7,10 +7,10 @@ sudo: false
 addons:
   apt:
     packages:
-      - imagemagick
-      - libmagickwand-dev
-      - libmagickcore-dev
       - libgif-dev
+      - libcairo2-dev
+      - libjpeg8-dev
+      - libpango1.0-dev
 install:
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
