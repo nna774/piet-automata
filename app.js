@@ -424,7 +424,7 @@ function genCodeMap(code) {
       }
     }
 
-    if (j == newCode[0].length) {
+    if (j === newCode[0].length) {
       throw "never come";
     }
     const word = newCode[0][j].label;
@@ -438,7 +438,7 @@ function genCodeMap(code) {
         }
       }
     }
-    if (k == newCode[0].length) {
+    if (k === newCode[0].length) {
       throw "label " + word + " not found.";
     }
 
