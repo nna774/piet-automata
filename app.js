@@ -1,6 +1,7 @@
 // app.js
+'use strict';
 
-let opTable = {
+const opTable = {
   0: { filename: 'push', toRight: true },
   1: { filename: 'pop', toRight: true },
   2: { filename: 'add', toRight: true },
@@ -97,10 +98,10 @@ const OP = {
   swap: 68,
 };
 
-let Canvas = require('canvas')
-  , Image = Canvas.Image
-  , fs = require('fs')
-  , config = require('./config');
+const Canvas = require('canvas');
+const Image = Canvas.Image;
+const fs = require('fs');
+const config = require('./config');
 
 function pusher1(l, op) {
   'use strict';
@@ -115,9 +116,9 @@ function debug_log(level, out) {
 
 function analyze(data) {
   'use strict';
-  let lines = data.split('\n');
-  let code = [];
-  for (let l of lines) {
+  const lines = data.split('\n');
+  const code = [];
+  for (const l of lines) {
     let m;
     let f = false;
     if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) {
@@ -229,7 +230,7 @@ function isJump(opCode) {
 
 function sizedPush(funs, list) {
   'use strict';
-  let fun = funs[config.unit];
+  const fun = funs[config.unit];
   if (!fun) throw "never come!(unknown unit size)";
   fun(list);
 }
@@ -254,12 +255,11 @@ function opPush(newCode, c) {
   } else {
     newCode[0].push({ op: OP.push2 });
     let sum = 2;
-    let tar = c.val;
+    const tar = c.val;
     while (tar !== sum) {
       if (tar === sum + 1) {
         newCode[0].push({ op: OP.push, val: 1 });
         newCode[0].push({ op: OP.add });
-        sum += d;
         break;
       } else {
         let d = 2;
@@ -288,7 +288,7 @@ function opPush(newCode, c) {
         } else {
           throw "never come!(unknown unit size)";
         }
-        while (true) {
+        for (;;) {
           if (d * d + sum < tar) {
             if (config.unit === 3) {
               newCode[0].push({ op: OP.dup });
@@ -319,20 +319,11 @@ function opPush(newCode, c) {
 function genCodeChain(code) {
   'use strict';
   console.log("genCodeChain");
-  let newCode = [];
+  const newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
   let labelCount = 0;
-  const jezDefault = (l) => {
-    l.push({ op: OP.not });
-    l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
-  };
-  const jezFuns = {
-    7: (l) => { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
-    5: jezDefault,
-    3: jezDefault,
-  };
-  for (let c of code) {
+  for (const c of code) {
     switch (c.op) {
      case OP.push:
       opPush(newCode, c);
@@ -340,6 +331,15 @@ function genCodeChain(code) {
      case OP.jez: // JEZ
       // branch is a kind of pointer.
       // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
+      const jezDefault = (l) => {
+        l.push({ op: OP.not });
+        l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+      };
+      const jezFuns = {
+        7: (l) => { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
+        5: jezDefault,
+        3: jezDefault,
+      };
       sizedPush(jezFuns, newCode[0]);
       ++labelCount;
       break;
@@ -348,12 +348,12 @@ function genCodeChain(code) {
       ++labelCount;
       break;
      case OP.swap:
-      let f = (c) => {
+      const f = (c) => {
         c.push({ op: OP.push2 });
         c.push({ op: OP.push, val: 1 });
         c.push({ op: OP.roll });
       };
-      let funs = {
+      const funs = {
         7: (c) => { c.push({ op: OP.swap }); },
         5: f,
         3: f,
@@ -403,9 +403,9 @@ function genCodeMap(code) {
   'use strict';
   console.log("genCodeMap");
 
-  let tmp = genCodeChain(code);
+  const tmp = genCodeChain(code);
   let newCode = tmp['code'];
-  let labelCount = tmp['count'];
+  const labelCount = tmp['count'];
 
   newCode = optimize(newCode);
 
@@ -428,7 +428,7 @@ function genCodeMap(code) {
     if (j == newCode[0].length) {
       throw("never come");
     }
-    let word = newCode[0][j].label;
+    const word = newCode[0][j].label;
 
     // 対応するラベルを探す。
     let k = 0;
@@ -446,7 +446,7 @@ function genCodeMap(code) {
 // ラベルとジャンプを繋ぐ。
     if (j < k) {// right
       // 上が開いてるかどうかを確認。
-      let current = findSpace(newCode, i, j, k);
+      const current = findSpace(newCode, i, j, k);
       // 縦
       for (let l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
@@ -489,7 +489,7 @@ function genCodeMap(code) {
       }
     } else { // left
       // 上が開いてるかどうかを確認。
-      let current = findSpace(newCode, i, k, j);
+      const current = findSpace(newCode, i, k, j);
       // 縦
       for (let l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
@@ -535,7 +535,7 @@ function genCodeMap(code) {
   // delete all black line
   for(let c = newCode.length - 1; c > 0; c--) {
     let flg = true;
-    for (let o of newCode[c]) {
+    for (const o of newCode[c]) {
       if (o.op !== OP.black) {
         flg = false;
         break;
@@ -570,10 +570,10 @@ function rewriteCodemap(codemap) {
 function generateImage(code, outfile) {
   'use strict';
   console.log("generateImage");
-  let height = config.unit * code.length;
-  let width = config.unit * code[0].length;
-  let canvas = new Canvas(width, height);
-  let ctx = canvas.getContext('2d');
+  const height = config.unit * code.length;
+  const width = config.unit * code[0].length;
+  const canvas = new Canvas(width, height);
+  const ctx = canvas.getContext('2d');
 
   ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
 
@@ -581,13 +581,13 @@ function generateImage(code, outfile) {
   for (let i = 0; i < code.length; ++i) {
     for (let j = 0; j < code[0].length; ++j) {
       // コードに対応した画像を挿入する｡
-      let opCode = code[i][j];
+      const opCode = code[i][j];
       if (!sanityCheck(opCode)) {
         console.error(opCode);
         throw opCode;
       }
       debug_log(20, opCode);
-      let op = opTable[opCode.op];
+      const op = opTable[opCode.op];
       debug_log(15, op);
       let filename = op['filename'];
       if (filename === 'label') {
@@ -603,8 +603,8 @@ function generateImage(code, outfile) {
   }
 
   // 以下保存
-  let out = fs.createWriteStream(outfile);
-  let stream = canvas.pngStream();
+  const out = fs.createWriteStream(outfile);
+  const stream = canvas.pngStream();
 
   stream.on('data', (chunk) => {
     out.write(chunk);
@@ -619,11 +619,11 @@ if (process.argv.length < 3) {
   console.log('missing argument.');
   exit(-1);
 }
-let filename = process.argv[2];
-let outfile = process.argv[3] || 'out.png';
+const filename = process.argv[2];
+const outfile = process.argv[3] || 'out.png';
 
-for (let k in config.images[config.unit]) {
-  let image = new Image();
+for (const k in config.images[config.unit]) {
+  const image = new Image();
   image.src = fs.readFileSync(config.images[config.unit][k].file);
   config.images[config.unit][k].image = image;
 }
