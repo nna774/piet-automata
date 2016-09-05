@@ -15,6 +15,7 @@ addons:
       - libpango1.0-dev
       - g++-4.8
 install:
+  - $CXX --version
   - npm install
   - git clone https://github.com/nna774/piet-testutils.git
   - cd piet-testutils
