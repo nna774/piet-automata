@@ -1,12 +1,12 @@
 // this should be 3, 5 or 7
-var size = 3;
+const size = 3;
 
-var optimezeLevel = 0;
+const optimezeLevel = 0;
 
 // 0 ~ 100
-var debug = 0;
+const debug = 0;
 
-var images = {
+const images = {
   3: {
     'push': { 'file': 'piet/3x3/push1.png' },
     'push2': { 'file': 'piet/3x3/push2.png' },
