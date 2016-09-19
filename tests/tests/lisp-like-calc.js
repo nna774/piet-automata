@@ -1,6 +1,6 @@
 // tests.js
 
-var cases = [
+const cases = [
   {
     name: '1',
     desc: '',
@@ -16,17 +16,17 @@ var cases = [
   {
     name: '(+ 1 2)',
     desc: '',
-    input: "(+ 1 2)\n".split(''),
+    input: '(+ 1 2)\n'.split(''),
     expect: '3',
   },
   {
     name: '(+ 1 (* 2 (/ 3 2) (- 4 5 (- 6 7 8 9) (+ 0))))',
     desc: '',
-    input: "(+ 1 (* 2 (/ 3 2) (- 4 5 (- 6 7 8 9) (+ 0))))\n".split(''),
+    input: '(+ 1 (* 2 (/ 3 2) (- 4 5 (- 6 7 8 9) (+ 0))))\n'.split(''),
     expect: '35',
   },
 ];
 
 module.exports = {
-  cases: cases,
+  cases,
 };
