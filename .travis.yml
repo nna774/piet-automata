@@ -22,7 +22,7 @@ install:
   - git clone https://github.com/nna774/piet-testutils.git
   - cd piet-testutils
   - npm install
-  - node app.js devide_by_2.10cs.11x4.png
+  - node --use_strict app.js devide_by_2.10cs.11x4.png
   - sed -i -e "s/var codel = 10;/var codel = 1;/" config.js
   - cd ..
 script:
