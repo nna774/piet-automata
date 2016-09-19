@@ -2,7 +2,7 @@ module.exports = {
   "extends": "airbnb",
   "rules": {
     "no-console": "off",
-    "no-mixed-operators": ["error", { "allowSamePrecedence": true }],
+    "no-mixed-operators": "off",
     "yoda": ["error", "never", { "exceptRange": true }],
     "strict": ["error", "function"],
   },
