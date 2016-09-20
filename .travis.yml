@@ -23,7 +23,7 @@ install:
   - cd piet-testutils
   - npm install
   - node --use_strict app.js devide_by_2.10cs.11x4.png
-  - sed -i -e "s/var codel = 10;/var codel = 1;/" config.js
+  - sed -i -e "s/const codel = 10;/const codel = 1;/" config.js
   - cd ..
 script:
   - make lint
