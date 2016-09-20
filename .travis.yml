@@ -30,10 +30,10 @@ script:
   - make all
   - TESTUTILS_REL=piet-testutils ./test.sh
   - make clean
-  - sed -i -e "s/var size = 3;/var size = 5;/" config.js
+  - sed -i -e "s/const size = 3;/const size = 5;/" config.js
   - make all
   - TESTUTILS_REL=piet-testutils ./test.sh
   - make clean
-  - sed -i -e "s/var size = 5;/var size = 7;/" config.js
+  - sed -i -e "s/const size = 5;/const size = 7;/" config.js
   - make all
   - TESTUTILS_REL=piet-testutils ./test.sh
