@@ -121,11 +121,11 @@ function analyze(data) {
   for (const l of lines) {
     let m;
     let f = false;
-    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) {
+    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.push, val: parseInt(m[1], 10) });
       f = true;
     }
-    if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
+    if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) { // eslint-disable-line no-cond-assign
       if (m[1][0] === '\\') {
         // エスケープ文字の処理をする。
         throw new Error('escape is un impled now');
@@ -194,15 +194,15 @@ function analyze(data) {
       pusher1(code, OP.terminate);
       f = true;
     }
-    if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.jez, label: m[1] });
       f = true;
     }
-    if ((m = l.match(/^\s*LABEL\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*LABEL\s+(\w+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.label, word: m[1] });
       f = true;
     }
-    if ((m = l.match(/^\s*JMP\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*JMP\s+(\w+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.jmp, label: m[1] });
       f = true;
     }
