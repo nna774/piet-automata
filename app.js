@@ -1,53 +1,53 @@
 // app.js
 
-var opTable = {
-  0: { 'filename': 'push', toRight: true },
-  1: { 'filename': 'pop', toRight: true },
-  2: { 'filename': 'add', toRight: true },
-  3: { 'filename': 'sub', toRight: true },
-  4: { 'filename': 'mul', toRight: true },
-  5: { 'filename': 'div', toRight: true },
-  6: { 'filename': 'mod', toRight: true },
-  7: { 'filename': 'not', toRight: true },
-  8: { 'filename': 'greater', toRight: true },
-  9: { 'filename': 'dup', toRight: true },
-  10: { 'filename': 'roll', toRight: true },
-  15: { 'filename': 'in_n', toRight: true },
-  16: { 'filename': 'in_c', toRight: true },
-  17: { 'filename': 'out_n', toRight: true },
-  18: { 'filename': 'out_c', toRight: true },
-  19: { 'filename': 'start', toRight: true },
-  20: { 'filename': 'terminate', toRight: false },
-  21: { 'filename': 'jez', toRight: true }, // image not exists
-  22: { 'filename': 'label', toRight: true }, // image not exists
-  23: { 'filename': 'jmp', toRight: false }, // image not exists
+const opTable = {
+  0: { filename: 'push', toRight: true },
+  1: { filename: 'pop', toRight: true },
+  2: { filename: 'add', toRight: true },
+  3: { filename: 'sub', toRight: true },
+  4: { filename: 'mul', toRight: true },
+  5: { filename: 'div', toRight: true },
+  6: { filename: 'mod', toRight: true },
+  7: { filename: 'not', toRight: true },
+  8: { filename: 'greater', toRight: true },
+  9: { filename: 'dup', toRight: true },
+  10: { filename: 'roll', toRight: true },
+  15: { filename: 'in_n', toRight: true },
+  16: { filename: 'in_c', toRight: true },
+  17: { filename: 'out_n', toRight: true },
+  18: { filename: 'out_c', toRight: true },
+  19: { filename: 'start', toRight: true },
+  20: { filename: 'terminate', toRight: false },
+  21: { filename: 'jez', toRight: true }, // image not exists
+  22: { filename: 'label', toRight: true }, // image not exists
+  23: { filename: 'jmp', toRight: false }, // image not exists
 
-  24: { 'filename': 'black', toRight: false }, // only use generate
-  25: { 'filename': 'branch', toRight: true },
-  26: { 'filename': 'nop_h', toRight: true },
-  27: { 'filename': 'nop_v', toRight: false },
-  28: { 'filename': 'curve5', toRight: false }, // 上から左
-  29: { 'filename': 'curve6', toRight: false}, // 右から上
-  30: { 'filename': 'curve4', toRight: true }, // 上から右
-  31: { 'filename': 'curve7', toRight: false }, // 左から上
-  32: { 'filename': 'cross', toRight: true },
-  33: { 'filename': 'join', toRight: true },
-  34: { 'filename': 'rjoin', toRight: true },
-  35: { 'filename': 'ljoin', toRight: false },
-  36: { 'filename': 'curve1', toRight: false }, // 左から下
-  37: { 'filename': 'curve2', toRight: true }, // 下から右
+  24: { filename: 'black', toRight: false }, // only use generate
+  25: { filename: 'branch', toRight: true },
+  26: { filename: 'nop_h', toRight: true },
+  27: { filename: 'nop_v', toRight: false },
+  28: { filename: 'curve5', toRight: false }, // 上から左
+  29: { filename: 'curve6', toRight: false }, // 右から上
+  30: { filename: 'curve4', toRight: true }, // 上から右
+  31: { filename: 'curve7', toRight: false }, // 左から上
+  32: { filename: 'cross', toRight: true },
+  33: { filename: 'join', toRight: true },
+  34: { filename: 'rjoin', toRight: true },
+  35: { filename: 'ljoin', toRight: false },
+  36: { filename: 'curve1', toRight: false }, // 左から下
+  37: { filename: 'curve2', toRight: true }, // 下から右
 
-  40: { 'filename': 'push0', toRight: true },
-  41: { 'filename': 'push2', toRight: true },
-  42: { 'filename': 'push3', toRight: true },
-  43: { 'filename': 'push4', toRight: true },
-  50: { 'filename': 'push16', toRight: true },
-  51: { 'filename': 'push32', toRight: true },
+  40: { filename: 'push0', toRight: true },
+  41: { filename: 'push2', toRight: true },
+  42: { filename: 'push3', toRight: true },
+  43: { filename: 'push4', toRight: true },
+  50: { filename: 'push16', toRight: true },
+  51: { filename: 'push32', toRight: true },
 
-  65: { 'filename': 'dupadd', toRight: true },
-  66: { 'filename': 'dupmul', toRight: true },
-  67: { 'filename': 'notbranch', toRight: true },
-  68: { 'filename': 'swap', toRight: true },
+  65: { filename: 'dupadd', toRight: true },
+  66: { filename: 'dupmul', toRight: true },
+  67: { filename: 'notbranch', toRight: true },
+  68: { filename: 'swap', toRight: true },
 };
 
 const OP = {
@@ -97,37 +97,36 @@ const OP = {
   swap: 68,
 };
 
-var Canvas = require('canvas')
-  , Image = Canvas.Image
-  , fs = require('fs')
-  , config = require('./config');
+const Canvas = require('canvas');
+const fs = require('fs');
+const config = require('./config');
+
+const Image = Canvas.Image;
 
 function pusher1(l, op) {
-  'use strict';
-  l.push({ op: op});
+  l.push({ op });
 }
 
-function debug_log(level, out) {
+function debugLog(level, out) {
   if (config.debug > level) {
     console.log(out);
   }
 }
 
 function analyze(data) {
-  'use strict';
-  var lines = data.split('\n');
-  var code = [];
-  for (var l of lines) {
-    var m;
-    var f = false;
-    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) {
-      code.push({ op: OP.push, val: parseInt(m[1]) });
+  const lines = data.split('\n');
+  const code = [];
+  for (const l of lines) {
+    let m;
+    let f = false;
+    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) { // eslint-disable-line no-cond-assign
+      code.push({ op: OP.push, val: parseInt(m[1], 10) });
       f = true;
     }
-    if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) {
+    if ((m = l.match(/^\s*PUSH\s+'(\\?.)'/i))) { // eslint-disable-line no-cond-assign
       if (m[1][0] === '\\') {
         // エスケープ文字の処理をする。
-        throw("escape is un impled now");
+        throw new Error('escape is un impled now');
       } else {
         code.push({ op: OP.push, val: m[1][0].charCodeAt() });
       }
@@ -193,15 +192,15 @@ function analyze(data) {
       pusher1(code, OP.terminate);
       f = true;
     }
-    if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*JEZ\s+(\w+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.jez, label: m[1] });
       f = true;
     }
-    if ((m = l.match(/^\s*LABEL\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*LABEL\s+(\w+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.label, word: m[1] });
       f = true;
     }
-    if ((m = l.match(/^\s*JMP\s+(\w+)/i))) {
+    if ((m = l.match(/^\s*JMP\s+(\w+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.jmp, label: m[1] });
       f = true;
     }
@@ -216,26 +215,23 @@ function analyze(data) {
     }
 
     if (!f) {
-      console.log("unknown token: " + l);
+      console.log(`unknown token: ${l}`);
     }
   }
   return code;
 }
 
 function isJump(opCode) {
-  'use strict';
   return !!opCode.jump;
 }
 
 function sizedPush(funs, list) {
-  'use strict';
-  var fun = funs[config.unit];
-  if (!fun) throw "never come!(unknown unit size)";
+  const fun = funs[config.unit];
+  if (!fun) throw new Error('never come!(unknown unit size)');
   fun(list);
 }
 
 function opPush(newCode, c) {
-  'use strict';
   if (c.val === 0) {
     if (config.unit >= 5) {
       newCode[0].push({ op: OP.push0 });
@@ -253,16 +249,15 @@ function opPush(newCode, c) {
     newCode[0].push({ op: OP.push4 });
   } else {
     newCode[0].push({ op: OP.push2 });
-    var sum = 2;
-    var tar = c.val;
+    let sum = 2;
+    const tar = c.val;
     while (tar !== sum) {
       if (tar === sum + 1) {
         newCode[0].push({ op: OP.push, val: 1 });
         newCode[0].push({ op: OP.add });
-        sum += d;
         break;
       } else {
-        var d = 2;
+        let d = 2;
         if (config.unit === 7) {
           if (sum + 32 < tar) {
             d = 32;
@@ -286,9 +281,9 @@ function opPush(newCode, c) {
         } else if (config.unit === 3) {
           newCode[0].push({ op: OP.push2 });
         } else {
-          throw "never come!(unknown unit size)";
+          throw new Error('never come!(unknown unit size)');
         }
-        while (true) {
+        for (;;) {
           if (d * d + sum < tar) {
             if (config.unit === 3) {
               newCode[0].push({ op: OP.dup });
@@ -317,79 +312,88 @@ function opPush(newCode, c) {
 }
 
 function genCodeChain(code) {
-  'use strict';
-  console.log("genCodeChain");
-  var newCode = [];
+  console.log('genCodeChain');
+  const newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
-  var labelCount = 0;
-  for (var c of code) {
+  let labelCount = 0;
+  for (const c of code) {
     switch (c.op) {
-     case OP.push:
-      opPush(newCode, c);
-      break;
-     case OP.jez: // JEZ
-      // branch is a kind of pointer.
-      // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-      var f = function(l) {
-        l.push({ op: OP.not });
-        l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
-      };
-      var funs = {
-        7: function(l) { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
-        5: f,
-        3: f,
-      };
-      sizedPush(funs, newCode[0]);
-      ++labelCount;
-      break;
-     case OP.jmp: // JMP
-      newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
-      ++labelCount;
-      break;
-     case OP.swap:
-      var f = function(c) {
-        c.push({ op: OP.push2 });
-        c.push({ op: OP.push, val: 1 });
-        c.push({ op: OP.roll });
-      };
-      var funs = {
-        7: function(c) { c.push({ op: OP.swap }); },
-        5: f,
-        3: f,
-      };
-      sizedPush(funs, newCode[0]);
-      break;
-    default:
-      newCode[0].push(c);
+      case OP.push: {
+        opPush(newCode, c);
+        break;
+      }
+      case OP.jez: { // JEZ
+        // branch is a kind of pointer.
+        // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
+        const jezDefault = (l) => { // eslint-disable-line no-loop-func
+          l.push({ op: OP.not });
+          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+        };
+        const jezFuns = {
+          // eslint-disable-next-line no-loop-func
+          7: (l) => {
+            l.push({
+              op: OP.notbranch,
+              label: c.label,
+              count: labelCount,
+              jump: true,
+            });
+          },
+          5: jezDefault,
+          3: jezDefault,
+        };
+        sizedPush(jezFuns, newCode[0]);
+        ++labelCount;
+        break;
+      }
+      case OP.jmp: { // JMP
+        newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
+        ++labelCount;
+        break;
+      }
+      case OP.swap: {
+        const f = (cm) => {
+          cm.push({ op: OP.push2 });
+          cm.push({ op: OP.push, val: 1 });
+          cm.push({ op: OP.roll });
+        };
+        const funs = {
+          7: (cm) => { cm.push({ op: OP.swap }); },
+          5: f,
+          3: f,
+        };
+        sizedPush(funs, newCode[0]);
+        break;
+      }
+      default: {
+        newCode[0].push(c);
+      }
     }
   }
-  if (opTable[newCode[0][newCode[0].length - 1].op].toRight){
+  if (opTable[newCode[0][newCode[0].length - 1].op].toRight) {
     newCode[0].push({ op: OP.terminate });
   }
-  return { 'code': newCode,
-           'count': labelCount };
+  return { code: newCode,
+           count: labelCount };
 }
 
 function optimize(chain) {
-  'use strict';
-  console.log("optimize(level: %s)", config.level);
+  console.log('optimize(level: %s)', config.level);
 
   return chain;
 }
 
 function crossable(c) {
-  'use strict';
   if (c.op === OP.black || c.op === OP.nop_v) return true;
   return false;
 }
 
 function findSpace(map, i, s, g) {
-  'use strict';
-  for (var c = 0; c <= i; ++c) {
-    var flg = true; // crossable
-    for (var l = s; l <= g; ++l) {
-      if (! crossable(map[c+1][l])) {
+  for (let c = 0; c <= i; ++c) {
+    let flg = true; // crossable
+    for (let l = s; l <= g; ++l) {
+      if (!crossable(map[c + 1][l])) {
         flg = false;
         break;
       }
@@ -400,23 +404,22 @@ function findSpace(map, i, s, g) {
 }
 
 function genCodeMap(code) {
-  'use strict';
-  console.log("genCodeMap");
+  console.log('genCodeMap');
 
-  var tmp = genCodeChain(code);
-  var newCode = tmp['code'];
-  var labelCount = tmp['count'];
+  const tmp = genCodeChain(code);
+  let newCode = tmp.code;
+  const labelCount = tmp.count;
 
   newCode = optimize(newCode);
 
-  for (var i = 0; i < labelCount; ++i) {
+  for (let i = 0; i < labelCount; ++i) {
     newCode.push([]);
-    for (var c = 0; c < newCode[0].length; ++c) {
-      newCode[i+1].push({ op: OP.black });
+    for (let c = 0; c < newCode[0].length; ++c) {
+      newCode[i + 1].push({ op: OP.black });
     }
 
     // Jump系を探す。
-    var j = 0;
+    let j = 0;
     for (j = 0; j < newCode[0].length; ++j) {
       if (isJump(newCode[0][j])) {
         if (newCode[0][j].count === i) {
@@ -425,13 +428,13 @@ function genCodeMap(code) {
       }
     }
 
-    if (j == newCode[0].length) {
-      throw("never come");
+    if (j === newCode[0].length) {
+      throw new Error('never come');
     }
-    var word = newCode[0][j].label;
+    const word = newCode[0][j].label;
 
     // 対応するラベルを探す。
-    var k = 0;
+    let k = 0;
     for (k = 0; k < newCode[0].length; ++k) {
       if (newCode[0][k].op === OP.label) {
         if (newCode[0][k].word === word) {
@@ -439,44 +442,44 @@ function genCodeMap(code) {
         }
       }
     }
-    if (k == newCode[0].length) {
-      throw("label " + word + " not found.");
+    if (k === newCode[0].length) {
+      throw new Error(`label ${word} not found.`);
     }
 
 // ラベルとジャンプを繋ぐ。
-    if (j < k) {// right
+    if (j < k) { // right
       // 上が開いてるかどうかを確認。
-      var current = findSpace(newCode, i, j, k);
+      const current = findSpace(newCode, i, j, k);
       // 縦
-      for (var l = 1; l <= current; ++l) {
+      for (let l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
           newCode[l][j].op = OP.nop_v; // vnop
         } else {
           newCode[l][j].op = OP.cross; // cross
         }
       }
-      newCode[current+1][j].op = OP.up2right;
-      for (var l = j + 1; l < k; ++l) {
-        if (newCode[current+1][l].op === OP.nop_v) {
-           newCode[current+1][l].op = OP.cross;
+      newCode[current + 1][j].op = OP.up2right;
+      for (let l = j + 1; l < k; ++l) {
+        if (newCode[current + 1][l].op === OP.nop_v) {
+          newCode[current + 1][l].op = OP.cross;
         } else {
-           newCode[current+1][l].op = OP.nop_h;
+          newCode[current + 1][l].op = OP.nop_h;
         }
       }
-      if (newCode[current+1][k].op === OP.nop_v) {
-        newCode[current+1][k].op = OP.ljoin;
+      if (newCode[current + 1][k].op === OP.nop_v) {
+        newCode[current + 1][k].op = OP.ljoin;
       } else {
-        newCode[current+1][k].op = OP.left2up;
+        newCode[current + 1][k].op = OP.left2up;
       }
-      for (var l = current; 0 < l; --l) {
+      for (let l = current; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
         } else if (newCode[l][k].op === OP.nop_h) { // hnop
           newCode[l][k].op = OP.cross; // cross
-        } else if (newCode[l][k].op === OP.right2up){
+        } else if (newCode[l][k].op === OP.right2up) {
           newCode[l][k].op = OP.rjoin; // rjoin
           break;
-        } else if (newCode[l][k].op === OP.left2up){
+        } else if (newCode[l][k].op === OP.left2up) {
           newCode[l][k].op = OP.ljoin; // ljoin
           break;
         } else if (newCode[l][k].op === OP.ljoin ||
@@ -484,42 +487,42 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw ("never come");
+          throw new Error('never come');
         }
       }
     } else { // left
       // 上が開いてるかどうかを確認。
-      var current = findSpace(newCode, i, k, j);
+      const current = findSpace(newCode, i, k, j);
       // 縦
-      for (var l = 1; l <= current; ++l) {
+      for (let l = 1; l <= current; ++l) {
         if (newCode[l][j].op === OP.black) { // 黒
           newCode[l][j].op = OP.nop_v; // vnop
         } else {
           newCode[l][j].op = OP.cross; // cross
         }
       }
-      newCode[current+1][j].op = OP.up2left;
-      for (var l = k + 1; l < j; ++l) {
-        if (newCode[current+1][l].op === OP.nop_v) {
-           newCode[current+1][l].op = OP.cross;
+      newCode[current + 1][j].op = OP.up2left;
+      for (let l = k + 1; l < j; ++l) {
+        if (newCode[current + 1][l].op === OP.nop_v) {
+          newCode[current + 1][l].op = OP.cross;
         } else {
-           newCode[current+1][l].op = OP.nop_h;
+          newCode[current + 1][l].op = OP.nop_h;
         }
       }
-      if (newCode[current+1][k].op === OP.nop_v) {
-        newCode[current+1][k].op = OP.rjoin;
+      if (newCode[current + 1][k].op === OP.nop_v) {
+        newCode[current + 1][k].op = OP.rjoin;
       } else {
-        newCode[current+1][k].op = OP.right2up;
+        newCode[current + 1][k].op = OP.right2up;
       }
-      for (var l = current; 0 < l; --l) {
+      for (let l = current; 0 < l; --l) {
         if (newCode[l][k].op === OP.black) { // 黒
           newCode[l][k].op = OP.nop_v; // vnop
         } else if (newCode[l][k].op === OP.nop_h) { // hnop
           newCode[l][k].op = OP.cross; // cross
-        } else if (newCode[l][k].op === OP.right2up){
+        } else if (newCode[l][k].op === OP.right2up) {
           newCode[l][k].op = OP.rjoin; // rjoin
           break;
-        } else if (newCode[l][k].op === OP.left2up){
+        } else if (newCode[l][k].op === OP.left2up) {
           newCode[l][k].op = OP.ljoin; // ljoin
           break;
         } else if (newCode[l][k].op === OP.ljoin ||
@@ -527,15 +530,15 @@ function genCodeMap(code) {
                    newCode[l][k].op === OP.cross) {
           /* do nothing */
         } else {
-          throw ("never come");
+          throw new Error('never come');
         }
       }
     }
   }
   // delete all black line
-  for(var c = newCode.length - 1; c > 0; c--) {
-    var flg = true;
-    for (var o of newCode[c]) {
+  for (let c = newCode.length - 1; c > 0; c--) {
+    let flg = true;
+    for (const o of newCode[c]) {
       if (o.op !== OP.black) {
         flg = false;
         break;
@@ -551,7 +554,6 @@ function genCodeMap(code) {
 }
 
 function sanityCheck(opcode) {
-  'use strict';
   if (opcode.op === OP.push) {
     if (opcode.val !== 1) {
       // if this, genCodeMap maybe somethig wrong.
@@ -562,77 +564,78 @@ function sanityCheck(opcode) {
 }
 
 function rewriteCodemap(codemap) {
-  'use strict';
-  console.log("rewriteCodemap");
+  console.log('rewriteCodemap');
 
   return codemap;
 }
 function generateImage(code, outfile) {
-  'use strict';
-  console.log("generateImage");
-  var height = config.unit * code.length;
-  var width = config.unit * code[0].length;
-  var canvas = new Canvas(width, height);
-  var ctx = canvas.getContext('2d');
+  console.log('generateImage');
+  const height = config.unit * code.length;
+  const width = config.unit * code[0].length;
+  const canvas = new Canvas(width, height);
+  const ctx = canvas.getContext('2d');
 
-  ctx.drawImage(config.images[config.unit]['start'].image, 0, 0);
+  ctx.drawImage(config.images[config.unit].start.image, 0, 0);
 
-  debug_log(50, code);
-  for (var i = 0; i < code.length; ++i) {
-    for (var j = 0; j < code[0].length; ++j) {
+  debugLog(50, code);
+  for (let i = 0; i < code.length; ++i) {
+    for (let j = 0; j < code[0].length; ++j) {
       // コードに対応した画像を挿入する｡
-      var opCode = code[i][j];
+      const opCode = code[i][j];
       if (!sanityCheck(opCode)) {
         console.error(opCode);
         throw opCode;
       }
-      debug_log(20, opCode);
-      var op = opTable[opCode.op];
-      debug_log(15, op);
-      var filename = op['filename'];
+      debugLog(20, opCode);
+      const op = opTable[opCode.op];
+      debugLog(15, op);
+      let filename = op.filename;
       if (filename === 'label') {
-        if (opTable[code[i][j-1].op].toRight) {
+        if (opTable[code[i][j - 1].op].toRight) {
           filename = 'join';
         } else {
           filename = 'curve2';
         }
       }
-      debug_log(10, filename);
+      debugLog(10, filename);
       ctx.drawImage(config.images[config.unit][filename].image, j * config.unit, i * config.unit);
     }
   }
 
   // 以下保存
-  var out = fs.createWriteStream(outfile);
-  var stream = canvas.pngStream();
+  const out = fs.createWriteStream(outfile);
+  const stream = canvas.pngStream();
 
-  stream.on('data', function(chunk){
+  stream.on('data', (chunk) => {
     out.write(chunk);
   });
 
-  stream.on('end', function(){
+  stream.on('end', () => {
     console.log('saved png');
   });
 }
 
 if (process.argv.length < 3) {
   console.log('missing argument.');
-  exit(-1);
+  process.exit(-1);
 }
-var filename = process.argv[2];
-var outfile = process.argv[3] || 'out.png';
+const filename = process.argv[2];
+const outfile = process.argv[3] || 'out.png';
 
-for (var k in config.images[config.unit]) {
-  var image = new Image();
-  image.src = fs.readFileSync(config.images[config.unit][k].file);
-  config.images[config.unit][k].image = image;
+// eslint-disable-next-line no-restricted-syntax
+for (const k in config.images[config.unit]) {
+  if ({}.hasOwnProperty.call(config.images[config.unit], k)) {
+    const image = new Image();
+    image.src = fs.readFileSync(config.images[config.unit][k].file);
+    config.images[config.unit][k].image = image;
+  }
 }
 
-fs.readFile(filename, 'utf8', function (err, data) {
+fs.readFile(filename, 'utf8', (err, data) => {
   if (err) throw err;
-  var code = analyze(data);
+  const code = analyze(data);
 
-  var codemap = genCodeMap(code);
-  codemap = rewriteCodemap(codemap);
-  generateImage(codemap, outfile);
+  const codemap = genCodeMap(code);
+  const rewritedCodemap = rewriteCodemap(codemap);
+  generateImage(rewritedCodemap, outfile);
 });
