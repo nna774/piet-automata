@@ -351,13 +351,13 @@ function genCodeChain(code) {
         break;
       }
       case OP.swap: {
-        const f = (c) => {
-          c.push({ op: OP.push2 });
-          c.push({ op: OP.push, val: 1 });
-          c.push({ op: OP.roll });
+        const f = (cm) => {
+          cm.push({ op: OP.push2 });
+          cm.push({ op: OP.push, val: 1 });
+          cm.push({ op: OP.roll });
         };
         const funs = {
-          7: (c) => { c.push({ op: OP.swap }); },
+          7: (cm) => { cm.push({ op: OP.swap }); },
           5: f,
           3: f,
         };
