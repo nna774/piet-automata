@@ -114,7 +114,7 @@ const images = {
     branch: { file: 'piet/7x7/branch.png' },
     notbranch: { file: 'piet/7x7/notbranch.png' },
     start: { file: 'piet/7x7/start.png' },
-    aterminate: { file: 'piet/7x7/terminate.png' },
+    terminate: { file: 'piet/7x7/terminate.png' },
     black: { file: 'piet/7x7/black.png' },
     curve1: { file: 'piet/7x7/curve1.png' },
     curve2: { file: 'piet/7x7/curve2.png' },
