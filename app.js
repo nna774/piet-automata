@@ -622,6 +622,7 @@ if (process.argv.length < 3) {
 const filename = process.argv[2];
 const outfile = process.argv[3] || 'out.png';
 
+// eslint-disable-next-line no-restricted-syntax
 for (const k in config.images[config.unit]) {
   if ({}.hasOwnProperty.call(config.images[config.unit], k)) {
     const image = new Image();
