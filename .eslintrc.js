@@ -3,7 +3,7 @@ module.exports = {
   "rules": {
     "no-console": "off",
     "no-mixed-operators": "off",
-    "yoda": ["error", "never", { "exceptRange": true }],
+    "yoda": ["error", "never", { "onlyEquality": true }],
     "strict": ["error", "function"],
   },
   env: {
