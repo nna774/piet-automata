@@ -332,12 +332,20 @@ function genCodeChain(code) {
       case OP.jez: { // JEZ
         // branch is a kind of pointer.
         // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
-        const jezDefault = (l) => {
+        const jezDefault = (l) => { // eslint-disable-line no-loop-func
           l.push({ op: OP.not });
           l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
         };
         const jezFuns = {
-          7: (l) => { l.push({ op: OP.notbranch, label: c.label, count: labelCount, jump: true }); },
+          // eslint-disable-next-line no-loop-func
+          7: (l) => {
+            l.push({
+              op: OP.notbranch,
+              label: c.label,
+              count: labelCount,
+              jump: true,
+            });
+          },
           5: jezDefault,
           3: jezDefault,
         };
