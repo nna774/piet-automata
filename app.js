@@ -104,7 +104,6 @@ const config = require('./config');
 const Image = Canvas.Image;
 
 function pusher1(l, op) {
-  'use strict';
   l.push({ op });
 }
 
@@ -115,7 +114,6 @@ function debugLog(level, out) {
 }
 
 function analyze(data) {
-  'use strict';
   const lines = data.split('\n');
   const code = [];
   for (const l of lines) {
@@ -224,19 +222,16 @@ function analyze(data) {
 }
 
 function isJump(opCode) {
-  'use strict';
   return !!opCode.jump;
 }
 
 function sizedPush(funs, list) {
-  'use strict';
   const fun = funs[config.unit];
   if (!fun) throw new Error('never come!(unknown unit size)');
   fun(list);
 }
 
 function opPush(newCode, c) {
-  'use strict';
   if (c.val === 0) {
     if (config.unit >= 5) {
       newCode[0].push({ op: OP.push0 });
@@ -317,7 +312,6 @@ function opPush(newCode, c) {
 }
 
 function genCodeChain(code) {
-  'use strict';
   console.log('genCodeChain');
   const newCode = [];
   newCode[0] = [];
@@ -385,20 +379,17 @@ function genCodeChain(code) {
 }
 
 function optimize(chain) {
-  'use strict';
   console.log('optimize(level: %s)', config.level);
 
   return chain;
 }
 
 function crossable(c) {
-  'use strict';
   if (c.op === OP.black || c.op === OP.nop_v) return true;
   return false;
 }
 
 function findSpace(map, i, s, g) {
-  'use strict';
   for (let c = 0; c <= i; ++c) {
     let flg = true; // crossable
     for (let l = s; l <= g; ++l) {
@@ -413,7 +404,6 @@ function findSpace(map, i, s, g) {
 }
 
 function genCodeMap(code) {
-  'use strict';
   console.log('genCodeMap');
 
   const tmp = genCodeChain(code);
@@ -564,7 +554,6 @@ function genCodeMap(code) {
 }
 
 function sanityCheck(opcode) {
-  'use strict';
   if (opcode.op === OP.push) {
     if (opcode.val !== 1) {
       // if this, genCodeMap maybe somethig wrong.
@@ -575,13 +564,11 @@ function sanityCheck(opcode) {
 }
 
 function rewriteCodemap(codemap) {
-  'use strict';
   console.log('rewriteCodemap');
 
   return codemap;
 }
 function generateImage(code, outfile) {
-  'use strict';
   console.log('generateImage');
   const height = config.unit * code.length;
   const width = config.unit * code[0].length;
