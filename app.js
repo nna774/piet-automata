@@ -137,7 +137,7 @@ function sizedPush(funs, list) {
 }
 
 function opPush3(newCode, c) {
-  if (0 <= c.val && c.val <= 3) {
+  if (0 <= c.val && c.val <= 128) {
     const table = config.opPushTable[3][c.val];
     for (let i = 0; i < table.length; ++i) {
       const op = table[i];
