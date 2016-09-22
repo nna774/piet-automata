@@ -142,9 +142,9 @@ function opPush3(newCode, c) {
     for (let i = 0; i < table.length; ++i) {
       const op = table[i];
       if (op === OP.push) {
-	newCode[0].push({ op: OP.push, val: 1 });
+        newCode[0].push({ op: OP.push, val: 1 });
       } else {
-	newCode[0].push({ op });
+        newCode[0].push({ op });
       }
     }
   } else {
