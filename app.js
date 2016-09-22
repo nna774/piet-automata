@@ -1,107 +1,12 @@
 // app.js
 
-const opTable = {
-  0: { filename: 'push', toRight: true },
-  1: { filename: 'pop', toRight: true },
-  2: { filename: 'add', toRight: true },
-  3: { filename: 'sub', toRight: true },
-  4: { filename: 'mul', toRight: true },
-  5: { filename: 'div', toRight: true },
-  6: { filename: 'mod', toRight: true },
-  7: { filename: 'not', toRight: true },
-  8: { filename: 'greater', toRight: true },
-  9: { filename: 'dup', toRight: true },
-  10: { filename: 'roll', toRight: true },
-  15: { filename: 'in_n', toRight: true },
-  16: { filename: 'in_c', toRight: true },
-  17: { filename: 'out_n', toRight: true },
-  18: { filename: 'out_c', toRight: true },
-  19: { filename: 'start', toRight: true },
-  20: { filename: 'terminate', toRight: false },
-  21: { filename: 'jez', toRight: true }, // image not exists
-  22: { filename: 'label', toRight: true }, // image not exists
-  23: { filename: 'jmp', toRight: false }, // image not exists
-
-  24: { filename: 'black', toRight: false }, // only use generate
-  25: { filename: 'branch', toRight: true },
-  26: { filename: 'nop_h', toRight: true },
-  27: { filename: 'nop_v', toRight: false },
-  28: { filename: 'curve5', toRight: false }, // 上から左
-  29: { filename: 'curve6', toRight: false }, // 右から上
-  30: { filename: 'curve4', toRight: true }, // 上から右
-  31: { filename: 'curve7', toRight: false }, // 左から上
-  32: { filename: 'cross', toRight: true },
-  33: { filename: 'join', toRight: true },
-  34: { filename: 'rjoin', toRight: true },
-  35: { filename: 'ljoin', toRight: false },
-  36: { filename: 'curve1', toRight: false }, // 左から下
-  37: { filename: 'curve2', toRight: true }, // 下から右
-
-  40: { filename: 'push0', toRight: true },
-  41: { filename: 'push2', toRight: true },
-  42: { filename: 'push3', toRight: true },
-  43: { filename: 'push4', toRight: true },
-  50: { filename: 'push16', toRight: true },
-  51: { filename: 'push32', toRight: true },
-
-  65: { filename: 'dupadd', toRight: true },
-  66: { filename: 'dupmul', toRight: true },
-  67: { filename: 'notbranch', toRight: true },
-  68: { filename: 'swap', toRight: true },
-};
-
-const OP = {
-  push: 0,
-  pop: 1,
-  add: 2,
-  sub: 3,
-  mul: 4,
-  div: 5,
-  mod: 6,
-  not: 7,
-  greater: 8,
-  dup: 9,
-  roll: 10,
-  in_n: 15,
-  in_c: 16,
-  out_n: 17,
-  out_c: 18,
-  start: 19,
-  terminate: 20,
-  jez: 21,
-  label: 22,
-  jmp: 23,
-  black: 24,
-  branch: 25,
-  nop_h: 26,
-  nop_v: 27,
-  up2left: 28,
-  right2up: 29,
-  up2right: 30,
-  left2up: 31,
-  cross: 32,
-  join: 33,
-  rjoin: 34,
-  ljoin: 35,
-  left2down: 36,
-  down2right: 37,
-  push0: 40,
-  push2: 41,
-  push3: 42,
-  push4: 43,
-  push16: 50,
-  push32: 51,
-  dupadd: 65,
-  dupmul: 66,
-  notbranch: 67,
-  swap: 68,
-};
-
 const Canvas = require('canvas');
 const fs = require('fs');
 const config = require('./config');
 
 const Image = Canvas.Image;
+const OP = config.OP;
+const opTable = config.opTable;
 
 function pusher1(l, op) {
   l.push({ op });
@@ -231,21 +136,63 @@ function sizedPush(funs, list) {
   fun(list);
 }
 
-function opPush(newCode, c) {
-  if (c.val === 0) {
-    if (config.unit >= 5) {
-      newCode[0].push({ op: OP.push0 });
-    } else {
-      newCode[0].push({ op: OP.push, val: 1 });
-      newCode[0].push({ op: OP.not });
+function opPush3(newCode, c) {
+  if (0 <= c.val && c.val <= 128) {
+    const table = config.opPushTable[3][c.val];
+    for (let i = 0; i < table.length; ++i) {
+      const op = table[i];
+      if (op === OP.push) {
+        newCode[0].push({ op: OP.push, val: 1 });
+      } else {
+        newCode[0].push({ op });
+      }
     }
+  } else {
+    newCode[0].push({ op: OP.push2 });
+    let sum = 2;
+    const tar = c.val;
+    while (tar !== sum) {
+      if (tar === sum + 1) {
+        newCode[0].push({ op: OP.push, val: 1 });
+        newCode[0].push({ op: OP.add });
+        break;
+      } else {
+        let d = 2;
+        newCode[0].push({ op: OP.push2 });
+        for (;;) {
+          if (d * d + sum < tar) {
+            newCode[0].push({ op: OP.dup });
+            newCode[0].push({ op: OP.mul });
+            d *= d;
+          } else if (d * 2 + sum < tar) {
+            newCode[0].push({ op: OP.dup });
+            newCode[0].push({ op: OP.add });
+            d *= 2;
+          } else {
+            newCode[0].push({ op: OP.add });
+            sum += d;
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
+function opPush(newCode, c) {
+  if (config.unit === 3) {
+    opPush3(newCode, c);
+    return;
+  }
+  if (c.val === 0) {
+    newCode[0].push({ op: OP.push0 });
   } else if (c.val === 1) {
     newCode[0].push(c);
   } else if (c.val === 2) {
     newCode[0].push({ op: OP.push2 });
-  } else if (c.val === 3 && config.unit >= 5) {
+  } else if (c.val === 3) {
     newCode[0].push({ op: OP.push3 });
-  } else if (c.val === 4 && config.unit >= 5) {
+  } else if (c.val === 4) {
     newCode[0].push({ op: OP.push4 });
   } else {
     newCode[0].push({ op: OP.push2 });
@@ -278,27 +225,15 @@ function opPush(newCode, c) {
           } else {
             newCode[0].push({ op: OP.push2 });
           }
-        } else if (config.unit === 3) {
-          newCode[0].push({ op: OP.push2 });
         } else {
           throw new Error('never come!(unknown unit size)');
         }
         for (;;) {
           if (d * d + sum < tar) {
-            if (config.unit === 3) {
-              newCode[0].push({ op: OP.dup });
-              newCode[0].push({ op: OP.mul });
-            } else {
-              newCode[0].push({ op: OP.dupmul });
-            }
+            newCode[0].push({ op: OP.dupmul });
             d *= d;
           } else if (d * 2 + sum < tar) {
-            if (config.unit === 3) {
-              newCode[0].push({ op: OP.dup });
-              newCode[0].push({ op: OP.add });
-            } else {
-              newCode[0].push({ op: OP.dupadd });
-            }
+            newCode[0].push({ op: OP.dupadd });
             d *= 2;
           } else {
             newCode[0].push({ op: OP.add });
@@ -309,6 +244,7 @@ function opPush(newCode, c) {
       }
     }
   }
+  return;
 }
 
 function genCodeChain(code) {

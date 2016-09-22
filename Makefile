@@ -6,7 +6,8 @@ RM = rm -rf
 images = puts72.png \
          puts72_2.png \
          even-or-odd.png \
-         1to100.png \
+         0to100.png \
+         100to200.png \
          helloworld.png \
          helloworld_2.png \
          helloworld_3.png \
