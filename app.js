@@ -231,21 +231,57 @@ function sizedPush(funs, list) {
   fun(list);
 }
 
-function opPush(newCode, c) {
+function opPush3(newCode, c) {
   if (c.val === 0) {
-    if (config.unit >= 5) {
-      newCode[0].push({ op: OP.push0 });
-    } else {
-      newCode[0].push({ op: OP.push, val: 1 });
-      newCode[0].push({ op: OP.not });
-    }
+    newCode[0].push({ op: OP.push, val: 1 });
+    newCode[0].push({ op: OP.not });
   } else if (c.val === 1) {
     newCode[0].push(c);
   } else if (c.val === 2) {
     newCode[0].push({ op: OP.push2 });
-  } else if (c.val === 3 && config.unit >= 5) {
+  } else {
+    newCode[0].push({ op: OP.push2 });
+    let sum = 2;
+    const tar = c.val;
+    while (tar !== sum) {
+      if (tar === sum + 1) {
+        newCode[0].push({ op: OP.push, val: 1 });
+        newCode[0].push({ op: OP.add });
+        break;
+      } else {
+        let d = 2;
+        newCode[0].push({ op: OP.push2 });
+        for (;;) {
+          if (d * d + sum < tar) {
+            newCode[0].push({ op: OP.dup });
+            newCode[0].push({ op: OP.mul });
+            d *= d;
+          } else if (d * 2 + sum < tar) {
+            newCode[0].push({ op: OP.dup });
+            newCode[0].push({ op: OP.add });
+            d *= 2;
+          } else {
+            newCode[0].push({ op: OP.add });
+            sum += d;
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
+function opPush(newCode, c) {
+  if (config.unit === 3) return opPush3(newCode, c);
+  if (c.val === 0) {
+    newCode[0].push({ op: OP.push0 });
+  } else if (c.val === 1) {
+    newCode[0].push(c);
+  } else if (c.val === 2) {
+    newCode[0].push({ op: OP.push2 });
+  } else if (c.val === 3) {
     newCode[0].push({ op: OP.push3 });
-  } else if (c.val === 4 && config.unit >= 5) {
+  } else if (c.val === 4) {
     newCode[0].push({ op: OP.push4 });
   } else {
     newCode[0].push({ op: OP.push2 });
@@ -278,27 +314,15 @@ function opPush(newCode, c) {
           } else {
             newCode[0].push({ op: OP.push2 });
           }
-        } else if (config.unit === 3) {
-          newCode[0].push({ op: OP.push2 });
         } else {
           throw new Error('never come!(unknown unit size)');
         }
         for (;;) {
           if (d * d + sum < tar) {
-            if (config.unit === 3) {
-              newCode[0].push({ op: OP.dup });
-              newCode[0].push({ op: OP.mul });
-            } else {
-              newCode[0].push({ op: OP.dupmul });
-            }
+            newCode[0].push({ op: OP.dupmul });
             d *= d;
           } else if (d * 2 + sum < tar) {
-            if (config.unit === 3) {
-              newCode[0].push({ op: OP.dup });
-              newCode[0].push({ op: OP.add });
-            } else {
-              newCode[0].push({ op: OP.dupadd });
-            }
+            newCode[0].push({ op: OP.dupadd });
             d *= 2;
           } else {
             newCode[0].push({ op: OP.add });
