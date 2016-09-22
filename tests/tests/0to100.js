@@ -1,10 +1,10 @@
 let res = '';
 
-for (let i = 1; i <= 100; ++i) res += i.toString();
+for (let i = 0; i <= 100; ++i) res += i.toString();
 
 const cases = [
   {
-    name: '1 to 100',
+    name: '0 to 100',
     desc: '',
     input: [],
     expect: res,
