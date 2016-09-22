@@ -272,7 +272,10 @@ function opPush3(newCode, c) {
 }
 
 function opPush(newCode, c) {
-  if (config.unit === 3) return opPush3(newCode, c);
+  if (config.unit === 3) {
+    opPush3(newCode, c);
+    return;
+  }
   if (c.val === 0) {
     newCode[0].push({ op: OP.push0 });
   } else if (c.val === 1) {
@@ -333,6 +336,7 @@ function opPush(newCode, c) {
       }
     }
   }
+  return;
 }
 
 function genCodeChain(code) {
