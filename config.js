@@ -10,6 +10,7 @@ const images = {
   3: {
     push: { file: 'piet/3x3/push1.png' },
     push2: { file: 'piet/3x3/push2.png' },
+    push3: { file: 'piet/3x3/push3.png' },
     pop: { file: 'piet/3x3/pop.png' },
     add: { file: 'piet/3x3/add.png' },
     sub: { file: 'piet/3x3/sub.png' },

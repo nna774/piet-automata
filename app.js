@@ -239,6 +239,8 @@ function opPush3(newCode, c) {
     newCode[0].push(c);
   } else if (c.val === 2) {
     newCode[0].push({ op: OP.push2 });
+  } else if (c.val === 3) {
+    newCode[0].push({ op: OP.push3 });
   } else {
     newCode[0].push({ op: OP.push2 });
     let sum = 2;
