@@ -226,6 +226,15 @@ const OP = {
   swap: 68,
 };
 
+const opPushTable = {
+  3: {
+    0: [ OP.push, OP.not ],
+    1: [ OP.push ],
+    2: [ OP.push2 ],
+    3: [ OP.push3 ],
+  }
+};
+
 module.exports = {
   images,
   unit: size,
@@ -233,4 +242,5 @@ module.exports = {
   debug,
   OP,
   opTable,
+  opPushTable,
 };

@@ -137,15 +137,16 @@ function sizedPush(funs, list) {
 }
 
 function opPush3(newCode, c) {
-  if (c.val === 0) {
-    newCode[0].push({ op: OP.push, val: 1 });
-    newCode[0].push({ op: OP.not });
-  } else if (c.val === 1) {
-    newCode[0].push(c);
-  } else if (c.val === 2) {
-    newCode[0].push({ op: OP.push2 });
-  } else if (c.val === 3) {
-    newCode[0].push({ op: OP.push3 });
+  if (0 <= c.val && c.val <= 3) {
+    const table = config.opPushTable[3][c.val];
+    for (let i = 0; i < table.length; ++i) {
+      const op = table[i];
+      if (op === OP.push) {
+	newCode[0].push({ op: OP.push, val: 1 });
+      } else {
+	newCode[0].push({ op });
+      }
+    }
   } else {
     newCode[0].push({ op: OP.push2 });
     let sum = 2;
