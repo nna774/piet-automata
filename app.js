@@ -252,7 +252,9 @@ function genCodeChain(code) {
   const newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
-  let labelCount = 0;
+  const labelMap = {
+    count: 0,
+  };
   for (const c of code) {
     switch (c.op) {
       case OP.push: {
@@ -264,7 +266,7 @@ function genCodeChain(code) {
         // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
         const jezDefault = (l) => { // eslint-disable-line no-loop-func
           l.push({ op: OP.not });
-          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+          l.push({ op: OP.branch, label: c.label, count: labelMap.count, jump: true });
         };
         const jezFuns = {
           // eslint-disable-next-line no-loop-func
@@ -272,7 +274,7 @@ function genCodeChain(code) {
             l.push({
               op: OP.notbranch,
               label: c.label,
-              count: labelCount,
+              count: labelMap.count,
               jump: true,
             });
           },
@@ -280,12 +282,12 @@ function genCodeChain(code) {
           3: jezDefault,
         };
         sizedPush(jezFuns, newCode[0]);
-        ++labelCount;
+        ++labelMap.count;
         break;
       }
       case OP.jmp: { // JMP
-        newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
-        ++labelCount;
+        newCode[0].push({ op: OP.left2down, label: c.label, count: labelMap.count, jump: true });
+        ++labelMap.count;
         break;
       }
       case OP.swap: {
@@ -310,8 +312,10 @@ function genCodeChain(code) {
   if (opTable[newCode[0][newCode[0].length - 1].op].toRight) {
     newCode[0].push({ op: OP.terminate });
   }
-  return { code: newCode,
-           count: labelCount };
+  return {
+    code: newCode,
+    labelMap,
+  };
 }
 
 function optimize(chain) {
@@ -344,7 +348,7 @@ function genCodeMap(code) {
 
   const tmp = genCodeChain(code);
   let newCode = tmp.code;
-  const labelCount = tmp.count;
+  const labelCount = tmp.labelMap.count;
 
   newCode = optimize(newCode);
 
