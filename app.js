@@ -321,6 +321,7 @@ function genCodeChain(code) {
 function optimize(chain) {
   console.log('optimize(level: %s)', config.level);
 
+  //到達不能コードの削除
   for (let i = 0; i < chain[0].length - 1; ++i) {
     if (!opTable[chain[0][i].op].toRight) {
       if (chain[0][i + 1].op !== OP.label) {
