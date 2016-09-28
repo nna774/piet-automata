@@ -392,7 +392,7 @@ function genCodeMap(code) {
     }
 
     if (j === newCode[0].length) {
-      continue;
+      continue; // このjumpはdeadcodeだったので消された。
     }
     const word = newCode[0][j].label;
 
