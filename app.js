@@ -324,8 +324,8 @@ function optimize(chain) {
   for (let i = 0; i < chain[0].length - 1; ++i) {
     if (!opTable[chain[0][i].op].toRight) {
       if (chain[0][i + 1].op !== OP.label) {
-	chain[0].splice(i + 1, 1); // 一つづつ消していくので、まとめて消す方が効率がよい。
-	return optimize(chain);
+        chain[0].splice(i + 1, 1); // 一つづつ消していくので、まとめて消す方が効率がよい。
+        return optimize(chain);
       }
     }
   }
