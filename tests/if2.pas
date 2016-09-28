@@ -1,7 +1,5 @@
 INN
-PUSH 1
-DUP
-ADD
+PUSH 2
 MOD
 JEZ zero
 PUSH 1
