@@ -254,6 +254,8 @@ function genCodeChain(code) {
   newCode[0].push({ op: OP.start });
   const labelMap = {
     count: 0,
+    labels: {},
+    jumps: {},
   };
   for (const c of code) {
     switch (c.op) {
@@ -283,6 +285,8 @@ function genCodeChain(code) {
         };
         sizedPush(jezFuns, newCode[0]);
         ++labelMap.count;
+        labelMap.jumps[c.label] = labelMap.jumps[c.label] || 0;
+        ++labelMap.jumps[c.label];
         break;
       }
       case OP.jmp: { // JMP
@@ -302,6 +306,12 @@ function genCodeChain(code) {
           3: f,
         };
         sizedPush(funs, newCode[0]);
+        break;
+      }
+      case OP.label: {
+        labelMap.labels[c.label] = labelMap.labels[c.label] || 0;
+        ++labelMap.labels[c.label];
+        newCode[0].push(c);
         break;
       }
       default: {
