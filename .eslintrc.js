@@ -5,6 +5,7 @@ module.exports = {
     "no-mixed-operators": "off",
     "no-bitwise": "off",
     "no-plusplus": "off",
+    "no-continue": "off",
     "yoda": ["error", "never", { "onlyEquality": true }],
     "strict": ["error", "function"],
   },
