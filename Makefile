@@ -18,7 +18,11 @@ images = puts72.png \
          lisp-like-calc.png
 
 images_notest = deadcode.png \
-                removelabel.png
+                removelabel.png \
+                greater.png \
+                if2.png \
+                jmp.png \
+                sub.png
 
 all_images = $(images) $(images_notest)
 
