@@ -330,6 +330,18 @@ function genCodeChain(code) {
   };
 }
 
+function removeUnusedLabel(codeChain) {
+  const chain = codeChain.code;
+  const labelMap = codeChain.labelMap;
+  for (let i = 0; i < chain[0].length; ++i) {
+    const c = chain[0][i];
+    if (c.op === OP.label && labelMap.jumps[c.word] === undefined){
+      chain[0].splice(i, 1);
+      --i;
+    }
+  }
+}
+
 function eliminamteUnreachable(chain) {
   // 到達不能コードの削除
   for (let i = 0; i < chain[0].length - 1; ++i) {
@@ -347,6 +359,7 @@ function optimize(codeChain) {
   const chain = codeChain.code;
   console.log('optimize(level: %s)', config.level);
 
+  removeUnusedLabel(codeChain);
   eliminamteUnreachable(chain);
   return chain;
 }
