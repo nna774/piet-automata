@@ -330,7 +330,9 @@ function eliminamteUnreachable(chain) {
   }
   return chain;
 }
-function optimize(chain) {
+
+function optimize(codeChain) {
+  const chain = codeChain.code;
   console.log('optimize(level: %s)', config.level);
 
   eliminamteUnreachable(chain);
@@ -359,11 +361,9 @@ function findSpace(map, i, s, g) {
 function genCodeMap(code) {
   console.log('genCodeMap');
 
-  const tmp = genCodeChain(code);
-  let newCode = tmp.code;
-  const labelCount = tmp.labelMap.count;
-
-  newCode = optimize(newCode);
+  const codeChain = genCodeChain(code);
+  let newCode = optimize(codeChain);
+  const labelCount = codeChain.labelMap.count;
 
   for (let i = 0; i < labelCount; ++i) {
     newCode.push([]);
