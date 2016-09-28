@@ -292,6 +292,8 @@ function genCodeChain(code) {
       case OP.jmp: { // JMP
         newCode[0].push({ op: OP.left2down, label: c.label, count: labelMap.count, jump: true });
         ++labelMap.count;
+        labelMap.jumps[c.label] = labelMap.jumps[c.label] || 0;
+        ++labelMap.jumps[c.label];
         break;
       }
       case OP.swap: {
@@ -309,8 +311,8 @@ function genCodeChain(code) {
         break;
       }
       case OP.label: {
-        labelMap.labels[c.label] = labelMap.labels[c.label] || 0;
-        ++labelMap.labels[c.label];
+        labelMap.labels[c.word] = labelMap.labels[c.word] || 0;
+        ++labelMap.labels[c.word];
         newCode[0].push(c);
         break;
       }
