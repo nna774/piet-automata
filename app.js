@@ -335,7 +335,7 @@ function removeUnusedLabel(codeChain) {
   const labelMap = codeChain.labelMap;
   for (let i = 0; i < chain[0].length; ++i) {
     const c = chain[0][i];
-    if (c.op === OP.label && labelMap.jumps[c.word] === undefined){
+    if (c.op === OP.label && labelMap.jumps[c.word] === undefined) {
       chain[0].splice(i, 1);
       --i;
     }
