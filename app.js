@@ -372,7 +372,7 @@ function genCodeMap(code) {
   console.log('genCodeMap');
 
   const codeChain = genCodeChain(code);
-  let newCode = optimize(codeChain);
+  const newCode = optimize(codeChain);
   const labelCount = codeChain.labelMap.count;
 
   for (let i = 0; i < labelCount; ++i) {
