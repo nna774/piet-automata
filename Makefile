@@ -15,10 +15,14 @@ images = puts72.png \
          jmp_3.png \
          gcd.png \
          swap.png \
-         lisp-like-calc.png \
-         deadcode.png
+         lisp-like-calc.png
 
-all: $(images)
+images_notest = deadcode.png \
+                removelabel.png
+
+all_images = $(images) $(images_notest)
+
+all: $(all_images)
 
 .SUFFIXES: .pas .png
 
@@ -27,9 +31,9 @@ all: $(images)
 
 .PHONY: clean test lint
 clean:
-	$(RM) $(images)
+	$(RM) $(all_images)
 
-test: $(images)
+test: $(all_images)
 	TESTUTILS_REL=../piet-testutils ./test.sh
 
 lint:
