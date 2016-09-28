@@ -252,7 +252,11 @@ function genCodeChain(code) {
   const newCode = [];
   newCode[0] = [];
   newCode[0].push({ op: OP.start });
-  let labelCount = 0;
+  const labelMap = {
+    count: 0,
+    labels: {},
+    jumps: {},
+  };
   for (const c of code) {
     switch (c.op) {
       case OP.push: {
@@ -264,7 +268,7 @@ function genCodeChain(code) {
         // Not; pointer へと書き換えることで、スタックのトップが0かそうでないかで分岐することが可能となる。
         const jezDefault = (l) => { // eslint-disable-line no-loop-func
           l.push({ op: OP.not });
-          l.push({ op: OP.branch, label: c.label, count: labelCount, jump: true });
+          l.push({ op: OP.branch, label: c.label, count: labelMap.count, jump: true });
         };
         const jezFuns = {
           // eslint-disable-next-line no-loop-func
@@ -272,7 +276,7 @@ function genCodeChain(code) {
             l.push({
               op: OP.notbranch,
               label: c.label,
-              count: labelCount,
+              count: labelMap.count,
               jump: true,
             });
           },
@@ -280,12 +284,16 @@ function genCodeChain(code) {
           3: jezDefault,
         };
         sizedPush(jezFuns, newCode[0]);
-        ++labelCount;
+        ++labelMap.count;
+        labelMap.jumps[c.label] = labelMap.jumps[c.label] || 0;
+        ++labelMap.jumps[c.label];
         break;
       }
       case OP.jmp: { // JMP
-        newCode[0].push({ op: OP.left2down, label: c.label, count: labelCount, jump: true });
-        ++labelCount;
+        newCode[0].push({ op: OP.left2down, label: c.label, count: labelMap.count, jump: true });
+        ++labelMap.count;
+        labelMap.jumps[c.label] = labelMap.jumps[c.label] || 0;
+        ++labelMap.jumps[c.label];
         break;
       }
       case OP.swap: {
@@ -302,6 +310,12 @@ function genCodeChain(code) {
         sizedPush(funs, newCode[0]);
         break;
       }
+      case OP.label: {
+        labelMap.labels[c.word] = labelMap.labels[c.word] || 0;
+        ++labelMap.labels[c.word];
+        newCode[0].push(c);
+        break;
+      }
       default: {
         newCode[0].push(c);
       }
@@ -310,13 +324,43 @@ function genCodeChain(code) {
   if (opTable[newCode[0][newCode[0].length - 1].op].toRight) {
     newCode[0].push({ op: OP.terminate });
   }
-  return { code: newCode,
-           count: labelCount };
+  return {
+    code: newCode,
+    labelMap,
+  };
 }
 
-function optimize(chain) {
+function removeUnusedLabel(codeChain) {
+  const chain = codeChain.code;
+  const labelMap = codeChain.labelMap;
+  for (let i = 0; i < chain[0].length; ++i) {
+    const c = chain[0][i];
+    if (c.op === OP.label && labelMap.jumps[c.word] === undefined) {
+      chain[0].splice(i, 1);
+      --i;
+    }
+  }
+}
+
+function eliminamteUnreachable(chain) {
+  // 到達不能コードの削除
+  for (let i = 0; i < chain[0].length - 1; ++i) {
+    if (!opTable[chain[0][i].op].toRight) {
+      if (chain[0][i + 1].op !== OP.label) {
+        chain[0].splice(i + 1, 1);
+        --i;
+      }
+    }
+  }
+  return chain;
+}
+
+function optimize(codeChain) {
+  const chain = codeChain.code;
   console.log('optimize(level: %s)', config.level);
 
+  removeUnusedLabel(codeChain);
+  eliminamteUnreachable(chain);
   return chain;
 }
 
@@ -342,11 +386,9 @@ function findSpace(map, i, s, g) {
 function genCodeMap(code) {
   console.log('genCodeMap');
 
-  const tmp = genCodeChain(code);
-  let newCode = tmp.code;
-  const labelCount = tmp.count;
-
-  newCode = optimize(newCode);
+  const codeChain = genCodeChain(code);
+  const newCode = optimize(codeChain);
+  const labelCount = codeChain.labelMap.count;
 
   for (let i = 0; i < labelCount; ++i) {
     newCode.push([]);
@@ -365,7 +407,7 @@ function genCodeMap(code) {
     }
 
     if (j === newCode[0].length) {
-      throw new Error('never come');
+      continue; // このjumpはdeadcodeだったので消された。
     }
     const word = newCode[0][j].label;
 
