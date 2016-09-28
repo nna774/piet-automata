@@ -15,7 +15,8 @@ images = puts72.png \
          jmp_3.png \
          gcd.png \
          swap.png \
-         lisp-like-calc.png
+         lisp-like-calc.png \
+         deadcode.png
 
 all: $(images)
 
