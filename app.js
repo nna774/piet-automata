@@ -24,7 +24,7 @@ function analyze(data) {
   for (const l of lines) {
     let m;
     let f = false;
-    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) { // eslint-disable-line no-cond-assign
+    if ((m = l.match(/^\s*PUSH\s+(-?\d+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.push, val: parseInt(m[1], 10) });
       f = true;
     }
@@ -137,6 +137,12 @@ function sizedPush(funs, list) {
 }
 
 function opPush3(newCode, c) {
+  let negative = c.val < 0;
+  if (negative) {
+    newCode[0].push({ op: OP.push, val: 1 });
+    newCode[0].push({ op: OP.not });
+    c.val = -c.val;
+  }
   if (0 <= c.val && c.val <= 128) {
     const table = config.opPushTable[3][c.val];
     for (let i = 0; i < table.length; ++i) {
@@ -176,6 +182,9 @@ function opPush3(newCode, c) {
         }
       }
     }
+  }
+  if (negative) {
+    newCode[0].push({ op: OP.sub });
   }
 }
 
