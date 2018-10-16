@@ -137,7 +137,7 @@ function sizedPush(funs, list) {
 }
 
 function opPush3(newCode, c) {
-  let negative = c.val < 0;
+  const negative = c.val < 0;
   if (negative) {
     newCode[0].push({ op: OP.push, val: 1 });
     newCode[0].push({ op: OP.not });
