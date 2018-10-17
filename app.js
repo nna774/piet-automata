@@ -24,7 +24,7 @@ function analyze(data) {
   for (const l of lines) {
     let m;
     let f = false;
-    if ((m = l.match(/^\s*PUSH\s+(\d+)/i))) { // eslint-disable-line no-cond-assign
+    if ((m = l.match(/^\s*PUSH\s+(-?\d+)/i))) { // eslint-disable-line no-cond-assign
       code.push({ op: OP.push, val: parseInt(m[1], 10) });
       f = true;
     }
@@ -137,8 +137,14 @@ function sizedPush(funs, list) {
 }
 
 function opPush3(newCode, c) {
-  if (0 <= c.val && c.val <= 128) {
-    const table = config.opPushTable[3][c.val];
+  const negative = c.val < 0;
+  const val = Math.abs(c.val);
+  if (negative) {
+    newCode[0].push({ op: OP.push, val: 1 });
+    newCode[0].push({ op: OP.not });
+  }
+  if (0 <= val && val <= 128) {
+    const table = config.opPushTable[3][val];
     for (let i = 0; i < table.length; ++i) {
       const op = table[i];
       if (op === OP.push) {
@@ -150,7 +156,7 @@ function opPush3(newCode, c) {
   } else {
     newCode[0].push({ op: OP.push2 });
     let sum = 2;
-    const tar = c.val;
+    const tar = val;
     while (tar !== sum) {
       if (tar === sum + 1) {
         newCode[0].push({ op: OP.push, val: 1 });
@@ -176,6 +182,9 @@ function opPush3(newCode, c) {
         }
       }
     }
+  }
+  if (negative) {
+    newCode[0].push({ op: OP.sub });
   }
 }
 
